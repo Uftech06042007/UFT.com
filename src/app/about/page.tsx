@@ -6,7 +6,7 @@ import { Icon } from "@/components/icons";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Learn about UnitForce Technologies — our story, leadership, and values since 2005.",
+    "Learn about UnitForce Technologies — our story, leadership, and values since 2003.",
 };
 
 export default function AboutPage() {
@@ -16,7 +16,7 @@ export default function AboutPage() {
         <div className="container">
           <span className="eyebrow">[ About UFT ]</span>
           <h1 className="page-title">
-            Inspired innovations <span className="serif-italic">since 2005.</span>
+            Inspired innovations <span className="serif-italic">since 2003.</span>
           </h1>
         </div>
       </section>
@@ -30,7 +30,7 @@ export default function AboutPage() {
             </div>
             <div className="about-prose">
               <p>
-                Established in 2005, UnitForce Technologies is a prominent technology company
+                Established in 2003, UnitForce Technologies is a prominent technology company
                 offering software, engineering, and talent acquisition services to enterprises of
                 various scales. With our international headquarters in Bengaluru, we have{" "}
                 {UFT_DATA.employees} global employees across India, USA, and UAE.

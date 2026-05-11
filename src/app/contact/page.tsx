@@ -170,7 +170,7 @@ export default function ContactPage() {
       <section className="section">
         <div className="container">
           <div className="section-header">
-            <span className="eyebrow">[ Locations ]</span>
+            <span className="eyebrow">[ Global Office Locations ]</span>
             <h2 className="section-title">
               Four hubs, <span className="serif-italic">one delivery network.</span>
             </h2>
@@ -178,24 +178,29 @@ export default function ContactPage() {
           <div className="locations-grid">
             {UFT_DATA.locations.map((l) => (
               <div key={l.city} className="location-card">
-                <div className="location-header">
-                  <Icon.Pin />
-                  <span
-                    className="mono"
-                    style={{ fontSize: 11, letterSpacing: "0.12em", color: "var(--fg-dim)" }}
-                  >
-                    {l.region}
-                  </span>
+                {l.photo && (
+                  /* eslint-disable-next-line @next/next/no-img-element */
+                  <img
+                    src={l.photo}
+                    alt={l.city}
+                    className="location-photo"
+                  />
+                )}
+                <div className="location-body">
+                  <div className="location-header">
+                    <Icon.Pin />
+                    <span className="mono" style={{ fontSize: 11, letterSpacing: "0.12em", color: "var(--fg-dim)" }}>
+                      {l.region}
+                    </span>
+                  </div>
+                  <h3 style={{ fontSize: 24, marginTop: 8, marginBottom: 10 }} className="serif">
+                    {l.city}
+                  </h3>
+                  <p className="muted" style={{ fontSize: 13, lineHeight: 1.6, marginBottom: 10 }}>
+                    {l.address}
+                  </p>
+                  <span className="mono dim" style={{ fontSize: 11 }}>{l.tz}</span>
                 </div>
-                <h3 style={{ fontSize: 28, marginTop: 8, marginBottom: 12 }} className="serif">
-                  {l.city}
-                </h3>
-                <p className="muted" style={{ fontSize: 14, marginBottom: 8 }}>
-                  {l.address}
-                </p>
-                <span className="mono dim" style={{ fontSize: 12 }}>
-                  {l.tz}
-                </span>
               </div>
             ))}
           </div>

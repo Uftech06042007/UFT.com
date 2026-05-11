@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     template: "%s · UFT",
   },
   description:
-    "UnitForce Technologies: software, engineering, and talent solutions for global enterprises since 2005.",
+    "UnitForce Technologies: software, engineering, and talent solutions for global enterprises since 2003.",
 };
 
 export default function RootLayout({

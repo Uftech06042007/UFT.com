@@ -5,7 +5,13 @@ import { useState } from "react";
 import { UFT_DATA } from "@/lib/data";
 import { Icon } from "@/components/icons";
 
-function MarqueeRow({ items, reverse }: { items: string[]; reverse?: boolean }) {
+function MarqueeRow({
+  items,
+  reverse,
+}: {
+  items: { name: string; logo: string }[];
+  reverse?: boolean;
+}) {
   return (
     <div
       className="marquee-track"
@@ -13,12 +19,17 @@ function MarqueeRow({ items, reverse }: { items: string[]; reverse?: boolean }) 
     >
       {[...items, ...items, ...items].map((c, i) => (
         <div key={i} className="client-cell">
-          <span
-            className="mono"
-            style={{ fontSize: 13, letterSpacing: "0.18em", color: "var(--fg-muted)" }}
-          >
-            {c}
-          </span>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={c.logo}
+            alt={c.name}
+            onError={(e) => {
+              e.currentTarget.style.display = "none";
+              const fb = e.currentTarget.nextElementSibling as HTMLElement;
+              if (fb) fb.style.display = "block";
+            }}
+          />
+          <span className="client-cell-name" style={{ display: "none" }}>{c.name}</span>
         </div>
       ))}
     </div>
@@ -26,7 +37,7 @@ function MarqueeRow({ items, reverse }: { items: string[]; reverse?: boolean }) 
 }
 
 export default function HomePage() {
-  const [activeServiceId, setActiveServiceId] = useState("software");
+  const [activeServiceId, setActiveServiceId] = useState("talent");
   const [activeIndustry, setActiveIndustry] = useState(0);
 
   const active =
@@ -39,7 +50,7 @@ export default function HomePage() {
         <div className="container">
           <div className="hero-eyebrow">
             <span className="status-dot"></span>
-            <span className="mono">UNITFORCE TECHNOLOGIES · BENGALURU · EST. 2005</span>
+            <span className="mono">UNITFORCE TECHNOLOGIES · BENGALURU · EST. 2003</span>
           </div>
           <h1 className="hero-title">
             Inspired innovations{" "}
@@ -122,9 +133,24 @@ export default function HomePage() {
               ))}
             </div>
             <div className="service-detail">
-              <div className="ph" style={{ aspectRatio: "16/10", marginBottom: 24 }}>
-                <span className="ph-label">{active.title.toUpperCase()}</span>
-              </div>
+              {active.image ? (
+                <img
+                  src={active.image}
+                  alt={active.title}
+                  style={{
+                    width: "100%",
+                    aspectRatio: "16/10",
+                    objectFit: "cover",
+                    borderRadius: "var(--radius-lg)",
+                    marginBottom: 24,
+                    display: "block",
+                  }}
+                />
+              ) : (
+                <div className="ph" style={{ aspectRatio: "16/10", marginBottom: 24 }}>
+                  <span className="ph-label">{active.title.toUpperCase()}</span>
+                </div>
+              )}
               <div
                 className="mono dim"
                 style={{ fontSize: 11, letterSpacing: "0.12em", marginBottom: 8 }}
@@ -188,11 +214,25 @@ export default function HomePage() {
               ))}
             </div>
             <div className="industry-visual">
-              <div className="ph" style={{ aspectRatio: "4/5" }}>
-                <span className="ph-label">
-                  {UFT_DATA.industries[activeIndustry].name.toUpperCase()}
-                </span>
-              </div>
+              {UFT_DATA.industries[activeIndustry].image ? (
+                <img
+                  src={UFT_DATA.industries[activeIndustry].image}
+                  alt={UFT_DATA.industries[activeIndustry].name}
+                  style={{
+                    width: "100%",
+                    aspectRatio: "4/5",
+                    objectFit: "cover",
+                    borderRadius: "var(--radius-lg)",
+                    display: "block",
+                  }}
+                />
+              ) : (
+                <div className="ph" style={{ aspectRatio: "4/5" }}>
+                  <span className="ph-label">
+                    {UFT_DATA.industries[activeIndustry].name.toUpperCase()}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -118,6 +118,9 @@ h1, h2, h3, h4 { font-weight: 500; letter-spacing: -0.02em; line-height: 1.05; }
 }
 .nav-logo-tld { color: var(--fg-dim); font-weight: 400; }
 .nav-logo-img { height: 36px; width: auto; display: block; }
+.logo-dark  { display: none; }
+[data-theme="dark"] .logo-light { display: none; }
+[data-theme="dark"] .logo-dark  { display: block; }
 .nav-links {
   display: flex;
   align-items: center;
@@ -161,14 +164,30 @@ h1, h2, h3, h4 { font-weight: 500; letter-spacing: -0.02em; line-height: 1.05; }
 .explore-btn svg { padding: 6px; box-sizing: content-box; background: var(--bg); color: var(--fg); border-radius: 100px; transition: all 0.15s; }
 .explore-btn:hover svg { background: var(--accent-fg); color: var(--accent); transform: rotate(90deg); }
 
+.jobs-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  background: var(--accent-soft);
+  color: var(--fg);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  border-radius: 100px;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.jobs-btn:hover { background: var(--accent); color: var(--accent-fg); transform: translateY(-1px); }
+
 /* ===== Nav Overlay (full-screen command bar) ===== */
 .nav-overlay {
   position: fixed;
   inset: 0;
   z-index: 100;
-  background: color-mix(in srgb, var(--bg) 70%, transparent);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: color-mix(in srgb, var(--bg) 50%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s ease;
@@ -185,6 +204,9 @@ h1, h2, h3, h4 { font-weight: 500; letter-spacing: -0.02em; line-height: 1.05; }
   transform: translateY(-12px);
   opacity: 0;
   transition: transform 0.3s ease, opacity 0.25s ease;
+  background: var(--bg-elev);
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
 }
 .nav-overlay.open .nav-overlay-panel { transform: translateY(0); opacity: 1; }
 

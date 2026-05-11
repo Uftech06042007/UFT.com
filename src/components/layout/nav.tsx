@@ -14,7 +14,16 @@ function Logo() {
       <Image
         src="/assets/uft-logo.png"
         alt="UFT — Inspired Innovations"
-        className="nav-logo-img"
+        className="nav-logo-img logo-light"
+        width={120}
+        height={36}
+        priority
+        style={{ width: "auto", height: 36 }}
+      />
+      <Image
+        src="/assets/uft-logo-dark.png"
+        alt="UFT — Inspired Innovations"
+        className="nav-logo-img logo-dark"
         width={120}
         height={36}
         priority
@@ -97,10 +106,10 @@ function NavOverlay({ open, onClose }: { open: boolean; onClose: () => void }) {
                 </Link>
               </li>
               <li>
-                <Link href="/jobs" onClick={onClose}>
+                <a href="https://uftech.in/jobs" target="_blank" rel="noreferrer" onClick={onClose}>
                   <span>Open roles</span>
                   <Icon.ArrowUR />
-                </Link>
+                </a>
               </li>
               <li>
                 <Link href="/contact" onClick={onClose}>
@@ -164,6 +173,14 @@ export function Nav() {
             <button className="theme-toggle" onClick={toggleTheme} aria-label="Toggle theme">
               {theme === "dark" ? <Icon.Sun /> : <Icon.Moon />}
             </button>
+            <a
+              href="https://uftech.in/jobs"
+              className="jobs-btn"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Jobs <Icon.Arrow size={12} />
+            </a>
             <button className="explore-btn" onClick={() => setOverlayOpen(true)}>
               <span>Explore</span>
               <Icon.Plus />

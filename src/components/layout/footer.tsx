@@ -9,7 +9,15 @@ function Logo() {
       <Image
         src="/assets/uft-logo.png"
         alt="UFT"
-        className="nav-logo-img"
+        className="nav-logo-img logo-light"
+        width={120}
+        height={36}
+        style={{ width: "auto", height: 36 }}
+      />
+      <Image
+        src="/assets/uft-logo-dark.png"
+        alt="UFT"
+        className="nav-logo-img logo-dark"
         width={120}
         height={36}
         style={{ width: "auto", height: 36 }}
@@ -26,7 +34,7 @@ export function Footer() {
           <div>
             <Logo />
             <p style={{ marginTop: 16, color: "var(--fg-muted)", fontSize: 14, maxWidth: 280 }}>
-              Inspired Innovations — software, engineering, and talent for global enterprises since 2005.
+              Inspired Innovations — software, engineering, and talent for global enterprises since 2003.
             </p>
             <div style={{ display: "flex", gap: 10, marginTop: 24 }}>
               <a href={UFT_DATA.contact.socials.linkedin} className="social-btn" target="_blank" rel="noreferrer">
