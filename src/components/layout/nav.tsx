@@ -18,7 +18,7 @@ function Logo() {
         width={120}
         height={36}
         priority
-        style={{ width: "auto", height: 36 }}
+        style={{ width: "auto" }}
       />
       <Image
         src="/assets/uft-logo-dark.png"
@@ -27,7 +27,7 @@ function Logo() {
         width={120}
         height={36}
         priority
-        style={{ width: "auto", height: 36 }}
+        style={{ width: "auto" }}
       />
     </Link>
   );

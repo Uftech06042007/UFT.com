@@ -137,6 +137,7 @@ export default function HomePage() {
                 <img
                   src={active.image}
                   alt={active.title}
+                  fetchPriority="low"
                   style={{
                     width: "100%",
                     aspectRatio: "16/10",
@@ -218,6 +219,7 @@ export default function HomePage() {
                 <img
                   src={UFT_DATA.industries[activeIndustry].image}
                   alt={UFT_DATA.industries[activeIndustry].name}
+                  fetchPriority="low"
                   style={{
                     width: "100%",
                     aspectRatio: "4/5",
