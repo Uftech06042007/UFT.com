@@ -3,14 +3,14 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { UFT_DATA } from "@/lib/data";
 import { Icon } from "@/components/icons";
 import { useTheme } from "@/hooks/use-theme";
 
 function Logo() {
   return (
-    <Link href="/" className="nav-logo">
+    <Link href="/" className="nav-logo" style={{ marginLeft: "-24px" }}>
       <Image
         src="/assets/uft-logo.png"
         alt="UFT — Inspired Innovations"
@@ -18,7 +18,7 @@ function Logo() {
         width={120}
         height={36}
         priority
-        style={{ width: "auto" }}
+        style={{ width: "auto", height: 34, filter: "contrast(1.3) brightness(1.1)" }}
       />
       <Image
         src="/assets/uft-logo-dark.png"
@@ -27,8 +27,21 @@ function Logo() {
         width={120}
         height={36}
         priority
-        style={{ width: "auto" }}
+        style={{ width: "auto", filter: "contrast(1.3) brightness(1.2)" }}
       />
+      <span className="nav-logo-wordmark" style={{
+        display: "flex",
+        flexDirection: "column",
+        color: "#223778",
+        fontSize: 13,
+        fontWeight: 700,
+        lineHeight: 1.25,
+        letterSpacing: "-0.02em",
+        fontStretch: "condensed",
+      }}>
+        <span>UNITFORCE</span>
+        <span>TECHNOLOGIES</span>
+      </span>
     </Link>
   );
 }
@@ -63,7 +76,7 @@ function NavOverlay({ open, onClose }: { open: boolean; onClose: () => void }) {
             <ul className="overlay-list">
               {UFT_DATA.services.map((s, i) => (
                 <li key={s.id}>
-                  <Link href="/#services-section" onClick={onClose}>
+                  <Link href={`/services#${s.id}`} onClick={onClose}>
                     <span className="mono dim" style={{ fontSize: 11, width: 28 }}>
                       0{i + 1}
                     </span>
@@ -79,7 +92,7 @@ function NavOverlay({ open, onClose }: { open: boolean; onClose: () => void }) {
             <ul className="overlay-list">
               {UFT_DATA.industries.map((ind, i) => (
                 <li key={ind.id}>
-                  <Link href="/#industries-section" onClick={onClose}>
+                  <Link href={`/#industries-section`} onClick={onClose}>
                     <span className="mono dim" style={{ fontSize: 11, width: 28 }}>
                       0{i + 1}
                     </span>
@@ -143,35 +156,111 @@ function NavOverlay({ open, onClose }: { open: boolean; onClose: () => void }) {
 }
 
 export function Nav() {
-  const [theme, toggleTheme] = useTheme();
+  const [, toggleTheme] = useTheme();
   const [overlayOpen, setOverlayOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const pathname = usePathname();
+  const navLinksRef = useRef<HTMLDivElement>(null);
+  const indicatorRef = useRef<HTMLDivElement>(null);
+  const hoverIndicatorRef = useRef<HTMLDivElement>(null);
+  const themeToggleRef = useRef<HTMLButtonElement>(null);
+  const firstRender = useRef(true);
+  const lastY = useRef(0);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 8);
+      const delta = y - lastY.current;
+      if (delta > 6 && y > 80) setHidden(true);
+      else if (delta < -6) setHidden(false);
+      lastY.current = y;
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const container = navLinksRef.current;
+    const indicator = indicatorRef.current;
+    if (!container || !indicator) return;
+    const active = container.querySelector<HTMLElement>(".nav-link.active");
+    if (!active) { indicator.style.opacity = "0"; return; }
+    const cr = container.getBoundingClientRect();
+    const lr = active.getBoundingClientRect();
+    if (firstRender.current) {
+      indicator.style.transition = "none";
+      firstRender.current = false;
+    } else {
+      indicator.style.transition = "transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94), width 0.3s cubic-bezier(0.25,0.46,0.45,0.94)";
+    }
+    indicator.style.opacity = "1";
+    indicator.style.width = `${lr.width}px`;
+    indicator.style.transform = `translateX(${lr.left - cr.left}px)`;
+  }, [pathname]);
+
+  const handleThemeToggle = () => {
+    toggleTheme();
+    const btn = themeToggleRef.current;
+    if (btn) {
+      btn.classList.remove("theme-toggle--pop");
+      void btn.offsetWidth;
+      btn.classList.add("theme-toggle--pop");
+    }
+  };
 
   const isActive = (path: string) =>
     path === "/" ? pathname === "/" : pathname.startsWith(path);
 
+  const moveIndicatorTo = (target: HTMLElement) => {
+    const container = navLinksRef.current;
+    const hover = hoverIndicatorRef.current;
+    if (!container || !hover) return;
+    const cr = container.getBoundingClientRect();
+    const lr = target.getBoundingClientRect();
+    hover.style.transition = "transform 0.2s cubic-bezier(0.25,0.46,0.45,0.94), width 0.2s cubic-bezier(0.25,0.46,0.45,0.94), opacity 0.15s";
+    hover.style.opacity = "1";
+    hover.style.width = `${lr.width}px`;
+    hover.style.transform = `translateX(${lr.left - cr.left}px)`;
+  };
+
+  const resetIndicatorToActive = () => {
+    const hover = hoverIndicatorRef.current;
+    if (!hover) return;
+    hover.style.transition = "opacity 0.15s";
+    hover.style.opacity = "0";
+  };
+
   return (
     <>
-      <nav className="nav">
+      <nav className={`nav${scrolled ? " nav--scrolled" : " nav--float"}${hidden ? " nav--hidden" : ""}`}>
         <div className="nav-inner">
           <Logo />
-          <div className="nav-links">
-            <Link href="/" className={`nav-link ${isActive("/") ? "active" : ""}`}>
+          <div className="nav-links" ref={navLinksRef} onMouseLeave={resetIndicatorToActive}>
+            <div className="nav-link-indicator" ref={indicatorRef} />
+            <div className="nav-link-hover-indicator" ref={hoverIndicatorRef} />
+            <Link href="/" className={`nav-link ${isActive("/") ? "active" : ""}`} onMouseEnter={(e) => moveIndicatorTo(e.currentTarget)}>
               Home
             </Link>
-            <Link href="/about" className={`nav-link ${isActive("/about") ? "active" : ""}`}>
+            <Link href="/about" className={`nav-link ${isActive("/about") ? "active" : ""}`} onMouseEnter={(e) => moveIndicatorTo(e.currentTarget)}>
               About
             </Link>
-            <Link href="/careers" className={`nav-link ${isActive("/careers") ? "active" : ""}`}>
+            <Link href="/services" className={`nav-link ${isActive("/services") ? "active" : ""}`} onMouseEnter={(e) => moveIndicatorTo(e.currentTarget)}>
+              Services
+            </Link>
+            <Link href="/careers" className={`nav-link ${isActive("/careers") ? "active" : ""}`} onMouseEnter={(e) => moveIndicatorTo(e.currentTarget)}>
               Careers
             </Link>
-            <Link href="/contact" className={`nav-link ${isActive("/contact") ? "active" : ""}`}>
+            <Link href="/contact" className={`nav-link ${isActive("/contact") ? "active" : ""}`} onMouseEnter={(e) => moveIndicatorTo(e.currentTarget)}>
               Contact
             </Link>
           </div>
           <div className="nav-cta">
-            <button className="theme-toggle" onClick={toggleTheme} aria-label="Toggle theme">
-              {theme === "dark" ? <Icon.Sun /> : <Icon.Moon />}
+            <button ref={themeToggleRef} className="theme-toggle" onClick={handleThemeToggle} aria-label="Toggle theme">
+              <span className="theme-icon theme-icon--sun"><Icon.Sun /></span>
+              <span className="theme-icon theme-icon--moon"><Icon.Moon /></span>
             </button>
             <a
               href="https://uftech.in/jobs"

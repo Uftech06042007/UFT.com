@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { UFT_DATA } from "@/lib/data";
 import { Icon } from "@/components/icons";
+import { StickyHeroFade } from "@/components/sticky-hero-fade";
+import { StackFade } from "@/components/stack-fade";
 
 interface ContactForm {
   name: string;
@@ -22,20 +24,32 @@ const EMPTY_FORM: ContactForm = {
 
 export default function ContactPage() {
   const [form, setForm] = useState<ContactForm>(EMPTY_FORM);
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSent(true);
-    setTimeout(() => {
-      setSent(false);
+    setStatus("sending");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) throw new Error();
+      setStatus("sent");
       setForm(EMPTY_FORM);
-    }, 3000);
+      setTimeout(() => setStatus("idle"), 5000);
+    } catch {
+      setStatus("error");
+      setTimeout(() => setStatus("idle"), 5000);
+    }
   };
 
   return (
-    <main className="page-enter">
-      <section className="page-hero">
+    <main className="page-enter sticky-hero">
+      <StickyHeroFade />
+      <StackFade container=".contact-stack" card=".contact-stack-card" />
+      <section className="page-hero" style={{ paddingBottom: 16 }}>
         <div className="container">
           <span className="eyebrow">[ Contact ]</span>
           <h1 className="page-title">
@@ -49,8 +63,9 @@ export default function ContactPage() {
         </div>
       </section>
 
+      <div className="contact-stack">
       {/* Contact form + aside */}
-      <section className="section">
+      <section className="section contact-stack-card" id="contact-form-section">
         <div className="container">
           <div className="contact-grid">
             <form className="contact-form" onSubmit={submit}>
@@ -106,19 +121,20 @@ export default function ContactPage() {
                   placeholder="A few sentences on the system, the team, or the problem…"
                 />
               </label>
+              {status === "error" && (
+                <p style={{ color: "oklch(0.6 0.2 25)", fontSize: 14, marginBottom: 8 }}>
+                  Something went wrong — please try again or email us directly.
+                </p>
+              )}
               <button
                 type="submit"
                 className="btn btn-primary"
-                disabled={sent}
+                disabled={status === "sending" || status === "sent"}
                 style={{ alignSelf: "flex-start" }}
               >
-                {sent ? (
-                  "Sent — we'll be in touch ✓"
-                ) : (
-                  <>
-                    Send message <Icon.Arrow />
-                  </>
-                )}
+                {status === "sending" ? "Sending…" :
+                 status === "sent"    ? "Sent — we'll be in touch ✓" :
+                 <> Send message <Icon.Arrow /> </>}
               </button>
             </form>
 
@@ -167,7 +183,7 @@ export default function ContactPage() {
       </section>
 
       {/* Locations */}
-      <section className="section">
+      <section className="section contact-stack-card" id="locations-section">
         <div className="container">
           <div className="section-header">
             <span className="eyebrow">[ Global Office Locations ]</span>
@@ -206,6 +222,7 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
+      </div>
     </main>
   );
 }

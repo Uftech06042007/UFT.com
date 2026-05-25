@@ -39,3 +39,6 @@ uploads/
 # Misc
 .vercel
 .turbo
+
+# Claude Code memory
+.claude/

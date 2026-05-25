@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Nav } from "@/components/layout/nav";
 import { Footer } from "@/components/layout/footer";
+import { SectionObserver } from "@/components/section-observer";
+import { ButtonPersistence } from "@/components/button-persistence";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -33,6 +35,8 @@ export default function RootLayout({
       </head>
       <body>
         <Nav />
+        <SectionObserver />
+        <ButtonPersistence />
         {children}
         <Footer />
       </body>

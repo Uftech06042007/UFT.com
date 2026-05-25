@@ -1,9 +1,16 @@
 "use client";
 
+// Module-level: resets on F5 (new JS module load), persists across SPA navigation
+let svcReloadHandled = false;
+
 import Link from "next/link";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { UFT_DATA } from "@/lib/data";
 import { Icon } from "@/components/icons";
+import { DynamicYears } from "@/components/dynamic-years";
+import { ClientCarousel } from "@/components/client-carousel";
+import { HomeStackFade } from "@/components/home-stack-fade";
+
 
 function MarqueeRow({
   items,
@@ -36,33 +43,106 @@ function MarqueeRow({
   );
 }
 
-export default function HomePage() {
-  const [activeServiceId, setActiveServiceId] = useState("talent");
-  const [activeIndustry, setActiveIndustry] = useState(0);
+function DotArrow() {
+  return (
+    <svg className="dot-arrow" width="30" height="28" viewBox="0 0 30 28" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle className="da da-1" cx="2"  cy="14" r="1.6"/>
+      <circle className="da da-2" cx="7"  cy="14" r="1.6"/>
+      <circle className="da da-3" cx="12" cy="14" r="1.6"/>
+      <circle className="da da-3" cx="12" cy="5"  r="1.6"/>
+      <circle className="da da-3" cx="12" cy="23" r="1.6"/>
+      <circle className="da da-4" cx="17" cy="9"  r="1.6"/>
+      <circle className="da da-4" cx="17" cy="19" r="1.6"/>
+      <circle className="da da-5" cx="22" cy="12" r="1.6"/>
+      <circle className="da da-5" cx="22" cy="16" r="1.6"/>
+      <circle className="da da-6" cx="27" cy="14" r="1.6"/>
+    </svg>
+  );
+}
 
-  const active =
-    UFT_DATA.services.find((s) => s.id === activeServiceId) ?? UFT_DATA.services[0];
+const STEPS = [
+  { n: "01", t: "Brief & Scope",      d: "Two-week discovery with a senior lead. Fixed deliverables, not vague intentions." },
+  { n: "02", t: "Stand Up the Squad", d: "Engineers placed in 2–4 weeks. Vetted, ready to commit code on day one." },
+  { n: "03", t: "Deliver in the Open",d: "Weekly demos, public backlog, real burndown. You see what we see." },
+  { n: "04", t: "Scale or Hand-Off",  d: "Grow the team, transfer to your in-house engineers, or wind down cleanly." },
+];
+
+const SERVICE_ICONS: Record<string, React.ReactNode> = {
+  talent: (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+      <circle cx="9" cy="7" r="4"/>
+      <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+      <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+    </svg>
+  ),
+  software: (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="16 18 22 12 16 6"/>
+      <polyline points="8 6 2 12 8 18"/>
+    </svg>
+  ),
+  engineering: (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+    </svg>
+  ),
+  manufacturing: (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/>
+      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+      <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+      <line x1="12" y1="22.08" x2="12" y2="12"/>
+    </svg>
+  ),
+  ai: (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="4" y="4" width="16" height="16" rx="2"/>
+      <rect x="9" y="9" width="6" height="6"/>
+      <path d="M15 2v2M9 2v2M2 9h2M2 15h2M22 9h-2M22 15h-2M15 22v-2M9 22v-2"/>
+    </svg>
+  ),
+};
+
+export default function HomePage() {
+  const [activeService, setActiveService] = useState(0);
+  const [activeIndustry, setActiveIndustry] = useState(0);
+  const [clickedService, setClickedService] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!svcReloadHandled) {
+      svcReloadHandled = true;
+      const isReload = performance
+        .getEntriesByType("navigation")
+        .some((n) => (n as PerformanceNavigationTiming).type === "reload");
+      if (isReload) sessionStorage.removeItem("uft-clicked-service");
+    }
+    const v = sessionStorage.getItem("uft-clicked-service");
+    if (v !== null) setClickedService(Number(v));
+  }, []);
+
+  const handleServiceClick = (idx: number) => {
+    setClickedService(idx);
+    sessionStorage.setItem("uft-clicked-service", String(idx));
+  };
 
   return (
     <main className="page-enter">
       {/* HERO — scroll 1 */}
       <section className="hero">
         <div className="container">
-          <div className="hero-eyebrow">
-            <span className="status-dot"></span>
-            <span className="mono">UNITFORCE TECHNOLOGIES · BENGALURU · EST. 2003</span>
-          </div>
           <h1 className="hero-title">
-            Inspired innovations{" "}
+            Inspired Innovations
+            <br />
             <span className="serif-italic">for the industries that build the world.</span>
           </h1>
           <div className="hero-meta">
             <p className="hero-sub">
-              We design software, place specialized engineers, and modernize manufacturing for the
-              industries that move the world — from automotive to aerospace, banking to oil &amp; gas.
+              We develop scalable pipeline software, integrate AI-driven services, place specialized engineers, and modernize manufacturing for the
+              industries that move the world — from Automotive to Aerospace, BFSI to Oil &amp; Gas, Pharmacy to FMCG.
             </p>
             <div className="hero-actions">
-              <Link href="/#services-section" className="btn btn-primary">
+              <Link href="/services" className="btn btn-primary">
                 Our services <Icon.Arrow />
               </Link>
               <Link href="/contact" className="btn btn-ghost">
@@ -73,106 +153,131 @@ export default function HomePage() {
           <div className="hero-stats">
             {UFT_DATA.stats.map((s) => (
               <div key={s.label} className="stat">
-                <div className="stat-kpi">{s.kpi}</div>
+                <div className="stat-kpi">
+                  {s.dynamicKey ? <DynamicYears type={s.dynamicKey} /> : s.kpi}
+                </div>
                 <div className="stat-label mono">{s.label}</div>
               </div>
             ))}
           </div>
+          <hr style={{ border: "none", borderTop: "1px solid var(--border)", margin: 0 }} />
         </div>
       </section>
 
-      {/* CLIENTS MARQUEE — scroll 2 */}
-      <section className="clients-section">
-        <div className="container">
-          <div className="clients-header">
-            <span className="eyebrow">Trusted by global enterprises</span>
-          </div>
+      {/* CLIENTS CAROUSEL — scroll 2 */}
+      <section className="section" style={{ paddingTop: 0, marginTop: -32, paddingBottom: 40 }}>
+        <div className="container" style={{ paddingTop: 0, paddingBottom: 24, textAlign: "center" }}>
+          <span className="eyebrow" style={{ fontWeight: 600, color: "var(--fg)", fontSize: "clamp(11px, 1vw, 13px)", letterSpacing: "0.10em" }}>Trusted by global enterprises</span>
         </div>
-        <div className="marquee">
-          <MarqueeRow items={UFT_DATA.clients} />
-        </div>
+        <ClientCarousel items={UFT_DATA.clients} />
+        <div className="container"><hr style={{ border: "none", borderTop: "1px solid var(--border)", margin: "48px 0 0" }} /></div>
       </section>
+
+      {/* STACKED SECTIONS — scroll 3-6 */}
+      <HomeStackFade />
+      <div className="home-stack">
 
       {/* SERVICES — scroll 3 */}
-      <section className="section" id="services-section">
+      <section className="section home-stack-card" id="services-section">
         <div className="container">
           <div className="section-head-row">
             <div>
-              <span className="eyebrow">[ 01 ] What we do</span>
+              <span className="eyebrow">[ Services ]</span>
               <h2 className="section-title">
-                Five practices,{" "}
-                <span className="serif-italic">one delivery muscle.</span>
+                What we do,{" "}
+                <span className="serif-italic">end to end.</span>
               </h2>
             </div>
             <p className="section-sub-inline">
-              From a single embedded engineer to a 200-person modernization program — we operate as
-              one integrated services group.
+              From talent acquisition to AI — every UFT service is built around
+              delivering real outcomes for the industries we serve.
             </p>
           </div>
 
-          <div className="services-explorer">
-            <div className="services-list">
-              {UFT_DATA.services.map((s, idx) => (
-                <button
-                  key={s.id}
-                  className={`service-tab ${activeServiceId === s.id ? "active" : ""}`}
-                  onClick={() => setActiveServiceId(s.id)}
+          <div className="industries-strip">
+            <div className="industries-rows">
+              {UFT_DATA.services.map((svc, idx) => (
+                <Link
+                  key={svc.id}
+                  href={`/services#${svc.id}`}
+                  className={`industry-row ${activeService === idx ? "active" : ""} ${clickedService === idx ? "industry-row--clicked" : ""}`}
+                  onMouseEnter={() => setActiveService(idx)}
+                  onClick={() => handleServiceClick(idx)}
                 >
-                  <span className="service-num mono">0{idx + 1}</span>
-                  <div className="service-tab-body">
-                    <div className="service-tab-title">
-                      {s.title}
-                      {s.flagship && (
-                        <span className="flagship-badge mono">FLAGSHIP</span>
-                      )}
-                    </div>
-                    <div className="service-tab-tagline">{s.tagline}</div>
-                  </div>
-                  <Icon.Arrow size={14} />
-                </button>
+                  <span className="industry-row-num" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    {SERVICE_ICONS[svc.id] ?? null}
+                  </span>
+                  <span className="industry-row-name">
+                    {svc.id === "talent" ? (<>Talent<br />Acquisition</>) :
+                     svc.id === "software" ? (<>Software<br />Services</>) :
+                     svc.title}
+                  </span>
+                  <span className="industry-row-blurb">{svc.tagline}</span>
+                </Link>
               ))}
             </div>
-            <div className="service-detail">
-              {active.image ? (
-                <img
-                  src={active.image}
-                  alt={active.title}
-                  fetchPriority="low"
-                  style={{
-                    width: "100%",
-                    aspectRatio: "16/10",
-                    objectFit: "cover",
-                    borderRadius: "var(--radius-lg)",
-                    marginBottom: 24,
-                    display: "block",
-                  }}
-                />
-              ) : (
-                <div className="ph" style={{ aspectRatio: "16/10", marginBottom: 24 }}>
-                  <span className="ph-label">{active.title.toUpperCase()}</span>
+            <div className="industry-visual">
+              <div style={{
+                background: "var(--bg-card)",
+                borderRadius: "16px",
+                padding: "12px 12px 24px",
+                boxShadow: "0 12px 48px rgba(0,0,0,0.18), 0 4px 16px rgba(0,0,0,0.10)",
+                width: "100%",
+                aspectRatio: "5/6",
+                overflow: "hidden",
+              }}>
+                {UFT_DATA.services[activeService].image ? (
+                  <Link href={`/services#${UFT_DATA.services[activeService].id}`}>
+                  <img
+                    src={UFT_DATA.services[activeService].image}
+                    alt={UFT_DATA.services[activeService].title}
+                    fetchPriority="low"
+                    style={{
+                      width: "100%",
+                      aspectRatio: "4/3",
+                      objectFit: "cover",
+                      borderRadius: "8px",
+                      display: "block",
+                      cursor: "pointer",
+                    }}
+                  />
+                  </Link>
+                ) : (
+                  <div className="ph" style={{ aspectRatio: "4/3", borderRadius: "8px" }}>
+                    <span className="ph-label">
+                      {UFT_DATA.services[activeService].title.toUpperCase()}
+                    </span>
+                  </div>
+                )}
+                <div style={{ padding: "20px 8px 0" }}>
+                  <p style={{ fontSize: 13, lineHeight: 1.65, color: "var(--fg-muted)", marginBottom: 16 }}>
+                    {UFT_DATA.services[activeService].desc}
+                  </p>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
+                    {(() => {
+                      const caps = [...UFT_DATA.services[activeService].capabilities].sort((a, b) => b.length - a.length);
+                      const interleaved: string[] = [];
+                      let lo = 0, hi = caps.length - 1;
+                      while (lo <= hi) {
+                        interleaved.push(caps[lo++]);
+                        if (lo <= hi) interleaved.push(caps[hi--]);
+                      }
+                      return interleaved;
+                    })().map((cap) => (
+                      <span key={cap} style={{
+                        padding: "4px 10px",
+                        borderRadius: 100,
+                        border: "1px solid var(--border)",
+                        fontSize: 11,
+                        color: "var(--fg-muted)",
+                        lineHeight: 1.5,
+                        whiteSpace: "nowrap",
+                      }}>
+                        {cap}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              )}
-              <div
-                className="mono dim"
-                style={{ fontSize: 11, letterSpacing: "0.12em", marginBottom: 8 }}
-              >
-                PRACTICE / {active.id.toUpperCase()}
-              </div>
-              <h3
-                className="serif"
-                style={{ fontSize: 30, marginBottom: 12, letterSpacing: "-0.01em" }}
-              >
-                {active.title}
-              </h3>
-              <p className="muted" style={{ marginBottom: 20, fontSize: 15 }}>
-                {active.desc}
-              </p>
-              <div className="capabilities">
-                {active.capabilities.map((c) => (
-                  <span key={c} className="capability-pill">
-                    {c}
-                  </span>
-                ))}
               </div>
             </div>
           </div>
@@ -180,11 +285,11 @@ export default function HomePage() {
       </section>
 
       {/* INDUSTRIES — scroll 4 */}
-      <section className="section" id="industries-section">
+      <section className="section home-stack-card" id="industries-section">
         <div className="container">
           <div className="section-head-row">
             <div>
-              <span className="eyebrow">[ 02 ] Industries</span>
+              <span className="eyebrow">[ Industries ]</span>
               <h2 className="section-title">
                 Domain depth,{" "}
                 <span className="serif-italic">across regulated sectors.</span>
@@ -210,7 +315,6 @@ export default function HomePage() {
                   </span>
                   <span className="industry-row-name">{ind.name}</span>
                   <span className="industry-row-blurb">{ind.blurb}</span>
-                  <Icon.ArrowUR />
                 </button>
               ))}
             </div>
@@ -241,11 +345,11 @@ export default function HomePage() {
       </section>
 
       {/* APPROACH — scroll 5 */}
-      <section className="section approach-section">
+      <section className="section approach-section home-stack-card" id="approach-section">
         <div className="container">
           <div className="approach-grid">
             <div>
-              <span className="eyebrow">[ 03 ] How we work</span>
+              <span className="eyebrow">[ How we work ]</span>
               <h2 className="section-title" style={{ marginTop: 16 }}>
                 We deliver engineers,{" "}
                 <span className="serif-italic">not decks.</span>
@@ -257,35 +361,12 @@ export default function HomePage() {
               </p>
             </div>
             <div className="approach-steps">
-              {[
-                {
-                  n: "01",
-                  t: "Brief & scope",
-                  d: "Two-week discovery with a senior lead. Fixed deliverables, not vague intentions.",
-                },
-                {
-                  n: "02",
-                  t: "Stand up the squad",
-                  d: "Engineers placed in 2–4 weeks. Vetted, ready to commit code on day one.",
-                },
-                {
-                  n: "03",
-                  t: "Deliver in the open",
-                  d: "Weekly demos, public backlog, real burndown. You see what we see.",
-                },
-                {
-                  n: "04",
-                  t: "Scale or hand-off",
-                  d: "Grow the team, transfer to your in-house engineers, or wind down cleanly.",
-                },
-              ].map((step) => (
+              {STEPS.map((step) => (
                 <div key={step.n} className="approach-step">
                   <span className="approach-n mono">{step.n}</span>
                   <div>
                     <h4 style={{ fontSize: 17, marginBottom: 6 }}>{step.t}</h4>
-                    <p className="muted" style={{ fontSize: 14 }}>
-                      {step.d}
-                    </p>
+                    <p className="muted" style={{ fontSize: 14 }}>{step.d}</p>
                   </div>
                 </div>
               ))}
@@ -295,7 +376,7 @@ export default function HomePage() {
       </section>
 
       {/* CTA — scroll 6 */}
-      <section className="cta-section">
+      <section className="cta-section home-stack-card">
         <div className="container">
           <div className="cta-card">
             <span className="eyebrow">[ Next ]</span>
@@ -326,6 +407,8 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      </div>{/* end .home-stack */}
     </main>
   );
 }

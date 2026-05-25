@@ -53,7 +53,7 @@ export function Footer() {
             <ul>
               {UFT_DATA.services.map((s) => (
                 <li key={s.id}>
-                  <Link href="/#services-section">{s.title}</Link>
+                  <Link href={`/services#${s.id}`}>{s.title}</Link>
                 </li>
               ))}
             </ul>
@@ -63,7 +63,7 @@ export function Footer() {
             <ul>
               {UFT_DATA.industries.slice(0, 5).map((ind) => (
                 <li key={ind.id}>
-                  <Link href="/#industries-section">{ind.name}</Link>
+                  <Link href={`/#industries-section`}>{ind.name}</Link>
                 </li>
               ))}
             </ul>
@@ -92,8 +92,8 @@ export function Footer() {
           </div>
         </div>
         <div className="footer-bottom">
-          <span>© 2026 UNITFORCE TECHNOLOGIES · ALL RIGHTS RESERVED</span>
-          <span>BRIDGING BUSINESS &amp; TECHNOLOGY</span>
+          <span style={{ color: "var(--accent)" }}>© 2026 UNITFORCE TECHNOLOGIES · ALL RIGHTS RESERVED</span>
+          <span style={{ color: "var(--accent)" }}>BRIDGING BUSINESS &amp; TECHNOLOGY</span>
         </div>
       </div>
     </footer>
