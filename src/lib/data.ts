@@ -186,7 +186,7 @@ export const UFT_DATA: UFTData = {
       role: "Operations Manager",
       photo: "/assets/team-nanditha.jpg",
       photoPosition: "center 15%",
-      photoScale: 1.25,
+      photoScale: 1.5,
       bio: "Operations Manager with 13+ years across financial controllership, strategic growth, and P&L optimization. Former Head of Finance & Controlling at Unitforce Technologies managing global cluster operations across India, UAE, and the USA. MBA in Finance.",
       socials: { linkedin: "https://www.linkedin.com/in/nanditha-natesh-b72434175/" },
     },
