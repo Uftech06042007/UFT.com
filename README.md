@@ -1,6 +1,6 @@
-# UFT.com — UnitForce Technologies Website
+# uftech.com — UnitForce Technologies Website
 
-Official marketing website for [UnitForce Technologies](https://uft.com), built with Next.js 16 and React 19.
+Official marketing website for [UnitForce Technologies](https://uftech.com), built with Next.js 16 and React 19.
 
 ## Tech Stack
 
