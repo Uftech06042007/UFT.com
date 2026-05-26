@@ -85,9 +85,4 @@ The site supports dark/light mode. The default is dark. Theme preference is pers
 
 ## Environment Variables
 
-Create a `.env.local` file for the contact form:
-
-```
-RESEND_API_KEY=re_...
-CONTACT_TO_EMAIL=your@email.com
-```
+Create a `.env.local` file for the contact form with your Resend API key and destination email address.
