@@ -40,7 +40,7 @@ export default function AboutPage() {
                   </p>
                   <p>
                     We operate as five interconnected practices —{" "}
-                    <em>software, engineering, talent, manufacturing, and AI</em> — and are recognized
+                    <em>AI, engineering, talent, software, and manufacturing</em> — and are recognized
                     for our array of new product design and AI-enhanced analytic tools, helping firms
                     enhance productivity, process, and data-based decision-making.
                   </p>
@@ -89,7 +89,7 @@ export default function AboutPage() {
         <hr style={{ border: "none", borderTop: "1px solid var(--border)", margin: 0 }} />
       </section>
 
-      <StickyExpand sectionId="leadership-section" cardsId="leadership-cards" spacerVh={450} enableBacklight />
+      <StickyExpand sectionId="leadership-section" cardsId="leadership-cards" spacerVh={320} enableBacklight />
 
       {/* Leadership */}
       <section className="section" id="leadership-section">
@@ -145,7 +145,7 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-      <div style={{ height: "450vh" }} />
+      <div style={{ height: "320vh" }} />
     </main>
   );
 }

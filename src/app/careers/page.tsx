@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type React from "react";
 import Link from "next/link";
 import { Icon } from "@/components/icons";
 import { TestimonialCarousel } from "@/components/testimonial-carousel";
@@ -85,14 +86,20 @@ export default function CareersPage() {
             <span className="serif-italic">flat structure, real ownership.</span>
           </h2>
           <div className="lau-collage">
-            <div className="lau-a"><img src="/assets/lau-a.jpg" alt="UFT office entrance" /></div>
-            <div className="lau-b"><img src="/assets/lau-b.jpg" alt="UFT meeting room" /></div>
-            <div className="lau-c"><img src="/assets/lau-c.jpg" alt="UFT team" /></div>
-            <div className="lau-d"><img src="/assets/lau-d.jpg" alt="UFT team" /></div>
-            <div className="lau-e"><img src="/assets/lau-e.jpg" alt="UFT all-hands" /></div>
-            <div className="lau-f"><img src="/assets/lau-f.jpg" alt="UFT team" /></div>
-            <div className="lau-g"><img src="/assets/lau-g.jpg" alt="UFT workspace" /></div>
-            <div className="lau-h"><img src="/assets/lau-h.jpg" alt="UFT team event" /></div>
+            {([
+              { cls: "lau-a", src: "/assets/lau-a.jpg", alt: "UFT office entrance" },
+              { cls: "lau-b", src: "/assets/lau-b.jpg", alt: "UFT meeting room" },
+              { cls: "lau-c", src: "/assets/lau-c.jpg", alt: "UFT team" },
+              { cls: "lau-d", src: "/assets/lau-d.jpg", alt: "UFT team" },
+              { cls: "lau-e", src: "/assets/lau-e.jpg", alt: "UFT all-hands" },
+              { cls: "lau-f", src: "/assets/lau-f.jpg", alt: "UFT team" },
+              { cls: "lau-g", src: "/assets/lau-g-3.jpg", alt: "UFT workspace", imgStyle: { transform: "scale(1.75)", transformOrigin: "35% center" } },
+              { cls: "lau-h", src: "/assets/lau-h.jpg", alt: "UFT team event" },
+            ] as { cls: string; src: string; alt: string; imgStyle?: React.CSSProperties }[]).map(({ cls, src, alt, imgStyle }) => (
+              <div key={cls} className={cls} style={{ position: "relative" }}>
+                <img src={src} alt={alt} style={imgStyle} />
+              </div>
+            ))}
           </div>
         </div>
       </section>

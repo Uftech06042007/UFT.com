@@ -92,6 +92,7 @@ export function ClientCarousel({ items }: { items: { name: string; logo: string 
               key={i}
               className="cc-card"
               style={{
+                width: cardWidth ? `${cardWidth - 12}px` : undefined,
                 transform: `scale(${scale})`,
                 transformOrigin: origin,
                 transition: animated ? "transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1), box-shadow 0.5s ease" : "none",
@@ -111,7 +112,7 @@ export function ClientCarousel({ items }: { items: { name: string; logo: string 
                   if (fb) fb.style.display = "block";
                 }}
               />
-              <span className="cc-name">{c.name}</span>
+              <span className="cc-name" style={{ display: "none" }}>{c.name}</span>
             </div>
           );
         })}

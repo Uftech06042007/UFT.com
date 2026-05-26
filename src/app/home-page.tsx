@@ -134,7 +134,9 @@ export default function HomePage() {
           <h1 className="hero-title">
             Inspired Innovations
             <br />
-            <span className="serif-italic">for the industries that build the world.</span>
+            <span className="serif-italic">for the industries</span>
+            <br />
+            <span className="serif-italic">that build the world.</span>
           </h1>
           <div className="hero-meta">
             <p className="hero-sub">
@@ -189,7 +191,7 @@ export default function HomePage() {
               </h2>
             </div>
             <p className="section-sub-inline">
-              From talent acquisition to AI — every UFT service is built around
+              From AI to Engineering Services — every UFT service is built around
               delivering real outcomes for the industries we serve.
             </p>
           </div>
@@ -356,8 +358,7 @@ export default function HomePage() {
               </h2>
               <p className="muted" style={{ fontSize: 16, marginTop: 24, maxWidth: 460 }}>
                 Every UFT engagement runs on the same model: a senior delivery lead, a transparent
-                backlog, and a team that sits with yours. Pricing is fixed, time-and-materials, or
-                outcome-based — your call.
+                backlog, and a team that sits with yours. We price to your commercial model — scope-defined, time-and-materials, or fully outcome-based.
               </p>
             </div>
             <div className="approach-steps">

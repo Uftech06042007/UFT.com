@@ -7,8 +7,8 @@ const CONTAINER_PAD   = 48;
 const CARD_GAP        = 24;
 const HIDE_BUFFER     = 24;
 
-const EXPAND_AT = 0.15;
-const SCROLL_AT = 0.28;
+const EXPAND_AT = 0.05;
+const SCROLL_AT = 0.10;
 
 const GREEN_GLOW = "0 0 0 2px oklch(0.72 0.18 145 / 0.6), 0 0 32px oklch(0.72 0.18 145 / 0.55), 0 0 64px oklch(0.72 0.18 145 / 0.3), 0 12px 40px rgba(0,0,0,0.16), 0 2px 8px rgba(0,0,0,0.08)";
 const BASE_SHADOW = "0 12px 40px rgba(0,0,0,0.16), 0 2px 8px rgba(0,0,0,0.08)";
