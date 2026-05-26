@@ -213,7 +213,7 @@ export const UFT_DATA: UFTData = {
     {
       name: "Balaji B S",
       role: "Team Lead",
-      photo: "[insert image]",
+      photo: "/assets/team-balaji.jpg",
       bio: "Mechanical Engineering Team Lead with 7+ years of global experience (USA, UK, Europe, India) in product design and project management. Skilled in client coordination, costing, and leading cross-functional engineering teams from concept to timely delivery. Holds a Bachelor's in Mechanical Engineering from VTU.",
       socials: { linkedin: "https://www.linkedin.com/in/balaji-b-s-26b140171/" },
     },

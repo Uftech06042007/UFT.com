@@ -42,7 +42,11 @@ export function ClientCarousel({ items }: { items: { name: string; logo: string 
 
   useEffect(() => {
     if (!animated) {
-      const id = requestAnimationFrame(() => setAnimated(true));
+      // Double rAF: first frame commits the instant-repositioned DOM,
+      // second frame re-enables transition so the next slide animates cleanly.
+      const id = requestAnimationFrame(() => {
+        requestAnimationFrame(() => setAnimated(true));
+      });
       return () => cancelAnimationFrame(id);
     }
   }, [animated]);
@@ -62,6 +66,8 @@ export function ClientCarousel({ items }: { items: { name: string; logo: string 
   const onMouseLeave = (e: React.MouseEvent) => handleSwipe(e.clientX, e.buttons > 0);
   const onTouchStart = (e: React.TouchEvent) => { dragX.current = e.touches[0].clientX; };
   const onTouchEnd = (e: React.TouchEvent) => handleSwipe(e.changedTouches[0].clientX, true);
+
+  const scaleMap: Record<number, number> = { 0: 0.82, 1: 0.92, 2: 1.0, 3: 0.92, 4: 0.82 };
 
   return (
     <div
@@ -83,10 +89,7 @@ export function ClientCarousel({ items }: { items: { name: string; logo: string 
       >
         {extended.map((c, i) => {
           const pos = i - idx;
-          const scaleMap: Record<number, number> = { 0: 0.78, 1: 0.90, 2: 1.08, 3: 0.90, 4: 0.78 };
-          const originMap: Record<number, string> = { 0: "right center", 1: "center center", 2: "center center", 3: "center center", 4: "left center" };
-          const scale = scaleMap[pos] ?? 0.78;
-          const origin = originMap[pos] ?? "center center";
+          const scale = scaleMap[pos] ?? 0.82;
           return (
             <div
               key={i}
@@ -94,7 +97,7 @@ export function ClientCarousel({ items }: { items: { name: string; logo: string 
               style={{
                 width: cardWidth ? `${cardWidth - 12}px` : undefined,
                 transform: `scale(${scale})`,
-                transformOrigin: origin,
+                transformOrigin: "center center",
                 transition: animated ? "transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1), box-shadow 0.5s ease" : "none",
                 zIndex: pos === 2 ? 2 : 1,
                 position: "relative",

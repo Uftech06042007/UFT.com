@@ -2,13 +2,12 @@
 
 // Module-level: resets on F5 (new JS module load), persists across SPA navigation
 let svcReloadHandled = false;
-
+import { ClientCarousel } from "@/components/client-carousel";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { UFT_DATA } from "@/lib/data";
 import { Icon } from "@/components/icons";
 import { DynamicYears } from "@/components/dynamic-years";
-import { ClientCarousel } from "@/components/client-carousel";
 import { HomeStackFade } from "@/components/home-stack-fade";
 
 
