@@ -1,8 +1,4 @@
 import type { Metadata } from "next";
-import { Nav } from "@/components/layout/nav";
-import { Footer } from "@/components/layout/footer";
-import { SectionObserver } from "@/components/section-observer";
-import { ButtonPersistence } from "@/components/button-persistence";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -26,7 +22,6 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap"
           rel="stylesheet"
         />
-        {/* Inline theme script prevents flash of wrong theme before hydration */}
         <script
           dangerouslySetInnerHTML={{
             __html: `try{const t=localStorage.getItem('uft-theme')||'dark';document.documentElement.setAttribute('data-theme',t);}catch(e){}`,
@@ -34,11 +29,7 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <Nav />
-        <SectionObserver />
-        <ButtonPersistence />
         {children}
-        <Footer />
       </body>
     </html>
   );
