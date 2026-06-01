@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import type React from "react";
-import Link from "next/link";
-import { Icon } from "@/components/icons";
 import { TestimonialCarousel } from "@/components/testimonial-carousel";
 import { StackFade } from "@/components/stack-fade";
+import { CareersHero } from "@/components/careers-hero";
 
 export const metadata: Metadata = {
   title: "Careers",
@@ -13,31 +12,8 @@ export const metadata: Metadata = {
 export default function CareersPage() {
   return (
     <main className="page-enter">
-      <section className="page-hero">
-        <div className="container">
-          <span className="eyebrow">[ Careers · Culture ]</span>
-          <h1 className="page-title">
-            Build the things that{" "}
-            <span className="serif-italic">build everything else.</span>
-          </h1>
-          <div className="hero-meta">
-            <p className="hero-sub">
-              We hire people who&apos;d rather ship hard problems for serious industries than chase
-              the next shiny thing — across roles like Software Engineers, Embedded Engineers,
-              SAP Consultants, Talent Recruiters, AI Specialists, Mechanical Engineers, PLM Analysts,
-              Operations Managers, Business Analysts, and Finance Professionals.
-              If that&apos;s you — read on.
-            </p>
-            <div className="hero-actions">
-              <Link href="https://uftech.in/jobs" className="btn btn-primary">
-                Find your next role <Icon.Arrow />
-              </Link>
-              <Link href="/contact" className="btn btn-ghost">
-                Talk to a recruiter
-              </Link>
-            </div>
-          </div>
-        </div>
+      <section className="page-hero careers-page-hero">
+        <CareersHero />
       </section>
 
       <StackFade container=".careers-stack" card=".careers-stack-card" />

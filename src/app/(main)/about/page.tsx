@@ -89,7 +89,7 @@ export default function AboutPage() {
         <hr style={{ border: "none", borderTop: "1px solid var(--border)", margin: 0 }} />
       </section>
 
-      <StickyExpand sectionId="leadership-section" cardsId="leadership-cards" spacerVh={320} enableBacklight />
+      <StickyExpand sectionId="leadership-section" cardsId="leadership-cards" spacerVh={320} holdVh={100} enableBacklight />
 
       {/* Leadership */}
       <section className="section" id="leadership-section">
@@ -102,10 +102,10 @@ export default function AboutPage() {
           </div>
           <div id="leadership-cards" style={{ display: "flex", gap: 24, marginTop: 20, willChange: "transform" }}>
             {UFT_DATA.team.map((p, i) => (
-              <div key={i} style={{ background: "var(--bg-card)", borderRadius: "var(--radius-lg)", boxShadow: "0 12px 40px rgba(0,0,0,0.16), 0 2px 8px rgba(0,0,0,0.08)", overflow: "hidden", display: "flex", flexDirection: "row", alignItems: "center", width: 560, flexShrink: 0, padding: "32px 28px 32px 24px", gap: 24 }}>
+              <div key={i} style={{ background: "var(--bg-card)", borderRadius: "var(--radius-lg)", boxShadow: "0 12px 40px rgba(0,0,0,0.16), 0 2px 8px rgba(0,0,0,0.08)", overflow: "hidden", display: "flex", flexDirection: "row", alignItems: "center", width: 640, flexShrink: 0, padding: "36px 32px 36px 28px", gap: 28 }}>
                 {/* Polaroid */}
                 <div style={{ flexShrink: 0, background: "var(--bg-elev)", padding: "2px 2px 0", boxShadow: "0 4px 16px rgba(0,0,0,0.18), 0 1px 4px rgba(0,0,0,0.10)", borderRadius: 0, display: "flex", flexDirection: "column" }}>
-                  <div style={{ width: 232, height: 232, overflow: "hidden" }}>
+                  <div style={{ width: 260, height: 260, overflow: "hidden" }}>
                     {p.photo.startsWith("[") ? (
                       <div style={{ width: "100%", height: "100%", background: "#e8e8e4", display: "flex", alignItems: "center", justifyContent: "center" }}>
                         <span style={{ fontSize: 11, color: "#aaa", letterSpacing: "0.08em" }}>[ photo ]</span>
@@ -145,7 +145,7 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-      <div style={{ height: "320vh" }} />
+      <div style={{ height: "420vh" }} />
     </main>
   );
 }

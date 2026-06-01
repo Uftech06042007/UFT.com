@@ -20,7 +20,7 @@ export default function ServicesPage() {
             What we do,{" "}<br /><span className="serif-italic">end to end.</span>
           </h1>
           <p className="page-sub">
-            From core engineering and custom software development to SAP, PLM, and advanced data pipelining, we provide end-to-end IT solutions and specialized talent through flexible global delivery models.
+            Five practices — AI, engineering, talent, software, and manufacturing — run as one engagement. One team accountable for all of it, not a patchwork of vendors. Whatever combination your programme needs, we've done it before.
           </p>
         </div>
       </section>

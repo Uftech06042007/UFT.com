@@ -17,11 +17,13 @@ export function StickyExpand({
   sectionId,
   cardsId,
   spacerVh = 200,
+  holdVh = 0,
   enableBacklight = false,
 }: {
   sectionId: string;
   cardsId: string;
   spacerVh?: number;
+  holdVh?: number;
   enableBacklight?: boolean;
 }) {
   const sentinelRef = useRef<HTMLDivElement>(null);
@@ -41,8 +43,11 @@ export function StickyExpand({
     }
 
     const onScroll = () => {
-      const spacer   = window.innerHeight * (spacerVh / 100);
+      const totalVh  = spacerVh + holdVh;
+      const spacer   = window.innerHeight * (totalVh / 100);
       const progress = Math.max(0, Math.min(1, (window.scrollY - stickyY) / spacer));
+      // Remap so cards complete their scroll at the spacerVh fraction; hold after
+      const cardProgress = holdVh > 0 ? Math.min(1, progress / (spacerVh / totalVh)) : progress;
 
       section.classList.toggle("sticky-expanded", progress >= EXPAND_AT);
 
@@ -50,7 +55,7 @@ export function StickyExpand({
       const initialOffset  = (sectionWidth - CONTAINER_PAD * 2 - FIRST_TWO_WIDTH) / 2;
       const thirdCard      = cards.children[2] as HTMLElement | null;
 
-      if (progress < SCROLL_AT) {
+      if (cardProgress < SCROLL_AT) {
         cards.style.transform = `translateX(${initialOffset}px)`;
 
         if (thirdCard) {
@@ -67,7 +72,7 @@ export function StickyExpand({
       } else {
         if (thirdCard) thirdCard.style.marginLeft = "";
 
-        const scrollProgress = (progress - SCROLL_AT) / (1 - SCROLL_AT);
+        const scrollProgress = (cardProgress - SCROLL_AT) / (1 - SCROLL_AT);
         const maxTranslate   = Math.max(
           0,
           initialOffset - sectionWidth + CONTAINER_PAD + cards.scrollWidth

@@ -40,6 +40,22 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; overflow-x: clip; }
+main { position: relative; }
+
+/* Global dot-grid — appears on all pages behind all content */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.14) 1px, transparent 1px);
+  background-size: 36px 36px;
+  pointer-events: none;
+  z-index: -1;
+}
+[data-theme="light"] body::before {
+  background-image: radial-gradient(circle, rgba(0,0,0,0.10) 1px, transparent 1px);
+}
+
 body {
   padding-top: 68px;
   font-family: var(--font-sans);
@@ -85,23 +101,14 @@ h1, h2, h3, h4 { font-weight: 500; letter-spacing: -0.02em; line-height: 1.05; }
   left: 0;
   right: 0;
   z-index: 100;
-  background:
-    radial-gradient(ellipse 260px 100% at 7% 50%, #fff 0%, transparent 100%),
-    rgba(255, 255, 255, 0.82);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  isolation: isolate;
   pointer-events: auto;
   box-shadow:
     0 1px 0 rgba(0, 0, 0, 0.08),
     0 4px 20px rgba(0, 0, 0, 0.10),
     0 8px 32px rgba(0, 0, 0, 0.06);
-  transition: top 0.25s cubic-bezier(0.22, 1, 0.36, 1), left 0.25s cubic-bezier(0.22, 1, 0.36, 1), right 0.25s cubic-bezier(0.22, 1, 0.36, 1), border-radius 0.25s cubic-bezier(0.22, 1, 0.36, 1), background 0.3s ease;
+  transition: top 0.25s cubic-bezier(0.22, 1, 0.36, 1), left 0.25s cubic-bezier(0.22, 1, 0.36, 1), right 0.25s cubic-bezier(0.22, 1, 0.36, 1), border-radius 0.25s cubic-bezier(0.22, 1, 0.36, 1);
 }
 [data-theme="dark"] .nav {
-  background:
-    radial-gradient(ellipse 260px 100% at 7% 50%, #2a2a32 0%, transparent 100%),
-    rgba(30, 30, 38, 0.95);
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.10),
     0 4px 20px rgba(0, 0, 0, 0.50),
@@ -315,13 +322,16 @@ body:has(.nav:hover) .approach-section {
   inset: 0;
   z-index: 100;
   background: color-mix(in srgb, var(--bg) 50%, transparent);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s ease;
 }
-.nav-overlay.open { opacity: 1; pointer-events: auto; }
+.nav-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
 
 .nav-overlay-panel {
   max-width: 1280px;
@@ -556,8 +566,8 @@ body:has(.nav:hover) .approach-section {
 /* ===== Page transitions ===== */
 .page-enter { animation: pageEnter 0.4s ease both; }
 @keyframes pageEnter {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; }
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 .muted { color: var(--fg-muted); }

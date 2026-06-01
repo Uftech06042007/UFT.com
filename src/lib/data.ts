@@ -129,7 +129,7 @@ export const UFT_DATA: UFTData = {
     },
   ],
   industries: [
-    { id: "automotive", name: "Automotive", blurb: "Product design, ECU firmware, ADAS systems.", image: "/assets/industry-automotive.png" },
+    { id: "automotive", name: "Automotive", blurb: "Product design, ECU firmware, ADAS systems.", image: "/assets/industry-automotive.jpg" },
     { id: "aerospace", name: "Aerospace", blurb: "Avionics, systems engineering, certification.", image: "/assets/industry-aerospace.jpg" },
     { id: "locomotive", name: "Locomotive", blurb: "Rolling stock, signaling, PTC systems.", image: "/assets/industry-locomotive.jpg" },
     { id: "oilgas", name: "Oil & Gas", blurb: "Downhole tools, well completion, production optimization.", image: "/assets/industry-oilgas.jpg" },
@@ -162,7 +162,7 @@ export const UFT_DATA: UFTData = {
       role: "Chief Executive Officer",
       photo: "/assets/ceo.png",
       photoPosition: "center 20%",
-      bio: "CEO & Director at UnitForce Technologies with 23+ years of leadership in digital transformation, operational excellence, and global delivery management. Former COO with deep expertise across technology, corporate affairs, and strategic growth. Active NASSCOM Regional Council Member and executive alumnus of IIM Bangalore.",
+      bio: "CEO & Director at UnitForce Technologies with 23+ years leading digital transformation and global delivery management. A former COO experienced in technology, corporate affairs, and strategic growth, he is also a former NASSCOM National SME Council Member. He is an alumnus of IIM Bangalore, MCE , and FAU Erlangen-Nürnberg, bringing specialized expertise in German innovation spanning engineering, digital transformation, and industrial ecosystems.",
       socials: { linkedin: "https://www.linkedin.com/in/nateshns" },
     },
     {
@@ -199,7 +199,7 @@ export const UFT_DATA: UFTData = {
       name: "Sujita K",
       role: "HR Head",
       photo: "/assets/team-sujita.jpg",
-      bio: "HR Head with 17+ years across talent acquisition, core human resource operations, and framework development. Built end-to-end workforce strategies across IT services and consulting sectors including TAMS InfoTech and Suchir Consulting. MBA in Marketing & HR.",
+      bio: "Results-driven Human Resources professional with 15 Years experience in talent acquisition, employee relations, performance management, organizational development, and HR strategy. Skilled at aligning people practices with business objectives to build high-performing, engaged, and inclusive workplaces. Proven ability to lead recruitment initiatives, develop HR policies, manage employee lifecycle processes, and support leadership teams in driving organizational growth.",
       socials: { linkedin: "https://www.linkedin.com/in/sujitakemdeo/" },
     },
     {
@@ -214,7 +214,7 @@ export const UFT_DATA: UFTData = {
       name: "Balaji B S",
       role: "Team Lead",
       photo: "/assets/team-balaji.jpg",
-      bio: "Mechanical Engineering Team Lead with 7+ years of global experience (USA, UK, Europe, India) in product design and project management. Skilled in client coordination, costing, and leading cross-functional engineering teams from concept to timely delivery. Holds a Bachelor's in Mechanical Engineering from VTU.",
+      bio: "Mechanical Engineer and Team Lead with 7+ years driving product/engineering design, project management, and problem-solving for global clients (USA, UK, Europe, Indian subcontinent). Skilled in client coordination, project costing, and leading engineering teams to resolve technical challenges, execute designs, and ensure timely delivery. Holds a Bachelor's in Mechanical Engineering from Visvesvaraya Technological University.",
       socials: { linkedin: "https://www.linkedin.com/in/balaji-b-s-26b140171/" },
     },
   ],

@@ -235,7 +235,7 @@ export function Nav() {
 
   return (
     <>
-      <nav className={`nav${scrolled ? " nav--scrolled" : " nav--float"}${hidden ? " nav--hidden" : ""}`}>
+      <nav className={`nav${scrolled ? " nav--scrolled" : " nav--float"}${hidden ? " nav--hidden" : ""}`} style={{ backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)" }}>
         <div className="nav-inner">
           <Logo />
           <div className="nav-links" ref={navLinksRef} onMouseLeave={resetIndicatorToActive}>

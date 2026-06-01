@@ -108,6 +108,7 @@ export default function HomePage() {
   const [activeIndustry, setActiveIndustry] = useState(0);
   const [clickedService, setClickedService] = useState<number | null>(null);
 
+
   useEffect(() => {
     if (!svcReloadHandled) {
       svcReloadHandled = true;
@@ -125,18 +126,59 @@ export default function HomePage() {
     sessionStorage.setItem("uft-clicked-service", String(idx));
   };
 
+  // Fade hero bg + fixed title only when services-section is near the top
+  useEffect(() => {
+    const onScroll = () => {
+      const el = document.getElementById("services-section");
+      if (!el) return;
+      const top = el.getBoundingClientRect().top;
+      const vh  = window.innerHeight;
+      // start fading when services-section top is at 25% of viewport
+      // fully faded when it reaches -20% (scrolled 20% past the top)
+      const fadeStart = vh * 0.25;
+      const fadeEnd   = vh * -0.20;
+      const progress  = Math.max(0, Math.min(1, (fadeStart - top) / (fadeStart - fadeEnd)));
+      document.documentElement.style.setProperty("--hero-fade", String(1 - progress));
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <main className="page-enter">
+    <main>
       {/* HERO — scroll 1 */}
+      {/* HERO background — sticky, stays behind everything */}
       <section className="hero">
+        <div className="hero-glow" />
         <div className="container">
-          <h1 className="hero-title">
-            Inspired Innovations
-            <br />
-            <span className="serif-italic">for the industries</span>
-            <br />
-            <span className="serif-italic">that build the world.</span>
-          </h1>
+          <div className="hero-title-sticky" style={{ position: "fixed", top: "80px", left: 0, right: 0, zIndex: 0, pointerEvents: "none" }}>
+          <div className="hero-top" style={{ pointerEvents: "auto" }}>
+            <h1 className="hero-title">
+              Inspired Innovations
+              <br />
+              <span className="serif-italic">for the industries</span>
+              <br />
+              <span className="serif-italic">that build the world.</span>
+            </h1>
+            <div className="hero-kpis">
+              {UFT_DATA.stats.map((s) => (
+                <div key={s.label} className="hero-kpi">
+                  <div className="hero-kpi-val">
+                    {s.dynamicKey ? <DynamicYears type={s.dynamicKey} /> : s.kpi}
+                  </div>
+                  <div className="hero-kpi-lbl">{s.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+          </div>
+        </div>
+      </section>
+
+      {/* HERO CARD — scrolls over the sticky hero background */}
+      <div className="hero-card-wrap">
+        <div className="container">
           <div className="hero-meta">
             <p className="hero-sub">
               We develop scalable pipeline software, integrate AI-driven services, place specialized engineers, and modernize manufacturing for the
@@ -151,27 +193,15 @@ export default function HomePage() {
               </Link>
             </div>
           </div>
-          <div className="hero-stats">
-            {UFT_DATA.stats.map((s) => (
-              <div key={s.label} className="stat">
-                <div className="stat-kpi">
-                  {s.dynamicKey ? <DynamicYears type={s.dynamicKey} /> : s.kpi}
-                </div>
-                <div className="stat-label mono">{s.label}</div>
-              </div>
-            ))}
-          </div>
-          <hr style={{ border: "none", borderTop: "1px solid var(--border)", margin: 0 }} />
         </div>
-      </section>
+      </div>
 
       {/* CLIENTS CAROUSEL — scroll 2 */}
-      <section className="section" style={{ paddingTop: 0, marginTop: -32, paddingBottom: 40 }}>
+      <section className="section clients-blur-section" style={{ backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)" }}>
         <div className="container" style={{ paddingTop: 0, paddingBottom: 24, textAlign: "center" }}>
           <span className="eyebrow" style={{ fontWeight: 600, color: "var(--fg)", fontSize: "clamp(11px, 1vw, 13px)", letterSpacing: "0.10em" }}>Trusted by global enterprises</span>
         </div>
         <ClientCarousel items={UFT_DATA.clients} />
-        <div className="container"><hr style={{ border: "none", borderTop: "1px solid var(--border)", margin: "48px 0 0" }} /></div>
       </section>
 
       {/* STACKED SECTIONS — scroll 3-6 */}
