@@ -9,7 +9,6 @@ import { UFT_DATA } from "@/lib/data";
 import { Icon } from "@/components/icons";
 import { DynamicYears } from "@/components/dynamic-years";
 import { HomeStackFade } from "@/components/home-stack-fade";
-import { useTheme } from "@/hooks/use-theme";
 
 
 function MarqueeRow({
@@ -105,7 +104,6 @@ const SERVICE_ICONS: Record<string, React.ReactNode> = {
 };
 
 export default function HomePage() {
-  const [theme] = useTheme();
   const [activeService, setActiveService] = useState(0);
   const [activeIndustry, setActiveIndustry] = useState(0);
   const [clickedService, setClickedService] = useState<number | null>(null);
@@ -199,7 +197,7 @@ export default function HomePage() {
       </div>
 
       {/* CLIENTS CAROUSEL — scroll 2 */}
-      <section className="section clients-blur-section" style={{ backdropFilter: theme === "dark" ? "blur(6px)" : "blur(20px)", WebkitBackdropFilter: theme === "dark" ? "blur(6px)" : "blur(20px)" }}>
+      <section className="section clients-blur-section" style={{ backdropFilter: "blur(20px)" }}>
         <div className="container" style={{ paddingTop: 0, paddingBottom: 24, textAlign: "center" }}>
           <span className="eyebrow" style={{ fontWeight: 600, color: "var(--fg)", fontSize: "clamp(11px, 1vw, 13px)", letterSpacing: "0.10em" }}>Trusted by global enterprises</span>
         </div>

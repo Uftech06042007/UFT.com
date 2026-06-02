@@ -21,6 +21,7 @@
 }
 [data-theme="dark"] .clients-blur-section {
   background: rgba(20,20,28,0.55);
+  backdrop-filter: blur(6px);
 }
 
 

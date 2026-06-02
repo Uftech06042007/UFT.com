@@ -156,7 +156,7 @@ function NavOverlay({ open, onClose }: { open: boolean; onClose: () => void }) {
 }
 
 export function Nav() {
-  const [theme, toggleTheme] = useTheme();
+  const [, toggleTheme] = useTheme();
   const [overlayOpen, setOverlayOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
@@ -240,7 +240,7 @@ export function Nav() {
 
   return (
     <>
-      <nav className={`nav${scrolled ? " nav--scrolled" : " nav--float"}${hidden ? " nav--hidden" : ""}`} style={{ backdropFilter: theme === "dark" ? "blur(6px)" : "blur(20px)", WebkitBackdropFilter: theme === "dark" ? "blur(6px)" : "blur(20px)" }}>
+      <nav className={`nav${scrolled ? " nav--scrolled" : " nav--float"}${hidden ? " nav--hidden" : ""}`} style={{ backdropFilter: "blur(20px)" }}>
         <div className="nav-inner">
           <Logo />
           <div className="nav-links" ref={navLinksRef} onMouseLeave={resetIndicatorToActive}>
