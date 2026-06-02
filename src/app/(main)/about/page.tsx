@@ -25,8 +25,7 @@ export default function AboutPage() {
 
       {/* Story + values */}
       <section className="section" style={{ padding: 0 }}>
-        <hr style={{ border: "none", borderTop: "1px solid var(--border)", margin: 0 }} />
-        <div style={{ background: "var(--bg-card)", padding: "88px 0", boxShadow: "0 -12px 32px rgba(0,0,0,0.07), 0 12px 32px rgba(0,0,0,0.07)" }}>
+        <div className="about-story-bg" style={{ padding: "88px 0" }}>
           <div className="container">
             <div className="about-grid">
               <div>
@@ -86,7 +85,6 @@ export default function AboutPage() {
             </div>
           </div>
         </div>
-        <hr style={{ border: "none", borderTop: "1px solid var(--border)", margin: 0 }} />
       </section>
 
       <StickyExpand sectionId="leadership-section" cardsId="leadership-cards" spacerVh={320} holdVh={100} enableBacklight />

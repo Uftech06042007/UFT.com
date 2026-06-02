@@ -141,8 +141,8 @@ function NavOverlay({ open, onClose }: { open: boolean; onClose: () => void }) {
               <span className="mono dim" style={{ fontSize: 11, letterSpacing: "0.12em" }}>
                 GET IN TOUCH
               </span>
-              <a href="mailto:info@uftech.in" className="overlay-cta-line">
-                info@uftech.in
+              <a href="mailto:info@uftech.com" className="overlay-cta-line">
+                info@uftech.com
               </a>
               <a href="tel:+918951390893" className="overlay-cta-line">
                 +91 8951 390 893
@@ -156,7 +156,7 @@ function NavOverlay({ open, onClose }: { open: boolean; onClose: () => void }) {
 }
 
 export function Nav() {
-  const [, toggleTheme] = useTheme();
+  const [theme, toggleTheme] = useTheme();
   const [overlayOpen, setOverlayOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
@@ -202,12 +202,17 @@ export function Nav() {
   }, [pathname]);
 
   const handleThemeToggle = () => {
-    toggleTheme();
     const btn = themeToggleRef.current;
-    if (btn) {
-      btn.classList.remove("theme-toggle--pop");
-      void btn.offsetWidth;
-      btn.classList.add("theme-toggle--pop");
+    const rect = btn?.getBoundingClientRect();
+    const x = rect ? rect.left + rect.width / 2 : window.innerWidth / 2;
+    const y = rect ? rect.top + rect.height / 2 : window.innerHeight / 2;
+    document.documentElement.style.setProperty("--theme-x", `${x}px`);
+    document.documentElement.style.setProperty("--theme-y", `${y}px`);
+    const d = document as any;
+    if (d.startViewTransition) {
+      d.startViewTransition(() => toggleTheme());
+    } else {
+      toggleTheme();
     }
   };
 
@@ -235,7 +240,7 @@ export function Nav() {
 
   return (
     <>
-      <nav className={`nav${scrolled ? " nav--scrolled" : " nav--float"}${hidden ? " nav--hidden" : ""}`} style={{ backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)" }}>
+      <nav className={`nav${scrolled ? " nav--scrolled" : " nav--float"}${hidden ? " nav--hidden" : ""}`} style={{ backdropFilter: theme === "dark" ? "blur(6px)" : "blur(20px)", WebkitBackdropFilter: theme === "dark" ? "blur(6px)" : "blur(20px)" }}>
         <div className="nav-inner">
           <Logo />
           <div className="nav-links" ref={navLinksRef} onMouseLeave={resetIndicatorToActive}>
