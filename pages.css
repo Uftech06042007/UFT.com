@@ -1377,7 +1377,7 @@
 @media (max-width: 700px) {
   .hero-stats { grid-template-columns: repeat(2, 1fr); }
   .stat-kpi { font-size: 40px; }
-  .team-grid, .values-grid, .bignum-grid { grid-template-columns: 1fr; }
+  .team-grid, .bignum-grid { grid-template-columns: 1fr; }
   .field-row { grid-template-columns: 1fr; }
   .cta-card { padding: 48px 28px; }
   .section-head-row { margin-bottom: 32px; }
@@ -1398,7 +1398,6 @@
 @media (max-width: 480px) {
   .hero-stats { grid-template-columns: 1fr 1fr; gap: 16px; padding-top: 32px; padding-bottom: 32px; }
   .stat-kpi { font-size: 32px; }
-  .values-grid { grid-template-columns: 1fr; }
   .about-grid { grid-template-columns: 1fr; }
   .section-title { font-size: clamp(28px, 8vw, 48px); }
   .page-title { font-size: clamp(36px, 9vw, 64px); }
@@ -1554,6 +1553,21 @@
   }
   /* Panel 2: socials, left aligned, below */
   .footer-socials { margin-top: 14px !important; justify-content: flex-start; }
+}
+
+/* ===== About value cards [01]-[..] → square 2×2 (mobile) ===== */
+@media (max-width: 900px) {
+  .values-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 12px; }
+  .value-card {
+    aspect-ratio: 1 / 1;
+    min-height: 0 !important;
+    padding: 16px !important;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .value-card h4 { font-size: 15px !important; margin-top: 10px !important; margin-bottom: 6px !important; }
+  .value-card p  { font-size: 11px !important; line-height: 1.4; }
 }
 
 /* ===== Item 1: Approach steps [01]-[04] → 2×2 grid (mobile) ===== */

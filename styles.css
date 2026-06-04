@@ -672,8 +672,8 @@ h1, h2, h3, h4 { font-weight: 500; letter-spacing: -0.02em; line-height: 1.05; }
   .nav-cta { grid-column: 3; grid-row: 1; gap: 6px; }
   .mobile-nav-menu { grid-column: 1 / -1; grid-row: 2; }
 
-  /* Logo: hide wordmark text, keep image only */
-  .nav-logo-wordmark { display: none; }
+  /* Logo: hide wordmark text, keep image only (overrides inline display:flex) */
+  .nav-logo-wordmark { display: none !important; }
 
   /* Jobs btn: visible but compact */
   .jobs-btn { padding: 6px 10px; font-size: 12px; }
