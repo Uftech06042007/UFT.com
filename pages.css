@@ -1452,12 +1452,16 @@
   .section-sub-desktop { display: none; }
 
   /* Strip becomes flex column.
-     Order within strip: industry-visual(order:-1) → section-sub-mobile-only(order:0, first in DOM) → industries-rows(order:0, second in DOM)
-     Result: IMAGE → DESCRIPTION → LIST */
+     Explicit order: desc(1) → image(2) → list(3)
+     Result: DESCRIPTION → IMAGE → LIST */
   #services-section .industries-strip,
   #industries-section .industries-strip { display: flex; flex-direction: column; }
+  #services-section .section-sub-mobile-only,
+  #industries-section .section-sub-mobile-only { order: 1; }
   #services-section .industry-visual,
-  #industries-section .industry-visual { order: -1; margin-left: 0 !important; max-width: 100% !important; }
+  #industries-section .industry-visual { order: 2; margin-left: 0 !important; max-width: 100% !important; }
+  #services-section .industries-rows,
+  #industries-section .industries-rows { order: 3; }
 
   /* Services: strip the card wrapper on mobile — show clean image only */
   .svc-visual-card {
