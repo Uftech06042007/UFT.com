@@ -34,60 +34,11 @@ export function StickyExpand({
     const cards    = document.getElementById(cardsId);
     if (!sentinel || !section || !cards) return;
 
-    // Mobile: pin the section, map vertical scroll → horizontal card movement.
-    // Horizontal finger drags are converted into the same vertical scroll, so
-    // up≡left and down≡right share one source of truth (window.scrollY).
+    // Mobile: no JS. Cards use native horizontal scroll (see CSS) — the browser
+    // gives 1:1 finger tracking, smooth motion, and natural flick deceleration.
     if (window.matchMedia("(max-width: 900px)").matches) {
-      const spacer = document.querySelector<HTMLElement>(".leadership-spacer");
-      let stickyY = 0, maxTranslate = 0, pinDuration = 1;
-
-      const measure = () => {
-        stickyY = sentinel.getBoundingClientRect().top + window.scrollY;
-        maxTranslate = Math.max(0, cards.scrollWidth - cards.clientWidth);
-        pinDuration = maxTranslate * 2.6 || 1; // higher = slower vertical→horizontal
-        if (spacer) spacer.style.height = `${pinDuration + window.innerHeight * 0.15}px`;
-      };
-
-      const apply = () => {
-        const progress = Math.max(0, Math.min(1, (window.scrollY - stickyY) / pinDuration));
-        cards.style.transform = `translateX(${-progress * maxTranslate}px)`;
-      };
-
-      // Horizontal swipe → drive vertical scroll. Natural drag: finger follows cards.
-      const HSPEED = 32; // higher = faster horizontal swipe
-      let startX = 0, startY = 0, lastX = 0, mode: "h" | "v" | null = null;
-      const onTouchStart = (e: TouchEvent) => {
-        startX = lastX = e.touches[0].clientX;
-        startY = e.touches[0].clientY;
-        mode = null;
-      };
-      const onTouchMove = (e: TouchEvent) => {
-        const x = e.touches[0].clientX, y = e.touches[0].clientY;
-        if (mode === null) {
-          const dx = Math.abs(x - startX), dy = Math.abs(y - startY);
-          if (dx > 6 || dy > 6) mode = dx > dy ? "h" : "v";
-        }
-        if (mode === "h") {
-          e.preventDefault();
-          window.scrollBy(0, (lastX - x) * HSPEED);
-          lastX = x;
-        }
-      };
-
-      measure();
-      apply();
-      window.addEventListener("scroll", apply, { passive: true });
-      window.addEventListener("resize", measure, { passive: true });
-      section.addEventListener("touchstart", onTouchStart, { passive: true });
-      section.addEventListener("touchmove", onTouchMove, { passive: false });
-      return () => {
-        window.removeEventListener("scroll", apply);
-        window.removeEventListener("resize", measure);
-        section.removeEventListener("touchstart", onTouchStart);
-        section.removeEventListener("touchmove", onTouchMove);
-        cards.style.transform = "";
-        if (spacer) spacer.style.height = "";
-      };
+      cards.style.transform = "";
+      return;
     }
 
     const stickyY = sentinel.getBoundingClientRect().top + window.scrollY;

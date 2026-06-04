@@ -1592,26 +1592,32 @@
   .approach-step p  { font-size: 12px !important; line-height: 1.5; }
 }
 
-/* ===== Item 2: Leadership cards → pinned, vertical+horizontal both drive scroll (mobile) ===== */
+/* ===== Item 2: Leadership cards → native horizontal scroll w/ momentum (mobile) ===== */
 .leader-meta-mobile { display: none; }
 @media (max-width: 900px) {
-  /* Section pins below the nav; vertical scroll & horizontal swipe both advance cards.
-     touch-action: pan-y → vertical pans stay native-smooth, horizontal handled in JS */
+  /* Normal flow — page scrolls vertically; cards swipe horizontally with native momentum */
   #leadership-section {
-    position: sticky !important;
-    top: 60px;
-    min-height: calc(100vh - 60px) !important;
-    overflow: hidden !important;
-    touch-action: pan-y;
+    position: static !important;
+    min-height: auto !important;
+    overflow: visible !important;
   }
   #leadership-section::before { display: none !important; }
+  .leadership-spacer { display: none !important; }
 
-  /* Cards row: JS sets transform; overflow clipped by the section */
+  /* Native horizontal scroll: 1:1 finger tracking + smooth flick deceleration */
   #leadership-cards {
-    overflow: visible;
+    transform: none !important;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+    scroll-padding-left: 20px;
     gap: 16px !important;
     flex-wrap: nowrap;
+    padding-bottom: 12px;
+    scrollbar-width: none;
   }
+  #leadership-cards::-webkit-scrollbar { display: none; }
 
   /* Card: vertical — image → (name/role | socials) → description */
   .leader-card {
@@ -1621,7 +1627,7 @@
     padding: 0 0 18px !important;
     gap: 0 !important;
     flex-shrink: 0;
-    scroll-snap-align: center;
+    scroll-snap-align: start;
   }
   .leader-polaroid {
     width: 100% !important;
