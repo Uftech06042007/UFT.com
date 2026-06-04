@@ -54,8 +54,9 @@ export function StickyExpand({
         cards.style.transform = `translateX(${-progress * maxTranslate}px)`;
       };
 
-      // Horizontal drag → page scroll. HSPEED 2.6 ⇒ card tracks the finger 1:1.
-      const HSPEED = 2.6;
+      // Horizontal drag → page scroll. 2.6 = exact 1:1; higher moves the card
+      // faster than the finger (compensates for having no momentum/fling).
+      const HSPEED = 14;
       let startX = 0, startY = 0, lastX = 0, mode: "h" | "v" | null = null;
       const onTouchStart = (e: TouchEvent) => {
         startX = lastX = e.touches[0].clientX;
