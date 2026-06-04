@@ -248,6 +248,18 @@ export function Nav() {
     <>
       <nav className={`nav${scrolled ? " nav--scrolled" : " nav--float"}${hidden ? " nav--hidden" : ""}`} style={{ backdropFilter: "blur(20px)" }}>
         <div className="nav-inner">
+          {/* Mobile: sits in grid col-1 (left). Desktop: hidden via CSS. */}
+          <button
+            className={`mobile-hamburger${mobileMenuOpen ? " open" : ""}`}
+            onClick={() => setMobileMenuOpen(v => !v)}
+            aria-label="Toggle menu"
+          >
+            {mobileMenuOpen ? <Icon.X /> : (
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <path d="M0 1h16M0 6h16M0 11h16"/>
+              </svg>
+            )}
+          </button>
           <Logo />
           <div className="nav-links" ref={navLinksRef} onMouseLeave={resetIndicatorToActive}>
             <div className="nav-link-indicator" ref={indicatorRef} />
@@ -284,17 +296,6 @@ export function Nav() {
             <button className="explore-btn" onClick={() => setOverlayOpen(true)}>
               <span>Explore</span>
               <Icon.Plus />
-            </button>
-            <button
-              className={`mobile-hamburger${mobileMenuOpen ? " open" : ""}`}
-              onClick={() => setMobileMenuOpen(v => !v)}
-              aria-label="Toggle menu"
-            >
-              {mobileMenuOpen ? <Icon.X /> : (
-                <svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                  <path d="M0 1h16M0 6h16M0 11h16"/>
-                </svg>
-              )}
             </button>
           </div>
         </div>

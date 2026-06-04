@@ -219,7 +219,7 @@ export default function HomePage() {
                 <span className="serif-italic">end to end.</span>
               </h2>
             </div>
-            <p className="section-sub-inline">
+            <p className="section-sub-inline section-sub-desktop">
               From AI to Engineering Services — every UFT service is built around
               delivering real outcomes for the industries we serve.
             </p>
@@ -312,6 +312,10 @@ export default function HomePage() {
               </div>
             </div>
           </div>
+          <p className="section-sub-inline section-sub-mobile-only">
+            From AI to Engineering Services — every UFT service is built around
+            delivering real outcomes for the industries we serve.
+          </p>
         </div>
       </section>
 
@@ -326,7 +330,7 @@ export default function HomePage() {
                 <span className="serif-italic">across regulated sectors.</span>
               </h2>
             </div>
-            <p className="section-sub-inline">
+            <p className="section-sub-inline section-sub-desktop">
               We hire and train for the industries we serve — so our engineers speak the standards,
               the systems, and the safety frameworks.
             </p>
@@ -372,6 +376,10 @@ export default function HomePage() {
               )}
             </div>
           </div>
+          <p className="section-sub-inline section-sub-mobile-only">
+            We hire and train for the industries we serve — so our engineers speak the standards,
+            the systems, and the safety frameworks.
+          </p>
         </div>
       </section>
 

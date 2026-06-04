@@ -656,9 +656,22 @@ h1, h2, h3, h4 { font-weight: 500; letter-spacing: -0.02em; line-height: 1.05; }
   .nav-overlay-body { grid-template-columns: 1fr; gap: 32px; }
   .nav-overlay-panel { top: 68px; width: calc(100vw - 24px); border-radius: 16px; padding: 24px 20px; max-height: calc(100vh - 90px); }
   .nav--float { top: 8px; left: 12px; right: 12px; }
-  .nav-inner { padding: 0 16px; gap: 8px; }
 
-  /* Logo: hide wordmark, keep image only */
+  /* Nav grid: [hamburger | logo (centered) | cta] */
+  .nav-inner {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    padding: 0 16px;
+    gap: 0;
+  }
+  .mobile-hamburger { grid-column: 1; grid-row: 1; }
+  .nav-logo { grid-column: 2; grid-row: 1; justify-self: center; margin-left: 0 !important; }
+  .nav-links { display: none; }
+  .nav-cta { grid-column: 3; grid-row: 1; gap: 6px; }
+  .mobile-nav-menu { grid-column: 1 / -1; grid-row: 2; }
+
+  /* Logo: hide wordmark text, keep image only */
   .nav-logo-wordmark { display: none; }
 
   /* Jobs btn: visible but compact */

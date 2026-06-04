@@ -1437,10 +1437,10 @@
 
 /* ===== MOBILE-ONLY HOME PAGE FIXES ===== */
 
-/* 5. Less empty space between hero title and the content card */
+/* 4 & 5. Less space between stats and hero card; slightly tighter rows */
 @media (max-width: 600px) {
-  .hero { min-height: 75vh; }
-  .hero-card-wrap { margin-top: -20vh; }
+  .hero { min-height: 72vh; }
+  .hero-card-wrap { margin-top: -26vh; }
 }
 
 /* 7 & 8. Services + Industries: image on top, list below, no text clutter */
@@ -1476,4 +1476,37 @@
 @media (max-width: 900px) {
   [data-theme="dark"] .hero-meta { background: var(--bg-card); }
   [data-theme="dark"] .clients-blur-section { background: rgba(20,20,28,0.7); }
+}
+
+/* 5. Slightly tighter card rows and section headings */
+@media (max-width: 900px) {
+  .industry-row { padding: 11px 4px; }
+  .section-head-row { margin-bottom: 20px; }
+  .approach-step { padding: 14px 0; }
+  #services-section > .container,
+  #industries-section > .container,
+  #approach-section > .container { padding: 28px 20px; }
+}
+
+/* 6. Section sub-inline: desktop shows inline beside title, mobile shows below list */
+.section-sub-mobile-only { display: none; }
+@media (max-width: 900px) {
+  #services-section .section-sub-desktop,
+  #industries-section .section-sub-desktop { display: none; }
+  #services-section .section-sub-mobile-only,
+  #industries-section .section-sub-mobile-only {
+    display: block;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--fg-muted);
+    margin-top: 16px;
+    padding: 0 2px;
+  }
+}
+
+/* 7. Footer: slightly tighter line spacing on mobile */
+@media (max-width: 600px) {
+  .footer-grid > div { row-gap: 4px; }
+  .footer p { margin-top: 10px !important; line-height: 1.5; }
+  .footer ul li + li { margin-top: 2px; }
 }
