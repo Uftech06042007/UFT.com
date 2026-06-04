@@ -40,12 +40,15 @@ export function StickyExpand({
     // No native horizontal scroll, so no momentum write-back loop / rollback.
     if (window.matchMedia("(max-width: 900px)").matches) {
       const spacer = document.querySelector<HTMLElement>(".leadership-spacer");
-      let stickyY = 0, maxTranslate = 0, pinDuration = 1;
+      let stickyY = 0, maxTranslate = 0, pinDuration = 1, step = 1, lastIndex = 0;
 
       const measure = () => {
         stickyY = sentinel.getBoundingClientRect().top + window.scrollY;
         maxTranslate = Math.max(0, cards.scrollWidth - cards.clientWidth);
         pinDuration = maxTranslate * 2.6 || 1; // vertical scroll distance for full horizontal
+        const first = cards.children[0] as HTMLElement | undefined;
+        step = first ? first.offsetWidth + 16 : cards.clientWidth || 1; // card width + gap
+        lastIndex = step ? Math.round(maxTranslate / step) : 0;
         if (spacer) spacer.style.height = `${pinDuration + window.innerHeight * 0.15}px`;
       };
 
@@ -54,9 +57,9 @@ export function StickyExpand({
         cards.style.transform = `translateX(${-progress * maxTranslate}px)`;
       };
 
-      // Horizontal drag → page scroll. 2.6 = exact 1:1; higher moves the card
-      // faster than the finger (compensates for having no momentum/fling).
-      const HSPEED = 14;
+      // Horizontal swipe = discrete pager: one swipe → exactly one card,
+      // regardless of speed/distance. Vertical scroll still drives continuously.
+      const SWIPE_MIN = 10;
       let startX = 0, startY = 0, lastX = 0, mode: "h" | "v" | null = null;
       const onTouchStart = (e: TouchEvent) => {
         startX = lastX = e.touches[0].clientX;
@@ -65,15 +68,23 @@ export function StickyExpand({
       };
       const onTouchMove = (e: TouchEvent) => {
         const x = e.touches[0].clientX, y = e.touches[0].clientY;
+        lastX = x;
         if (mode === null) {
           const dx = Math.abs(x - startX), dy = Math.abs(y - startY);
           if (dx > 6 || dy > 6) mode = dx > dy ? "h" : "v";
         }
-        if (mode === "h") {
-          e.preventDefault();
-          window.scrollBy(0, (lastX - x) * HSPEED); // drag follows the card
-          lastX = x;
-        }
+        if (mode === "h") e.preventDefault(); // block page scroll; we page on release
+      };
+      const onTouchEnd = () => {
+        if (mode !== "h" || Math.abs(lastX - startX) < SWIPE_MIN) return;
+        const progress = Math.max(0, Math.min(1, (window.scrollY - stickyY) / pinDuration));
+        const curIdx = step ? (progress * maxTranslate) / step : 0;
+        // finger moved left → next card; right → previous card
+        let target = lastX < startX ? Math.floor(curIdx + 0.001) + 1 : Math.ceil(curIdx - 0.001) - 1;
+        target = Math.max(0, Math.min(lastIndex, target));
+        const targetTranslate = Math.min(target * step, maxTranslate);
+        const targetY = stickyY + (maxTranslate ? targetTranslate / maxTranslate : 0) * pinDuration;
+        window.scrollTo({ top: targetY, behavior: "smooth" });
       };
 
       measure();
@@ -82,11 +93,13 @@ export function StickyExpand({
       window.addEventListener("resize", measure, { passive: true });
       section.addEventListener("touchstart", onTouchStart, { passive: true });
       section.addEventListener("touchmove", onTouchMove, { passive: false });
+      section.addEventListener("touchend", onTouchEnd, { passive: true });
       return () => {
         window.removeEventListener("scroll", apply);
         window.removeEventListener("resize", measure);
         section.removeEventListener("touchstart", onTouchStart);
         section.removeEventListener("touchmove", onTouchMove);
+        section.removeEventListener("touchend", onTouchEnd);
         cards.style.transform = "";
         if (spacer) spacer.style.height = "";
       };
