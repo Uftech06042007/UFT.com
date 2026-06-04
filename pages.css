@@ -1437,10 +1437,23 @@
 
 /* ===== MOBILE-ONLY HOME PAGE FIXES ===== */
 
-/* 4 & 5. Less space between stats and hero card; slightly tighter rows */
-@media (max-width: 600px) {
-  .hero { min-height: 72vh; }
-  .hero-card-wrap { margin-top: -26vh; }
+/* Hero: remove fixed-positioning scroll choreography on mobile so the
+   description card sits naturally in the flow, directly above clients */
+@media (max-width: 900px) {
+  /* Override the position:fixed inline style — !important beats inline styles */
+  .hero-title-sticky {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    z-index: 1 !important;
+    opacity: 1 !important;
+  }
+  /* Hero section: natural height, no sticky */
+  .hero { position: relative; min-height: auto; padding-top: 20px; }
+  /* Card: normal flow, no negative overlap margin */
+  .hero-card-wrap { margin-top: 20px; padding-bottom: 0; }
+  .hero-meta { margin: 0; }
 }
 
 /* 7 & 8. Services + Industries: image on top, list below, no text clutter */
