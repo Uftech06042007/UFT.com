@@ -126,24 +126,6 @@ export default function HomePage() {
     sessionStorage.setItem("uft-clicked-service", String(idx));
   };
 
-  // Fade hero bg + fixed title only when services-section is near the top
-  useEffect(() => {
-    const onScroll = () => {
-      const el = document.getElementById("services-section");
-      if (!el) return;
-      const top = el.getBoundingClientRect().top;
-      const vh  = window.innerHeight;
-      // start fading when services-section top is at 25% of viewport
-      // fully faded when it reaches -20% (scrolled 20% past the top)
-      const fadeStart = vh * 0.25;
-      const fadeEnd   = vh * -0.20;
-      const progress  = Math.max(0, Math.min(1, (fadeStart - top) / (fadeStart - fadeEnd)));
-      document.documentElement.style.setProperty("--hero-fade", String(1 - progress));
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   return (
     <main>
@@ -152,8 +134,8 @@ export default function HomePage() {
       <section className="hero">
         <div className="hero-glow" />
         <div className="container">
-          <div className="hero-title-sticky" style={{ position: "fixed", top: "80px", left: 0, right: 0, zIndex: 0, pointerEvents: "none" }}>
-          <div className="hero-top" style={{ pointerEvents: "auto" }}>
+          <div className="hero-title-sticky">
+          <div className="hero-top">
             <h1 className="hero-title">
               Inspired Innovations
               <br />
@@ -178,20 +160,18 @@ export default function HomePage() {
 
       {/* HERO CARD — scrolls over the sticky hero background */}
       <div className="hero-card-wrap">
-        <div className="container">
-          <div className="hero-meta">
-            <p className="hero-sub">
-              We develop scalable pipeline software, integrate AI-driven services, place specialized engineers, and modernize manufacturing for the
-              industries that move the world — from Automotive to Aerospace, BFSI to Oil &amp; Gas, Pharmacy to FMCG.
-            </p>
-            <div className="hero-actions">
-              <Link href="/services" className="btn btn-primary">
-                Our services <Icon.Arrow />
-              </Link>
-              <Link href="/contact" className="btn btn-ghost">
-                Talk to us
-              </Link>
-            </div>
+        <div className="hero-meta">
+          <p className="hero-sub">
+            We develop scalable pipeline software, integrate AI-driven services, place specialized engineers, and modernize manufacturing for the
+            industries that move the world — from Automotive to Aerospace, BFSI to Oil &amp; Gas, Pharmacy to FMCG.
+          </p>
+          <div className="hero-actions">
+            <Link href="/services" className="btn btn-primary">
+              Our services <Icon.Arrow />
+            </Link>
+            <Link href="/contact" className="btn btn-ghost">
+              Talk to us
+            </Link>
           </div>
         </div>
       </div>
