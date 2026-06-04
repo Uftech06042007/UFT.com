@@ -126,6 +126,24 @@ export default function HomePage() {
     sessionStorage.setItem("uft-clicked-service", String(idx));
   };
 
+  // Position the hero card directly below the title+stats content + 5vh gap
+  useEffect(() => {
+    const updateCardPos = () => {
+      const heroTopEl  = document.querySelector(".hero-top")  as HTMLElement | null;
+      const heroEl     = document.querySelector(".hero")      as HTMLElement | null;
+      if (!heroTopEl || !heroEl) return;
+      const gapPx         = window.innerHeight * 0.05;          // 5vh gap
+      const bodyPadTop    = parseFloat(getComputedStyle(document.body).paddingTop) || 68;
+      const titleBottom   = heroTopEl.getBoundingClientRect().bottom;
+      const heroHeight    = heroEl.getBoundingClientRect().height;
+      const marginTop     = titleBottom + gapPx - bodyPadTop - heroHeight;
+      document.documentElement.style.setProperty("--hero-card-margin", `${Math.round(marginTop)}px`);
+    };
+    updateCardPos();
+    window.addEventListener("resize", updateCardPos, { passive: true });
+    return () => window.removeEventListener("resize", updateCardPos);
+  }, []);
+
   // Fade the locked title + stats once the [Services] top border hits the top of the screen
   useEffect(() => {
     const onScroll = () => {

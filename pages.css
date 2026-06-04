@@ -144,7 +144,7 @@
 .hero-card-wrap {
   position: relative;
   z-index: 2;
-  margin-top: -45vh;
+  margin-top: var(--hero-card-margin, -45vh);
   padding-bottom: 48px;
 }
 .hero-meta {
@@ -1439,10 +1439,8 @@
 
 /* ===== MOBILE-ONLY HOME PAGE FIXES ===== */
 
-/* Hero: mobile adjustments — title at 13vh, card proportionally below */
 @media (max-width: 600px) {
   .hero { min-height: 85vh; }
-  .hero-card-wrap { margin-top: -28vh; }
 }
 
 /* 7 & 8. Services + Industries: image on top, list below, no text clutter */
