@@ -239,11 +239,6 @@ export default function HomePage() {
           </div>
 
           <div className="industries-strip">
-            {/* Mobile: description sits here so flex order puts it after image, before rows */}
-            <p className="section-sub-inline section-sub-mobile-only">
-              From AI to Engineering Services — every UFT service is built around
-              delivering real outcomes for the industries we serve.
-            </p>
             <div className="industries-rows">
               {UFT_DATA.services.map((svc, idx) => (
                 <Link
@@ -351,11 +346,6 @@ export default function HomePage() {
           </div>
 
           <div className="industries-strip">
-            {/* Mobile: description sits here so flex order puts it after image, before rows */}
-            <p className="section-sub-inline section-sub-mobile-only">
-              We hire and train for the industries we serve — so our engineers speak the standards,
-              the systems, and the safety frameworks.
-            </p>
             <div className="industries-rows">
               {UFT_DATA.industries.map((ind, idx) => (
                 <button
