@@ -254,11 +254,9 @@ export function Nav() {
             onClick={() => setMobileMenuOpen(v => !v)}
             aria-label="Toggle menu"
           >
-            {mobileMenuOpen ? <Icon.X /> : (
-              <svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                <path d="M0 1h16M0 6h16M0 11h16"/>
-              </svg>
-            )}
+            <span className="ham-line" />
+            <span className="ham-line" />
+            <span className="ham-line" />
           </button>
           <Logo />
           <div className="nav-links" ref={navLinksRef} onMouseLeave={resetIndicatorToActive}>

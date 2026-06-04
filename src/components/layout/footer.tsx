@@ -33,19 +33,21 @@ export function Footer() {
         <div className="footer-grid">
           <div>
             <Logo />
-            <p style={{ marginTop: 16, color: "var(--fg-muted)", fontSize: 14, maxWidth: 280 }}>
-              Inspired Innovations — software, engineering, and talent for global enterprises since 2003.
-            </p>
-            <div style={{ display: "flex", gap: 10, marginTop: 24 }}>
-              <a href={UFT_DATA.contact.socials.linkedin} className="social-btn" target="_blank" rel="noreferrer">
-                <Icon.LinkedIn />
-              </a>
-              <a href={UFT_DATA.contact.socials.twitter} className="social-btn" target="_blank" rel="noreferrer">
-                <Icon.Twitter />
-              </a>
-              <a href={UFT_DATA.contact.socials.facebook} className="social-btn" target="_blank" rel="noreferrer">
-                <Icon.Facebook />
-              </a>
+            <div className="footer-brand-info">
+              <p style={{ marginTop: 16, color: "var(--fg-muted)", fontSize: 14, maxWidth: 280 }}>
+                Inspired Innovations — software, engineering, and talent for global enterprises since 2003.
+              </p>
+              <div style={{ display: "flex", gap: 10, marginTop: 24 }}>
+                <a href={UFT_DATA.contact.socials.linkedin} className="social-btn" target="_blank" rel="noreferrer">
+                  <Icon.LinkedIn />
+                </a>
+                <a href={UFT_DATA.contact.socials.twitter} className="social-btn" target="_blank" rel="noreferrer">
+                  <Icon.Twitter />
+                </a>
+                <a href={UFT_DATA.contact.socials.facebook} className="social-btn" target="_blank" rel="noreferrer">
+                  <Icon.Facebook />
+                </a>
+              </div>
             </div>
           </div>
           <div>
