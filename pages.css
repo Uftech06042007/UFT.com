@@ -1555,6 +1555,14 @@
   .footer-socials { margin-top: 14px !important; justify-content: flex-start; }
 }
 
+/* ===== About stats → single row, compact (mobile) ===== */
+@media (max-width: 600px) {
+  .about-stats { grid-template-columns: repeat(4, 1fr) !important; margin-top: 24px !important; }
+  .bignum { padding: 12px 6px; }
+  .bignum-v { font-size: 22px !important; margin-bottom: 4px; }
+  .bignum-l { font-size: 7.5px; letter-spacing: 0.05em; }
+}
+
 /* ===== About value cards [01]-[..] → square 2×2 (mobile) ===== */
 @media (max-width: 900px) {
   .values-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 12px; }
