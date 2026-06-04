@@ -57,11 +57,29 @@ export function StickyExpand({
         cards.style.transform = `translateX(${-progress * maxTranslate}px)`;
       };
 
+      // Custom fast snap animation (native smooth-scroll is too slow / fixed)
+      let rafId = 0;
+      const animateTo = (targetY: number) => {
+        cancelAnimationFrame(rafId);
+        const startY = window.scrollY;
+        const dist = targetY - startY;
+        const dur = 200; // ms — lower = faster snap
+        const t0 = performance.now();
+        const tick = (now: number) => {
+          const p = Math.min(1, (now - t0) / dur);
+          const eased = 1 - Math.pow(1 - p, 3); // easeOutCubic
+          window.scrollTo(0, startY + dist * eased);
+          if (p < 1) rafId = requestAnimationFrame(tick);
+        };
+        rafId = requestAnimationFrame(tick);
+      };
+
       // Horizontal swipe = discrete pager: one swipe → exactly one card,
       // regardless of speed/distance. Vertical scroll still drives continuously.
       const SWIPE_MIN = 10;
       let startX = 0, startY = 0, lastX = 0, mode: "h" | "v" | null = null;
       const onTouchStart = (e: TouchEvent) => {
+        cancelAnimationFrame(rafId);
         startX = lastX = e.touches[0].clientX;
         startY = e.touches[0].clientY;
         mode = null;
@@ -84,7 +102,7 @@ export function StickyExpand({
         target = Math.max(0, Math.min(lastIndex, target));
         const targetTranslate = Math.min(target * step, maxTranslate);
         const targetY = stickyY + (maxTranslate ? targetTranslate / maxTranslate : 0) * pinDuration;
-        window.scrollTo({ top: targetY, behavior: "smooth" });
+        animateTo(targetY);
       };
 
       measure();
@@ -100,6 +118,7 @@ export function StickyExpand({
         section.removeEventListener("touchstart", onTouchStart);
         section.removeEventListener("touchmove", onTouchMove);
         section.removeEventListener("touchend", onTouchEnd);
+        cancelAnimationFrame(rafId);
         cards.style.transform = "";
         if (spacer) spacer.style.height = "";
       };
