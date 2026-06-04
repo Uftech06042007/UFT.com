@@ -323,12 +323,12 @@ h1, h2, h3, h4 { font-weight: 500; letter-spacing: -0.02em; line-height: 1.05; }
   50%       { box-shadow: 0 0 22px color-mix(in srgb, var(--accent) 80%, transparent), 0 0 50px color-mix(in srgb, var(--accent) 45%, transparent); }
 }
 
-/* ===== Nav Overlay (full-screen command bar) ===== */
+/* ===== Nav Overlay — frosted glass card panel ===== */
 .nav-overlay {
   position: fixed;
   inset: 0;
   z-index: 100;
-  background: color-mix(in srgb, var(--bg) 50%, transparent);
+  background: rgba(0, 0, 0, 0.18);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s ease;
@@ -336,33 +336,63 @@ h1, h2, h3, h4 { font-weight: 500; letter-spacing: -0.02em; line-height: 1.05; }
 .nav-overlay.open {
   opacity: 1;
   pointer-events: auto;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
 .nav-overlay-panel {
-  max-width: 1280px;
-  margin: 0 auto;
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-16px);
+  width: min(980px, calc(100vw - 48px));
+  max-height: calc(100vh - 110px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-radius: 20px;
   padding: 32px;
-  height: 100%;
   display: flex;
   flex-direction: column;
-  transform: translateY(-12px);
+
+  /* Frosted glass — light mode */
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow:
+    0 0 0 0.5px rgba(0, 0, 0, 0.06),
+    0 8px 48px rgba(0, 0, 0, 0.13),
+    0 2px 14px rgba(0, 0, 0, 0.07);
+
   opacity: 0;
-  transition: transform 0.3s ease, opacity 0.25s ease;
-  background: var(--bg-elev);
-  border-left: 1px solid var(--border);
-  border-right: 1px solid var(--border);
+  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease;
 }
-.nav-overlay.open .nav-overlay-panel { transform: translateY(0); opacity: 1; }
+[data-theme="dark"] .nav-overlay-panel {
+  background: rgba(14, 14, 22, 0.88);
+  border-color: rgba(255, 255, 255, 0.09);
+  box-shadow:
+    0 0 0 0.5px rgba(255, 255, 255, 0.05),
+    0 8px 48px rgba(0, 0, 0, 0.55),
+    0 2px 14px rgba(0, 0, 0, 0.35);
+}
+.nav-overlay.open .nav-overlay-panel {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* Thin scrollbar inside panel */
+.nav-overlay-panel::-webkit-scrollbar { width: 4px; }
+.nav-overlay-panel::-webkit-scrollbar-track { background: transparent; }
+.nav-overlay-panel::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 4px; }
 
 .nav-overlay-head {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 24px;
+  padding-bottom: 20px;
   border-bottom: 1px solid var(--border);
-  margin-bottom: 48px;
+  margin-bottom: 32px;
+  flex-shrink: 0;
 }
 .overlay-close {
   width: 40px;
@@ -379,8 +409,7 @@ h1, h2, h3, h4 { font-weight: 500; letter-spacing: -0.02em; line-height: 1.05; }
 .nav-overlay-body {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 64px;
-  flex: 1;
+  gap: 48px;
   align-content: start;
 }
 .overlay-h {
@@ -622,6 +651,7 @@ h1, h2, h3, h4 { font-weight: 500; letter-spacing: -0.02em; line-height: 1.05; }
   .nav-links { display: none; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .nav-overlay-body { grid-template-columns: 1fr; gap: 32px; }
+  .nav-overlay-panel { top: 68px; width: calc(100vw - 24px); border-radius: 16px; padding: 24px 20px; }
   .nav--float { top: 8px; left: 12px; right: 12px; }
   .nav-inner { padding: 0 16px; gap: 8px; }
 
