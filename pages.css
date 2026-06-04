@@ -1596,31 +1596,26 @@
   .approach-step p  { font-size: 12px !important; line-height: 1.5; }
 }
 
-/* ===== Item 2: Leadership cards → native horizontal carousel (mobile) ===== */
+/* ===== Item 2: Leadership cards → pinned, vertical+horizontal both drive scroll (mobile) ===== */
 .leader-meta-mobile { display: none; }
 @media (max-width: 900px) {
-  /* Normal flow — page scrolls vertically; cards swipe horizontally */
+  /* Section pins below the nav; vertical scroll & horizontal swipe both advance cards.
+     touch-action: pan-y → vertical pans stay native-smooth, horizontal handled in JS */
   #leadership-section {
-    position: static !important;
-    min-height: auto !important;
-    overflow: visible !important;
+    position: sticky !important;
+    top: 60px;
+    min-height: calc(100vh - 60px) !important;
+    overflow: hidden !important;
+    touch-action: pan-y;
   }
-  #leadership-section.sticky-expanded { width: calc(100% - var(--gutter)); max-width: calc(100% - var(--gutter)); }
   #leadership-section::before { display: none !important; }
-  .leadership-spacer { display: none !important; }
 
-  /* Cards row: native horizontal scroll + snap */
+  /* Cards row: JS sets transform; overflow clipped by the section */
   #leadership-cards {
-    transform: none !important;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scroll-snap-type: x proximity;
+    overflow: visible;
     gap: 16px !important;
     flex-wrap: nowrap;
-    padding-bottom: 10px;
-    scrollbar-width: none;
   }
-  #leadership-cards::-webkit-scrollbar { display: none; }
 
   /* Card: vertical — image → (name/role | socials) → description */
   .leader-card {
