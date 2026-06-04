@@ -1595,28 +1595,22 @@
 /* ===== Item 2: Leadership cards → pinned + native horizontal scroll, two-way synced (mobile) ===== */
 .leader-meta-mobile { display: none; }
 @media (max-width: 900px) {
-  /* Pinned below the nav; JS keeps page scroll and cards.scrollLeft in sync */
+  /* Pinned below nav; vertical pans native (drive transform), horizontal handled in JS */
   #leadership-section {
     position: sticky !important;
     top: 60px;
     min-height: calc(100vh - 60px) !important;
     overflow: hidden !important;
+    touch-action: pan-y;
   }
   #leadership-section::before { display: none !important; }
 
-  /* Native horizontal scroller: vertical drag falls through to page (drives sync),
-     horizontal drag scrolls here with 1:1 tracking + momentum */
+  /* JS sets transform; overflow clipped by the section */
   #leadership-cards {
-    transform: none !important;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
+    overflow: visible;
     gap: 16px !important;
     flex-wrap: nowrap;
-    padding-bottom: 12px;
-    scrollbar-width: none;
   }
-  #leadership-cards::-webkit-scrollbar { display: none; }
 
   /* Card: vertical — image → (name/role | socials) → description */
   .leader-card {

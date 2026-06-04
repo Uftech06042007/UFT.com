@@ -34,52 +34,58 @@ export function StickyExpand({
     const cards    = document.getElementById(cardsId);
     if (!sentinel || !section || !cards) return;
 
-    // Mobile: section is pinned AND the cards are a native horizontal scroller.
-    // Two-way sync on one shared position:
-    //   • vertical page scroll → cards.scrollLeft (pinned scroll-jack)
-    //   • finger swipe → window scroll (so native 1:1 drag + momentum still apply)
+    // Mobile: section is pinned. One source of truth (window.scrollY → transform):
+    //   • vertical page scroll drives the cards horizontally
+    //   • horizontal finger drag is converted to page scroll (1:1, no momentum)
+    // No native horizontal scroll, so no momentum write-back loop / rollback.
     if (window.matchMedia("(max-width: 900px)").matches) {
       const spacer = document.querySelector<HTMLElement>(".leadership-spacer");
-      let stickyY = 0, maxScroll = 0, pinDuration = 1;
-      let syncingLeft = false, syncingTop = false;
+      let stickyY = 0, maxTranslate = 0, pinDuration = 1;
 
       const measure = () => {
         stickyY = sentinel.getBoundingClientRect().top + window.scrollY;
-        maxScroll = Math.max(0, cards.scrollWidth - cards.clientWidth);
-        pinDuration = maxScroll * 2.6 || 1; // vertical scroll distance for full horizontal
+        maxTranslate = Math.max(0, cards.scrollWidth - cards.clientWidth);
+        pinDuration = maxTranslate * 2.6 || 1; // vertical scroll distance for full horizontal
         if (spacer) spacer.style.height = `${pinDuration + window.innerHeight * 0.15}px`;
       };
 
-      const onWinScroll = () => {
-        if (syncingTop) { syncingTop = false; return; } // caused by our own scrollTo
+      const apply = () => {
         const progress = Math.max(0, Math.min(1, (window.scrollY - stickyY) / pinDuration));
-        const target = progress * maxScroll;
-        if (Math.abs(cards.scrollLeft - target) > 0.5) {
-          syncingLeft = true;
-          cards.scrollLeft = target;
-        }
+        cards.style.transform = `translateX(${-progress * maxTranslate}px)`;
       };
 
-      const onCardScroll = () => {
-        if (syncingLeft) { syncingLeft = false; return; } // caused by our own scrollLeft set
-        const progress = maxScroll ? cards.scrollLeft / maxScroll : 0;
-        const targetY = stickyY + progress * pinDuration;
-        if (Math.abs(window.scrollY - targetY) > 0.5) {
-          syncingTop = true;
-          window.scrollTo(0, targetY);
+      // Horizontal drag → page scroll. HSPEED 2.6 ⇒ card tracks the finger 1:1.
+      const HSPEED = 2.6;
+      let startX = 0, startY = 0, lastX = 0, mode: "h" | "v" | null = null;
+      const onTouchStart = (e: TouchEvent) => {
+        startX = lastX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        mode = null;
+      };
+      const onTouchMove = (e: TouchEvent) => {
+        const x = e.touches[0].clientX, y = e.touches[0].clientY;
+        if (mode === null) {
+          const dx = Math.abs(x - startX), dy = Math.abs(y - startY);
+          if (dx > 6 || dy > 6) mode = dx > dy ? "h" : "v";
+        }
+        if (mode === "h") {
+          e.preventDefault();
+          window.scrollBy(0, (lastX - x) * HSPEED); // drag follows the card
+          lastX = x;
         }
       };
 
       measure();
-      cards.style.transform = "";
-      onWinScroll();
-      window.addEventListener("scroll", onWinScroll, { passive: true });
+      apply();
+      window.addEventListener("scroll", apply, { passive: true });
       window.addEventListener("resize", measure, { passive: true });
-      cards.addEventListener("scroll", onCardScroll, { passive: true });
+      section.addEventListener("touchstart", onTouchStart, { passive: true });
+      section.addEventListener("touchmove", onTouchMove, { passive: false });
       return () => {
-        window.removeEventListener("scroll", onWinScroll);
+        window.removeEventListener("scroll", apply);
         window.removeEventListener("resize", measure);
-        cards.removeEventListener("scroll", onCardScroll);
+        section.removeEventListener("touchstart", onTouchStart);
+        section.removeEventListener("touchmove", onTouchMove);
         cards.style.transform = "";
         if (spacer) spacer.style.height = "";
       };
