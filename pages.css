@@ -70,18 +70,14 @@
   white-space: nowrap;
   max-width: 100%;
 }
-/* Title + stats: fixed/locked, centered in the upper portion of the hero.
-   Fades out once [Services] top border reaches the viewport top. */
+/* Title + stats: fixed at 15vh from top; fades when [Services] hits viewport top */
 .hero-title-sticky {
   position: fixed;
-  top: 80px;
-  bottom: 20vh;
+  top: 15vh;
   left: 0;
   right: 0;
   z-index: 0;
   pointer-events: none;
-  display: flex;
-  align-items: center;
   opacity: var(--hero-fade, 1);
   transition: opacity 0.08s linear;
 }
@@ -124,9 +120,8 @@
   color: var(--fg-dim);
 }
 
-/* Mobile: revert to top-anchored (no bottom:0 centering — card would overlap) */
 @media (max-width: 900px) {
-  .hero-title-sticky { bottom: auto; display: block; }
+  .hero-title-sticky { top: 13vh; }
   .hero-top { flex-direction: column; align-items: flex-start; gap: 24px; }
   .hero-kpis {
     border-left: none;
@@ -149,7 +144,7 @@
 .hero-card-wrap {
   position: relative;
   z-index: 2;
-  margin-top: -38vh;
+  margin-top: -45vh;
   padding-bottom: 48px;
 }
 .hero-meta {
@@ -1444,10 +1439,10 @@
 
 /* ===== MOBILE-ONLY HOME PAGE FIXES ===== */
 
-/* Hero: tighter on mobile — less empty space between locked title and card */
+/* Hero: mobile adjustments — title at 13vh, card proportionally below */
 @media (max-width: 600px) {
   .hero { min-height: 85vh; }
-  .hero-card-wrap { margin-top: -30vh; }
+  .hero-card-wrap { margin-top: -28vh; }
 }
 
 /* 7 & 8. Services + Industries: image on top, list below, no text clutter */
