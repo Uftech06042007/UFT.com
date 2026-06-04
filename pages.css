@@ -1411,3 +1411,27 @@
   #industries-section,
   #approach-section { width: calc(100% - var(--gutter)); margin: 24px auto; }
 }
+
+/* ===== TOUCH / MOBILE FIXES ===== */
+/* The fixed decorative hero/careers titles sit on top of scrolling content.
+   Their inner wrapper has pointer-events:auto for desktop, but on touch it
+   silently intercepts taps over a large area (even when faded out), which
+   makes content underneath unclickable. Disable that capture on touch. */
+@media (hover: none) {
+  .hero-title-sticky .hero-top,
+  .careers-title-fixed .container { pointer-events: none !important; }
+}
+
+/* Phone layout polish */
+@media (max-width: 600px) {
+  /* Title is nowrap by default and overflows narrow screens — scale it down */
+  .hero-title { font-size: clamp(26px, 8.5vw, 84px); }
+  .hero-kpi-val { font-size: clamp(26px, 9vw, 56px); }
+  .hero-kpis { gap: 14px 28px; margin-top: 18px; padding-top: 18px; }
+  .hero-sub { font-size: 15px; }
+}
+
+/* Very narrow phones: let the headline wrap rather than clip */
+@media (max-width: 360px) {
+  .hero-title { white-space: normal; line-height: 1.05; }
+}

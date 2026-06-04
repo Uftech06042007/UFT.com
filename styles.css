@@ -133,14 +133,18 @@ h1, h2, h3, h4 { font-weight: 500; letter-spacing: -0.02em; line-height: 1.05; }
   transition: transform 0.32s cubic-bezier(0.77, 0, 0.175, 1), top 0.32s cubic-bezier(0.25, 0.46, 0.45, 0.94), left 0.32s cubic-bezier(0.25, 0.46, 0.45, 0.94), right 0.32s cubic-bezier(0.25, 0.46, 0.45, 0.94), border-radius 0.32s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 .nav--hidden { transform: translateY(-100%); }
-/* Block hover on page content while cursor is over the floating nav */
-body:has(.nav:hover) main,
-body:has(.nav:hover) .hero,
-body:has(.nav:hover) .section,
-body:has(.nav:hover) .clients-section,
-body:has(.nav:hover) .cta-section,
-body:has(.nav:hover) .approach-section {
-  pointer-events: none;
+/* Block hover on page content while cursor is over the floating nav.
+   Hover-capable (mouse) devices only — on touch, :hover sticks after a tap
+   and would leave the whole page unclickable. */
+@media (hover: hover) and (pointer: fine) {
+  body:has(.nav:hover) main,
+  body:has(.nav:hover) .hero,
+  body:has(.nav:hover) .section,
+  body:has(.nav:hover) .clients-section,
+  body:has(.nav:hover) .cta-section,
+  body:has(.nav:hover) .approach-section {
+    pointer-events: none;
+  }
 }
 
 .nav-inner {
