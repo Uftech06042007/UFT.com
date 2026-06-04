@@ -1696,18 +1696,18 @@
     -webkit-overflow-scrolling: touch;
     scroll-snap-type: x proximity;
     scrollbar-width: none;
-    /* full-bleed edge to edge */
+    /* full-bleed edge to edge, no side padding so an image == screen width */
     margin: 0 calc(-1 * var(--gutter));
-    padding: 0 var(--gutter) 8px;
+    padding: 0 0 8px;
   }
   .lau-scroll::-webkit-scrollbar { display: none; }
 
   .lau-collage {
     display: grid !important;
-    width: 150vw;                 /* wider than viewport → horizontal scroll */
+    width: 200vw;                 /* two full-screen-wide columns */
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: repeat(5, 30vw) !important;
-    gap: 8px !important;
+    grid-template-rows: repeat(5, 58vw) !important;
+    gap: 6px !important;
     margin-top: 0 !important;
   }
   .lau-collage > div { aspect-ratio: auto !important; }
