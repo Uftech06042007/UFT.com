@@ -1555,27 +1555,23 @@
   .footer-socials { margin-top: 14px !important; justify-content: flex-start; }
 }
 
-/* ===== About stats → compact 2×2 rectangles (mobile) ===== */
-@media (max-width: 600px) {
-  .about-stats { grid-template-columns: repeat(2, 1fr) !important; margin-top: 20px !important; }
-  .bignum { padding: 10px 12px; }
-  .bignum-v { font-size: 26px !important; margin-bottom: 2px; line-height: 1; }
-  .bignum-l { font-size: 9px; letter-spacing: 0.05em; line-height: 1.25; }
-}
-
-/* ===== About value cards [01]-[..] → square 2×2 (mobile) ===== */
+/* ===== About section (mobile): no stats, tighter, content-height 2×2 cards ===== */
 @media (max-width: 900px) {
+  /* Remove the stats block; story prose flows straight into the value cards */
+  .about-stats { display: none !important; }
+
+  /* Tighten the story section */
+  .about-story-bg { padding: 36px 0 !important; }
+  .about-grid { margin-bottom: 28px !important; gap: 24px !important; }
+
+  /* Value cards: 2×2 rectangles sized to their content (no excess bottom space) */
   .values-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 12px; }
   .value-card {
-    aspect-ratio: 1 / 1;
     min-height: 0 !important;
-    padding: 16px !important;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
+    padding: 16px 16px 14px !important;
   }
-  .value-card h4 { font-size: 15px !important; margin-top: 10px !important; margin-bottom: 6px !important; }
-  .value-card p  { font-size: 11px !important; line-height: 1.4; }
+  .value-card h4 { font-size: 17px !important; margin-top: 10px !important; margin-bottom: 7px !important; }
+  .value-card p  { font-size: 12.5px !important; line-height: 1.45; }
 }
 
 /* ===== Item 1: Approach steps [01]-[04] → 2×2 grid (mobile) ===== */

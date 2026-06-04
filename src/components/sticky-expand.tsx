@@ -53,8 +53,8 @@ export function StickyExpand({
         cards.style.transform = `translateX(${-progress * maxTranslate}px)`;
       };
 
-      // Horizontal swipe → drive vertical scroll (finger right ⇒ scroll down ⇒ advance)
-      const HSPEED = 2.6; // ~1:1 finger-to-card after the pin ratio
+      // Horizontal swipe → drive vertical scroll. Natural drag: finger follows cards.
+      const HSPEED = 6; // higher = faster horizontal swipe
       let startX = 0, startY = 0, lastX = 0, mode: "h" | "v" | null = null;
       const onTouchStart = (e: TouchEvent) => {
         startX = lastX = e.touches[0].clientX;
@@ -69,7 +69,7 @@ export function StickyExpand({
         }
         if (mode === "h") {
           e.preventDefault();
-          window.scrollBy(0, (x - lastX) * HSPEED);
+          window.scrollBy(0, (lastX - x) * HSPEED);
           lastX = x;
         }
       };
