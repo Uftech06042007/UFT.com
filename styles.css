@@ -324,6 +324,8 @@ h1, h2, h3, h4 { font-weight: 500; letter-spacing: -0.02em; line-height: 1.05; }
 }
 
 /* ===== Nav Overlay — frosted glass card panel ===== */
+/* Backdrop: just the dim. No backdrop-filter here — that would create a
+   stacking context and prevent the panel's blur from hitting the page. */
 .nav-overlay {
   position: fixed;
   inset: 0;
@@ -336,15 +338,15 @@ h1, h2, h3, h4 { font-weight: 500; letter-spacing: -0.02em; line-height: 1.05; }
 .nav-overlay.open {
   opacity: 1;
   pointer-events: auto;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
 }
 
+/* Panel: position:fixed sibling of backdrop so backdrop-filter blurs real page */
 .nav-overlay-panel {
-  position: absolute;
+  position: fixed;
   top: 80px;
   left: 50%;
   transform: translateX(-50%) translateY(-16px);
+  z-index: 101;
   width: min(980px, calc(100vw - 48px));
   max-height: calc(100vh - 110px);
   overflow-y: auto;
@@ -353,31 +355,33 @@ h1, h2, h3, h4 { font-weight: 500; letter-spacing: -0.02em; line-height: 1.05; }
   padding: 32px;
   display: flex;
   flex-direction: column;
-
-  /* Frosted glass — light mode */
-  background: rgba(255, 255, 255, 0.82);
-  backdrop-filter: blur(28px) saturate(180%);
-  -webkit-backdrop-filter: blur(28px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.55);
-  box-shadow:
-    0 0 0 0.5px rgba(0, 0, 0, 0.06),
-    0 8px 48px rgba(0, 0, 0, 0.13),
-    0 2px 14px rgba(0, 0, 0, 0.07);
-
+  pointer-events: none;
   opacity: 0;
+
+  /* Frosted glass — same as nav bar */
+  background: rgba(255, 255, 255, 0.60);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.08),
+    0 8px 40px rgba(0, 0, 0, 0.12),
+    0 2px 14px rgba(0, 0, 0, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+
   transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease;
 }
 [data-theme="dark"] .nav-overlay-panel {
-  background: rgba(14, 14, 22, 0.88);
-  border-color: rgba(255, 255, 255, 0.09);
+  background: rgba(18, 18, 26, 0.60);
+  border-color: rgba(255, 255, 255, 0.08);
   box-shadow:
-    0 0 0 0.5px rgba(255, 255, 255, 0.05),
-    0 8px 48px rgba(0, 0, 0, 0.55),
+    0 1px 0 rgba(255, 255, 255, 0.10),
+    0 8px 40px rgba(0, 0, 0, 0.50),
     0 2px 14px rgba(0, 0, 0, 0.35);
 }
-.nav-overlay.open .nav-overlay-panel {
+.nav-overlay-panel.open {
   transform: translateX(-50%) translateY(0);
   opacity: 1;
+  pointer-events: auto;
 }
 
 /* Thin scrollbar inside panel */
@@ -651,7 +655,7 @@ h1, h2, h3, h4 { font-weight: 500; letter-spacing: -0.02em; line-height: 1.05; }
   .nav-links { display: none; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .nav-overlay-body { grid-template-columns: 1fr; gap: 32px; }
-  .nav-overlay-panel { top: 68px; width: calc(100vw - 24px); border-radius: 16px; padding: 24px 20px; }
+  .nav-overlay-panel { top: 68px; width: calc(100vw - 24px); border-radius: 16px; padding: 24px 20px; max-height: calc(100vh - 90px); }
   .nav--float { top: 8px; left: 12px; right: 12px; }
   .nav-inner { padding: 0 16px; gap: 8px; }
 

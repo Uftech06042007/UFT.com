@@ -60,8 +60,10 @@ function NavOverlay({ open, onClose }: { open: boolean; onClose: () => void }) {
   }, [open, onClose]);
 
   return (
-    <div className={`nav-overlay ${open ? "open" : ""}`} onClick={onClose}>
-      <div className="nav-overlay-panel" onClick={(e) => e.stopPropagation()}>
+    <>
+      {/* Backdrop dim — separate from panel so panel's backdrop-filter hits real page content */}
+      <div className={`nav-overlay ${open ? "open" : ""}`} onClick={onClose} />
+      <div className={`nav-overlay-panel ${open ? "open" : ""}`}>
         <div className="nav-overlay-head">
           <span className="mono dim" style={{ fontSize: 11, letterSpacing: "0.14em" }}>
             EXPLORE UFT
@@ -151,7 +153,7 @@ function NavOverlay({ open, onClose }: { open: boolean; onClose: () => void }) {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
