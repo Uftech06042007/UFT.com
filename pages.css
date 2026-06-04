@@ -1683,45 +1683,21 @@
   .careers-title-fixed { position: static !important; opacity: 1 !important; }
 }
 
-/* ===== Life at UFT: swipe-left/right gallery (mobile) =====
-   Layout (canvas wider than screen — swipe to reveal the right column):
-     [1] [2]
-       [ 3 ]   ← full width, touches both borders
-     [4] [5]
-       [ 6 ]   ← full width
-     [7] [8]                                                              */
+/* ===== Life at UFT: 8 images stacked, scrolling vertically (mobile) ===== */
 @media (max-width: 900px) {
-  .lau-scroll {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scroll-snap-type: x proximity;
-    scrollbar-width: none;
-    /* full-bleed edge to edge, no side padding so an image == screen width */
-    margin: 0 calc(-1 * var(--gutter));
-    padding: 0 0 8px;
-  }
-  .lau-scroll::-webkit-scrollbar { display: none; }
-
   .lau-collage {
     display: grid !important;
-    width: 200vw;                 /* two full-screen-wide columns */
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: repeat(5, 58vw) !important;
-    gap: 6px !important;
-    margin-top: 0 !important;
+    grid-template-columns: 1fr !important;
+    grid-template-rows: none !important;
+    grid-auto-rows: auto !important;
+    gap: 10px !important;
   }
-  .lau-collage > div { aspect-ratio: auto !important; }
+  .lau-collage > div {
+    grid-column: 1 !important;
+    grid-row: auto !important;
+    aspect-ratio: 3 / 2 !important;
+  }
   .lau-collage img { width: 100%; height: 100%; object-fit: cover; }
-
-  /* explicit placement (a..h = photos 1..8) */
-  .lau-a { grid-column: 1 !important;     grid-row: 1 !important; scroll-snap-align: start; }
-  .lau-b { grid-column: 2 !important;     grid-row: 1 !important; scroll-snap-align: end;   }
-  .lau-c { grid-column: 1 / 3 !important; grid-row: 2 !important; }
-  .lau-d { grid-column: 1 !important;     grid-row: 3 !important; scroll-snap-align: start; }
-  .lau-e { grid-column: 2 !important;     grid-row: 3 !important; scroll-snap-align: end;   }
-  .lau-f { grid-column: 1 / 3 !important; grid-row: 4 !important; }
-  .lau-g { grid-column: 1 !important;     grid-row: 5 !important; scroll-snap-align: start; }
-  .lau-h { grid-column: 2 !important;     grid-row: 5 !important; scroll-snap-align: end;   }
 }
 
 /* ===== Trim top padding so [eyebrow] sits close to each card's top edge (mobile) ===== */
