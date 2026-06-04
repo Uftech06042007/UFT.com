@@ -1437,21 +1437,11 @@
   .hero-title { white-space: normal; line-height: 1.05; }
 }
 
-/* ===== HOME PAGE CARD LAYOUT (all sizes) ===== */
+/* ===== HOME PAGE CARD LAYOUT ===== */
 
-/* Section head: eyebrow + title stacked, no side column */
-#services-section .section-head-row,
-#industries-section .section-head-row,
-#approach-section .section-head-row { display: block; margin-bottom: 16px; }
-
-/* Title 2-line: regular font on line 1, serif-italic on line 2 */
-.home-stack-card .section-title .serif-italic,
-.cta-card .serif-italic { display: block; }
-
-/* Image banner between title and description */
+/* Image + description always needed (new JSX structure) */
 .section-img-wrap {
   display: block;
-  margin: 16px 0 14px;
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: 0 4px 24px rgba(0,0,0,0.15);
@@ -1459,32 +1449,63 @@
 a.section-img-wrap { cursor: pointer; }
 .section-img-wrap img {
   width: 100%;
-  aspect-ratio: 16/6;
   object-fit: cover;
   display: block;
   transition: transform 0.4s ease;
 }
 a.section-img-wrap:hover img { transform: scale(1.02); }
-.section-img-wrap.ph { aspect-ratio: 16/6; }
+.section-sub-text { color: var(--fg-muted); line-height: 1.6; }
 
-/* Description text below image */
-.section-sub-text {
-  font-size: 15px;
-  line-height: 1.6;
-  color: var(--fg-muted);
-  margin-bottom: 20px;
+/* ── DESKTOP (>900px): restore original 2-column layout ── */
+@media (min-width: 901px) {
+  /* Services + Industries: left = title/desc/rows, right = image */
+  #services-section > .container,
+  #industries-section > .container {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    grid-template-rows: auto auto 1fr;
+    gap: 0 32px;
+    align-items: start;
+  }
+  #services-section .section-head-row,
+  #industries-section .section-head-row { grid-column: 1; grid-row: 1; margin-bottom: 24px; }
+  #services-section .section-img-wrap,
+  #industries-section .section-img-wrap { grid-column: 2; grid-row: 1 / 4; margin: 0; }
+  #services-section .section-img-wrap img,
+  #industries-section .section-img-wrap img { aspect-ratio: 4/5; height: 100%; }
+  #services-section .section-sub-text,
+  #industries-section .section-sub-text { grid-column: 1; grid-row: 2; font-size: 15px; margin-bottom: 8px; }
+  #services-section .industries-rows,
+  #industries-section .industries-rows { grid-column: 1; grid-row: 3; }
+
+  /* Approach: restore 2-column */
+  .approach-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 56px; align-items: start; }
+
+  /* Restore original spacing */
+  #services-section, #industries-section, #approach-section { margin-top: 48px; margin-bottom: 48px; }
+  #services-section > .container,
+  #industries-section > .container,
+  #approach-section > .container { padding: 48px; }
 }
 
-/* Approach: single column */
-.approach-grid { display: flex; flex-direction: column; gap: 28px; }
+/* ── MOBILE (≤900px): vertical layout — eyebrow→title→image→desc→list ── */
+@media (max-width: 900px) {
+  /* 2-line title: serif-italic on its own line */
+  .home-stack-card .section-title .serif-italic,
+  .cta-card .serif-italic { display: block; }
 
-/* Less space above home stack cards — just like [next] */
-#services-section, #industries-section, #approach-section { margin-top: 20px; margin-bottom: 20px; }
+  #services-section .section-head-row,
+  #industries-section .section-head-row,
+  #approach-section .section-head-row { display: block; margin-bottom: 14px; }
 
-/* Tighter card padding */
-#services-section > .container,
-#industries-section > .container,
-#approach-section > .container { padding: 36px 40px; }
+  .section-img-wrap { margin: 14px 0 12px; }
+  .section-img-wrap img { aspect-ratio: 4/3; }
+  .section-sub-text { font-size: 13px; margin-bottom: 14px; }
+
+  .approach-grid { display: flex; flex-direction: column; gap: 24px; }
+
+  #services-section, #industries-section, #approach-section { margin-top: 16px; margin-bottom: 16px; }
+}
 
 /* ===== MOBILE-ONLY HOME PAGE FIXES ===== */
 
@@ -1530,15 +1551,13 @@ a.section-img-wrap:hover img { transform: scale(1.02); }
   [data-theme="dark"] .clients-blur-section { background: rgba(20,20,28,0.7); }
 }
 
-/* Tighter on mobile */
+/* Tighter rows on mobile */
 @media (max-width: 900px) {
   .industry-row { padding: 11px 4px; }
   .approach-step { padding: 14px 0; }
   #services-section > .container,
   #industries-section > .container,
   #approach-section > .container { padding: 22px 16px; }
-  .section-img-wrap img { aspect-ratio: 4/3; }
-  .section-sub-text { font-size: 13px; margin-bottom: 14px; }
 }
 
 /* Description: hidden on desktop inside header, shown on mobile before list */
