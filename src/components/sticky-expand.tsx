@@ -45,7 +45,7 @@ export function StickyExpand({
       const measure = () => {
         stickyY = sentinel.getBoundingClientRect().top + window.scrollY;
         maxTranslate = Math.max(0, cards.scrollWidth - cards.clientWidth);
-        pinDuration = maxTranslate; // ~1:1 vertical-to-horizontal feel
+        pinDuration = maxTranslate * 2.6; // higher = slower horizontal scroll
         if (spacer) spacer.style.height = `${pinDuration + window.innerHeight * 0.15}px`;
       };
 
