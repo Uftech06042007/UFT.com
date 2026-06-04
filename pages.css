@@ -1448,7 +1448,7 @@
 
   /* Header: block layout; hide desktop description */
   #services-section .section-head-row,
-  #industries-section .section-head-row { display: block; margin-bottom: 0; }
+  #industries-section .section-head-row { display: block; margin-bottom: 16px; }
   .section-sub-desktop { display: none; }
 
   /* Strip becomes flex column.
