@@ -70,7 +70,8 @@
   white-space: nowrap;
   max-width: 100%;
 }
-/* Title + stats: fixed/locked, centered in the upper portion of the hero */
+/* Title + stats: fixed/locked, centered in the upper portion of the hero.
+   Fades out once [Services] top border reaches the viewport top. */
 .hero-title-sticky {
   position: fixed;
   top: 80px;
@@ -81,6 +82,8 @@
   pointer-events: none;
   display: flex;
   align-items: center;
+  opacity: var(--hero-fade, 1);
+  transition: opacity 0.08s linear;
 }
 .hero-title-sticky .hero-top {
   padding: 0 var(--gutter);

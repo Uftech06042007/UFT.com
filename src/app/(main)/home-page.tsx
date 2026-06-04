@@ -126,6 +126,21 @@ export default function HomePage() {
     sessionStorage.setItem("uft-clicked-service", String(idx));
   };
 
+  // Fade the locked title + stats once the [Services] top border hits the top of the screen
+  useEffect(() => {
+    const onScroll = () => {
+      const el = document.getElementById("services-section");
+      if (!el) return;
+      const top = el.getBoundingClientRect().top;
+      // top === 0  → services border just reached viewport top → start fading
+      // top === -160 → 160px past top → fully faded
+      const progress = Math.max(0, Math.min(1, -top / 160));
+      document.documentElement.style.setProperty("--hero-fade", String(1 - progress));
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     <main>
