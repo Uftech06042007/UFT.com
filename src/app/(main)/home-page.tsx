@@ -225,110 +225,46 @@ export default function HomePage() {
       <section className="section home-stack-card" id="services-section">
         <div className="container">
           <div className="section-head-row">
-            <div>
-              <span className="eyebrow">[ Services ]</span>
-              <h2 className="section-title">
-                What we do,{" "}
-                <span className="serif-italic">end to end.</span>
-              </h2>
-            </div>
-            <p className="section-sub-inline section-sub-desktop">
-              From AI to Engineering Services — every UFT service is built around
-              delivering real outcomes for the industries we serve.
-            </p>
+            <span className="eyebrow">[ Services ]</span>
+            <h2 className="section-title">
+              What we do,{" "}
+              <span className="serif-italic">end to end.</span>
+            </h2>
           </div>
-
-          <div className="industries-strip">
-            <div className="industries-rows">
-              {UFT_DATA.services.map((svc, idx) => (
-                <Link
-                  key={svc.id}
-                  href={`/services#${svc.id}`}
-                  className={`industry-row ${activeService === idx ? "active" : ""} ${clickedService === idx ? "industry-row--clicked" : ""}`}
-                  onMouseEnter={() => setActiveService(idx)}
-                  onClick={() => handleServiceClick(idx)}
-                >
-                  <span className="industry-row-num" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    {SERVICE_ICONS[svc.id] ?? null}
-                  </span>
-                  <span className="industry-row-name">
-                    {svc.id === "talent" ? (<>Talent<br />Acquisition</>) :
-                     svc.id === "software" ? (<>Software<br />Services</>) :
-                     svc.title}
-                  </span>
-                  <span className="industry-row-blurb">{svc.tagline}</span>
-                </Link>
-              ))}
+          {UFT_DATA.services[activeService].image ? (
+            <Link href={`/services#${UFT_DATA.services[activeService].id}`} className="section-img-wrap">
+              <img src={UFT_DATA.services[activeService].image} alt={UFT_DATA.services[activeService].title} fetchPriority="low" />
+            </Link>
+          ) : (
+            <div className="section-img-wrap ph">
+              <span className="ph-label">{UFT_DATA.services[activeService].title.toUpperCase()}</span>
             </div>
-            <div className="industry-visual">
-              <div className="svc-visual-card" style={{
-                background: "var(--bg-card)",
-                borderRadius: "16px",
-                padding: "12px 12px 24px",
-                boxShadow: "0 12px 48px rgba(0,0,0,0.18), 0 4px 16px rgba(0,0,0,0.10)",
-                width: "100%",
-                aspectRatio: "5/6",
-                overflow: "hidden",
-              }}>
-                {UFT_DATA.services[activeService].image ? (
-                  <Link href={`/services#${UFT_DATA.services[activeService].id}`}>
-                  <img
-                    src={UFT_DATA.services[activeService].image}
-                    alt={UFT_DATA.services[activeService].title}
-                    fetchPriority="low"
-                    style={{
-                      width: "100%",
-                      aspectRatio: "4/3",
-                      objectFit: "cover",
-                      borderRadius: "8px",
-                      display: "block",
-                      cursor: "pointer",
-                    }}
-                  />
-                  </Link>
-                ) : (
-                  <div className="ph" style={{ aspectRatio: "4/3", borderRadius: "8px" }}>
-                    <span className="ph-label">
-                      {UFT_DATA.services[activeService].title.toUpperCase()}
-                    </span>
-                  </div>
-                )}
-                <div className="svc-visual-body" style={{ padding: "20px 8px 0" }}>
-                  <p style={{ fontSize: 13, lineHeight: 1.65, color: "var(--fg-muted)", marginBottom: 16 }}>
-                    {UFT_DATA.services[activeService].desc}
-                  </p>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
-                    {(() => {
-                      const caps = [...UFT_DATA.services[activeService].capabilities].sort((a, b) => b.length - a.length);
-                      const interleaved: string[] = [];
-                      let lo = 0, hi = caps.length - 1;
-                      while (lo <= hi) {
-                        interleaved.push(caps[lo++]);
-                        if (lo <= hi) interleaved.push(caps[hi--]);
-                      }
-                      return interleaved;
-                    })().map((cap) => (
-                      <span key={cap} style={{
-                        padding: "4px 10px",
-                        borderRadius: 100,
-                        border: "1px solid var(--border)",
-                        fontSize: 11,
-                        color: "var(--fg-muted)",
-                        lineHeight: 1.5,
-                        whiteSpace: "nowrap",
-                      }}>
-                        {cap}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <p className="section-sub-inline section-sub-mobile-only">
+          )}
+          <p className="section-sub-text">
             From AI to Engineering Services — every UFT service is built around
             delivering real outcomes for the industries we serve.
           </p>
+          <div className="industries-rows">
+            {UFT_DATA.services.map((svc, idx) => (
+              <Link
+                key={svc.id}
+                href={`/services#${svc.id}`}
+                className={`industry-row ${activeService === idx ? "active" : ""} ${clickedService === idx ? "industry-row--clicked" : ""}`}
+                onMouseEnter={() => setActiveService(idx)}
+                onClick={() => handleServiceClick(idx)}
+              >
+                <span className="industry-row-num" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  {SERVICE_ICONS[svc.id] ?? null}
+                </span>
+                <span className="industry-row-name">
+                  {svc.id === "talent" ? (<>Talent<br />Acquisition</>) :
+                   svc.id === "software" ? (<>Software<br />Services</>) :
+                   svc.title}
+                </span>
+                <span className="industry-row-blurb">{svc.tagline}</span>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -336,63 +272,41 @@ export default function HomePage() {
       <section className="section home-stack-card" id="industries-section">
         <div className="container">
           <div className="section-head-row">
-            <div>
-              <span className="eyebrow">[ Industries ]</span>
-              <h2 className="section-title">
-                Domain depth,{" "}
-                <span className="serif-italic">across regulated sectors.</span>
-              </h2>
-            </div>
-            <p className="section-sub-inline section-sub-desktop">
-              We hire and train for the industries we serve — so our engineers speak the standards,
-              the systems, and the safety frameworks.
-            </p>
+            <span className="eyebrow">[ Industries ]</span>
+            <h2 className="section-title">
+              Domain depth,{" "}
+              <span className="serif-italic">across regulated sectors.</span>
+            </h2>
           </div>
-
-          <div className="industries-strip">
-            <div className="industries-rows">
-              {UFT_DATA.industries.map((ind, idx) => (
-                <button
-                  key={ind.id}
-                  className={`industry-row ${activeIndustry === idx ? "active" : ""}`}
-                  onMouseEnter={() => setActiveIndustry(idx)}
-                  onClick={() => setActiveIndustry(idx)}
-                >
-                  <span className="industry-row-num mono">
-                    [{String(idx + 1).padStart(2, "0")}]
-                  </span>
-                  <span className="industry-row-name">{ind.name}</span>
-                  <span className="industry-row-blurb">{ind.blurb}</span>
-                </button>
-              ))}
+          {UFT_DATA.industries[activeIndustry].image ? (
+            <div className="section-img-wrap">
+              <img src={UFT_DATA.industries[activeIndustry].image} alt={UFT_DATA.industries[activeIndustry].name} fetchPriority="low" />
             </div>
-            <div className="industry-visual">
-              {UFT_DATA.industries[activeIndustry].image ? (
-                <img
-                  src={UFT_DATA.industries[activeIndustry].image}
-                  alt={UFT_DATA.industries[activeIndustry].name}
-                  fetchPriority="low"
-                  style={{
-                    width: "100%",
-                    aspectRatio: "4/5",
-                    objectFit: "cover",
-                    borderRadius: "var(--radius-lg)",
-                    display: "block",
-                  }}
-                />
-              ) : (
-                <div className="ph" style={{ aspectRatio: "4/5" }}>
-                  <span className="ph-label">
-                    {UFT_DATA.industries[activeIndustry].name.toUpperCase()}
-                  </span>
-                </div>
-              )}
+          ) : (
+            <div className="section-img-wrap ph">
+              <span className="ph-label">{UFT_DATA.industries[activeIndustry].name.toUpperCase()}</span>
             </div>
-          </div>
-          <p className="section-sub-inline section-sub-mobile-only">
+          )}
+          <p className="section-sub-text">
             We hire and train for the industries we serve — so our engineers speak the standards,
             the systems, and the safety frameworks.
           </p>
+          <div className="industries-rows">
+            {UFT_DATA.industries.map((ind, idx) => (
+              <button
+                key={ind.id}
+                className={`industry-row ${activeIndustry === idx ? "active" : ""}`}
+                onMouseEnter={() => setActiveIndustry(idx)}
+                onClick={() => setActiveIndustry(idx)}
+              >
+                <span className="industry-row-num mono">
+                  [{String(idx + 1).padStart(2, "0")}]
+                </span>
+                <span className="industry-row-name">{ind.name}</span>
+                <span className="industry-row-blurb">{ind.blurb}</span>
+              </button>
+            ))}
+          </div>
         </div>
       </section>
 
