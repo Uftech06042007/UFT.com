@@ -1648,6 +1648,30 @@
   .leader-socials-d { display: none !important; }
 }
 
+/* ===== Services page cards: single-column reflow (mobile) =====
+   Order per card: [num] → title → tagline → image → description → CAPABILITIES → list */
+.sc-image-mobile { display: none; }
+@media (max-width: 900px) {
+  .services-cards-section .service-card {
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
+    align-items: start !important;
+  }
+  .sc-image-desktop { display: none !important; }
+  .sc-image-mobile {
+    display: block;
+    margin: 4px 0 22px;
+  }
+  .sc-image-mobile img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+    display: block;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+  }
+}
+
 /* ===== Trim top padding so [eyebrow] sits close to each card's top edge (mobile) ===== */
 @media (max-width: 900px) {
   #services-section > .container,

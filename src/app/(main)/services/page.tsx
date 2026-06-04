@@ -52,6 +52,16 @@ export default function ServicesPage() {
                   <p className="muted" style={{ fontSize: 14, marginBottom: 24, fontWeight: 700 }}>
                     {s.tagline}
                   </p>
+                  {/* Mobile-only image — sits between tagline and description */}
+                  <div className="sc-image-mobile">
+                    {s.image ? (
+                      <img src={s.image} alt={s.title} />
+                    ) : (
+                      <div className="ph" style={{ aspectRatio: "16/9" }}>
+                        <span className="ph-label">{s.title.toUpperCase()}</span>
+                      </div>
+                    )}
+                  </div>
                   <p style={{ fontSize: 16, marginBottom: 32, lineHeight: 1.7 }}>{s.descFull ?? s.desc}</p>
                   <div>
                     <span
@@ -78,8 +88,8 @@ export default function ServicesPage() {
                     </ul>
                   </div>
                 </div>
-                {/* Image — right */}
-                <div style={{ display: "flex", justifyContent: "center" }}>
+                {/* Image — right (desktop only) */}
+                <div className="sc-image-desktop" style={{ display: "flex", justifyContent: "center" }}>
                   <div style={{
                     background: "#fff",
                     padding: "12px",
