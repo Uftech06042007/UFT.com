@@ -63,7 +63,7 @@ export function StickyExpand({
         cancelAnimationFrame(rafId);
         const startY = window.scrollY;
         const dist = targetY - startY;
-        const dur = 70; // ms — lower = faster snap
+        const dur = 45; // ms — lower = faster snap
         const t0 = performance.now();
         const tick = (now: number) => {
           const p = Math.min(1, (now - t0) / dur);
@@ -75,36 +75,40 @@ export function StickyExpand({
         rafId = requestAnimationFrame(tick);
       };
 
-      // Horizontal swipe = discrete pager: one swipe → exactly one card,
-      // regardless of speed/distance. Vertical scroll still drives continuously.
-      const SWIPE_MIN = 10;
-      let startX = 0, startY = 0, lastX = 0, mode: "h" | "v" | null = null;
+      // Horizontal swipe = discrete pager: one swipe → exactly one card. Fires the
+      // instant the swipe crosses a small threshold (no wait for finger-lift).
+      const SWIPE_TRIGGER = 24;
+      let startX = 0, startY = 0, mode: "h" | "v" | null = null, paged = false;
+      const page = (dir: 1 | -1) => {
+        const progress = Math.max(0, Math.min(1, (window.scrollY - stickyY) / pinDuration));
+        const curIdx = step ? (progress * maxTranslate) / step : 0;
+        let target = dir > 0 ? Math.floor(curIdx + 0.001) + 1 : Math.ceil(curIdx - 0.001) - 1;
+        target = Math.max(0, Math.min(lastIndex, target));
+        const targetTranslate = Math.min(target * step, maxTranslate);
+        animateTo(stickyY + (maxTranslate ? targetTranslate / maxTranslate : 0) * pinDuration);
+      };
       const onTouchStart = (e: TouchEvent) => {
         cancelAnimationFrame(rafId);
-        startX = lastX = e.touches[0].clientX;
+        startX = e.touches[0].clientX;
         startY = e.touches[0].clientY;
         mode = null;
+        paged = false;
       };
       const onTouchMove = (e: TouchEvent) => {
         const x = e.touches[0].clientX, y = e.touches[0].clientY;
-        lastX = x;
         if (mode === null) {
           const dx = Math.abs(x - startX), dy = Math.abs(y - startY);
           if (dx > 6 || dy > 6) mode = dx > dy ? "h" : "v";
         }
-        if (mode === "h") e.preventDefault(); // block page scroll; we page on release
+        if (mode === "h") {
+          e.preventDefault(); // block page scroll; we page horizontally
+          if (!paged && Math.abs(x - startX) > SWIPE_TRIGGER) {
+            paged = true;
+            page(x < startX ? 1 : -1); // left → next, right → previous
+          }
+        }
       };
-      const onTouchEnd = () => {
-        if (mode !== "h" || Math.abs(lastX - startX) < SWIPE_MIN) return;
-        const progress = Math.max(0, Math.min(1, (window.scrollY - stickyY) / pinDuration));
-        const curIdx = step ? (progress * maxTranslate) / step : 0;
-        // finger moved left → next card; right → previous card
-        let target = lastX < startX ? Math.floor(curIdx + 0.001) + 1 : Math.ceil(curIdx - 0.001) - 1;
-        target = Math.max(0, Math.min(lastIndex, target));
-        const targetTranslate = Math.min(target * step, maxTranslate);
-        const targetY = stickyY + (maxTranslate ? targetTranslate / maxTranslate : 0) * pinDuration;
-        animateTo(targetY);
-      };
+      const onTouchEnd = () => {};
 
       measure();
       apply();
