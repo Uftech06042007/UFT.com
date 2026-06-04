@@ -1402,7 +1402,6 @@
   .section-title { font-size: clamp(28px, 8vw, 48px); }
   .page-title { font-size: clamp(36px, 9vw, 64px); }
   .cta-card { padding: 36px 20px; }
-  .tc-card { flex-basis: calc(100% - 12px) !important; }
   .lau-collage { grid-template-columns: 1fr; grid-template-rows: auto; }
   .lau-a,.lau-b,.lau-c,.lau-d,.lau-e,.lau-f,.lau-g,.lau-h { grid-column: 1; grid-row: auto; aspect-ratio: 3/2; }
   .locations-grid { grid-template-columns: 1fr; }
@@ -1670,6 +1669,18 @@
     display: block;
     box-shadow: 0 4px 24px rgba(0,0,0,0.15);
   }
+}
+
+/* ===== Testimonials: one full-width card on phones (matches JS visible=1 @640) ===== */
+@media (max-width: 640px) {
+  .tc-card { flex-basis: calc(100% - 12px) !important; }
+}
+
+/* ===== Careers hero: normal spacing before the first card (mobile) ===== */
+@media (max-width: 900px) {
+  /* Title flows in-line instead of fixed, so the card follows with normal spacing */
+  .careers-page-hero { min-height: auto !important; }
+  .careers-title-fixed { position: static !important; opacity: 1 !important; }
 }
 
 /* ===== Trim top padding so [eyebrow] sits close to each card's top edge (mobile) ===== */

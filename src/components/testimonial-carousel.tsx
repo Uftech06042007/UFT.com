@@ -1,14 +1,27 @@
 "use client";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 
 interface T { company: string; body: string; by: string; }
-const VISIBLE = 3;
 
 export function TestimonialCarousel({ items }: { items: T[] }) {
   const total = items.length;
-  const extended = [...items.slice(-VISIBLE), ...items, ...items.slice(0, VISIBLE)];
 
-  const [idx, setIdx] = useState(VISIBLE);
+  // Visible count: 3 on desktop, 1 on phones (must match .tc-card flex-basis breakpoint)
+  const [visible, setVisible] = useState(3);
+  useEffect(() => {
+    const update = () => setVisible(window.innerWidth <= 640 ? 1 : 3);
+    update();
+    window.addEventListener("resize", update, { passive: true });
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  const center = Math.floor(visible / 2);
+  const extended = useMemo(
+    () => [...items.slice(-visible), ...items, ...items.slice(0, visible)],
+    [items, visible]
+  );
+
+  const [idx, setIdx] = useState(3);
   const [animated, setAnimated] = useState(true);
   const [cardWidth, setCardWidth] = useState(0);
   const [dragging, setDragging] = useState(false);
@@ -19,8 +32,7 @@ export function TestimonialCarousel({ items }: { items: T[] }) {
   const isDragging = useRef(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Mirrors of state for use inside event handlers without stale closures
-  const idxRef = useRef(VISIBLE);
+  const idxRef = useRef(3);
   const cardWidthRef = useRef(0);
   const animatedRef = useRef(true);
 
@@ -28,7 +40,6 @@ export function TestimonialCarousel({ items }: { items: T[] }) {
   useEffect(() => { cardWidthRef.current = cardWidth; }, [cardWidth]);
   useEffect(() => { animatedRef.current = animated; }, [animated]);
 
-  // Write transform directly to DOM — avoids React re-renders during drag
   const applyTransform = useCallback((extraOffset = 0, withTransition?: boolean) => {
     if (!trackRef.current) return;
     const tr = withTransition ?? animatedRef.current;
@@ -41,20 +52,29 @@ export function TestimonialCarousel({ items }: { items: T[] }) {
 
   const measureCard = useCallback(() => {
     if (!outerRef.current) return;
-    const w = outerRef.current.offsetWidth / VISIBLE;
+    const w = outerRef.current.offsetWidth / visible;
     setCardWidth(w);
     cardWidthRef.current = w;
     applyTransform(0, false);
-  }, [applyTransform]);
+  }, [applyTransform, visible]);
+
+  // Reset to the first slide when the visible count changes
+  useEffect(() => {
+    idxRef.current = visible;
+    setIdx(visible);
+    animatedRef.current = false;
+    setAnimated(false);
+    measureCard();
+  }, [visible, measureCard]);
 
   const advance = useCallback((dir: 1 | -1) => {
-    const next = Math.max(0, Math.min(VISIBLE + total, idxRef.current + dir));
+    const next = Math.max(0, Math.min(visible + total, idxRef.current + dir));
     idxRef.current = next;
     animatedRef.current = true;
     setIdx(next);
     setAnimated(true);
     applyTransform(0, true);
-  }, [total, applyTransform]);
+  }, [total, visible, applyTransform]);
 
   const stopTimer = useCallback(() => {
     if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null; }
@@ -73,7 +93,6 @@ export function TestimonialCarousel({ items }: { items: T[] }) {
     return () => { stopTimer(); ro.disconnect(); };
   }, [measureCard, resetTimer, stopTimer]);
 
-  // Re-enable animation one frame after a teleport (infinite loop seam)
   useEffect(() => {
     if (!animated) {
       const id = requestAnimationFrame(() => {
@@ -86,10 +105,10 @@ export function TestimonialCarousel({ items }: { items: T[] }) {
   }, [animated, applyTransform]);
 
   const onTransitionEnd = useCallback(() => {
-    if (idxRef.current >= VISIBLE + total) {
-      idxRef.current = VISIBLE;
+    if (idxRef.current >= visible + total) {
+      idxRef.current = visible;
       animatedRef.current = false;
-      setIdx(VISIBLE);
+      setIdx(visible);
       setAnimated(false);
       applyTransform(0, false);
     } else if (idxRef.current === 0) {
@@ -99,21 +118,20 @@ export function TestimonialCarousel({ items }: { items: T[] }) {
       setAnimated(false);
       applyTransform(0, false);
     }
-  }, [total, applyTransform]);
+  }, [total, visible, applyTransform]);
 
-  const realIdx = Math.max(0, Math.min(total - 1, idx - VISIBLE));
+  const realIdx = Math.max(0, Math.min(total - 1, idx - visible));
   const sliderPct = total > 1 ? (realIdx / (total - 1)) * 100 : 0;
 
   const goToReal = (n: number) => {
-    idxRef.current = n + VISIBLE;
+    idxRef.current = n + visible;
     animatedRef.current = true;
-    setIdx(n + VISIBLE);
+    setIdx(n + visible);
     setAnimated(true);
     applyTransform(0, true);
     resetTimer();
   };
 
-  // Drag handlers — track follows pointer in real time via direct DOM writes
   const startDrag = (x: number) => {
     dragX.current = x;
     isDragging.current = true;
@@ -136,7 +154,7 @@ export function TestimonialCarousel({ items }: { items: T[] }) {
       advance(diff > 0 ? 1 : -1);
       resetTimer();
     } else {
-      applyTransform(0, true); // snap back
+      applyTransform(0, true);
     }
   };
 
@@ -164,9 +182,9 @@ export function TestimonialCarousel({ items }: { items: T[] }) {
         <div ref={trackRef} className="tc-track" onTransitionEnd={onTransitionEnd}>
           {extended.map((t, i) => {
             const pos = i - idx;
-            const isCenter = pos === 1;
-            const isSide   = pos === 0 || pos === 2;
-            const scale   = isCenter ? 1.07 : 0.88;
+            const isCenter = pos === center;
+            const isSide   = visible > 1 && (pos === center - 1 || pos === center + 1);
+            const scale   = isCenter ? (visible === 1 ? 1 : 1.07) : 0.88;
             const opacity = isCenter ? 1 : isSide ? 0.72 : 0.3;
             const cardTransition = animated
               ? "transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94)"
