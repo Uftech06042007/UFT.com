@@ -1683,6 +1683,35 @@
   .careers-title-fixed { position: static !important; opacity: 1 !important; }
 }
 
+/* ===== Life at UFT: 3-row horizontally-scrollable gallery (mobile) ===== */
+@media (max-width: 900px) {
+  .lau-collage {
+    display: grid !important;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(3, 30vw) !important;
+    grid-auto-columns: 44vw;
+    gap: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    padding-bottom: 8px;
+    /* let the row break out to full-bleed width edge-to-edge */
+    margin: 0 calc(-1 * var(--gutter));
+    padding-left: var(--gutter);
+    padding-right: var(--gutter);
+  }
+  .lau-collage::-webkit-scrollbar { display: none; }
+  /* Reset the desktop explicit placements so items flow into the 3 rows */
+  .lau-collage > div {
+    grid-column: auto !important;
+    grid-row: auto !important;
+    aspect-ratio: auto !important;
+    scroll-snap-align: start;
+  }
+  .lau-collage img { width: 100%; height: 100%; object-fit: cover; }
+}
+
 /* ===== Trim top padding so [eyebrow] sits close to each card's top edge (mobile) ===== */
 @media (max-width: 900px) {
   #services-section > .container,
