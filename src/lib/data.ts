@@ -133,8 +133,8 @@ export const UFT_DATA: UFTData = {
     { id: "aerospace", name: "Aerospace", blurb: "Avionics, systems engineering, certification.", image: "/assets/industry-aerospace.jpg" },
     { id: "locomotive", name: "Locomotive", blurb: "Rolling stock, signaling, PTC systems.", image: "/assets/industry-locomotive.jpg" },
     { id: "oilgas", name: "Oil & Gas", blurb: "Downhole tools, well completion, production optimization.", image: "/assets/industry-oilgas.jpg" },
-    { id: "bfsi", name: "Banking, Finance & Insurance", blurb: "Core modernization, platforms, digital banking.", image: "/assets/industry-locomotive.jpg" },
-    { id: "retail", name: "Retail", blurb: "Omnichannel, supply chain, personalization.", image: "/assets/industry-bfsi.jpg" },
+    { id: "bfsi", name: "Banking, Finance & Insurance", blurb: "Core modernization, platforms, digital banking.", image: "/assets/industry-bfsi.jpg" },
+    { id: "retail", name: "Retail", blurb: "Omnichannel, supply chain, personalization.", image: "/assets/industry-retail.jpg" },
     { id: "govt", name: "Government & Public Sector", blurb: "Citizen services, digital identity, GovCloud.", image: "/assets/industry-govt.jpg" },
   ],
   clients: [
