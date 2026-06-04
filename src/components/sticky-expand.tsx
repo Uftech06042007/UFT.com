@@ -34,11 +34,55 @@ export function StickyExpand({
     const cards    = document.getElementById(cardsId);
     if (!sentinel || !section || !cards) return;
 
-    // Mobile: no JS. Cards use native horizontal scroll (see CSS) — the browser
-    // gives 1:1 finger tracking, smooth motion, and natural flick deceleration.
+    // Mobile: section is pinned AND the cards are a native horizontal scroller.
+    // Two-way sync on one shared position:
+    //   • vertical page scroll → cards.scrollLeft (pinned scroll-jack)
+    //   • finger swipe → window scroll (so native 1:1 drag + momentum still apply)
     if (window.matchMedia("(max-width: 900px)").matches) {
+      const spacer = document.querySelector<HTMLElement>(".leadership-spacer");
+      let stickyY = 0, maxScroll = 0, pinDuration = 1;
+      let syncingLeft = false, syncingTop = false;
+
+      const measure = () => {
+        stickyY = sentinel.getBoundingClientRect().top + window.scrollY;
+        maxScroll = Math.max(0, cards.scrollWidth - cards.clientWidth);
+        pinDuration = maxScroll * 2.6 || 1; // vertical scroll distance for full horizontal
+        if (spacer) spacer.style.height = `${pinDuration + window.innerHeight * 0.15}px`;
+      };
+
+      const onWinScroll = () => {
+        if (syncingTop) { syncingTop = false; return; } // caused by our own scrollTo
+        const progress = Math.max(0, Math.min(1, (window.scrollY - stickyY) / pinDuration));
+        const target = progress * maxScroll;
+        if (Math.abs(cards.scrollLeft - target) > 0.5) {
+          syncingLeft = true;
+          cards.scrollLeft = target;
+        }
+      };
+
+      const onCardScroll = () => {
+        if (syncingLeft) { syncingLeft = false; return; } // caused by our own scrollLeft set
+        const progress = maxScroll ? cards.scrollLeft / maxScroll : 0;
+        const targetY = stickyY + progress * pinDuration;
+        if (Math.abs(window.scrollY - targetY) > 0.5) {
+          syncingTop = true;
+          window.scrollTo(0, targetY);
+        }
+      };
+
+      measure();
       cards.style.transform = "";
-      return;
+      onWinScroll();
+      window.addEventListener("scroll", onWinScroll, { passive: true });
+      window.addEventListener("resize", measure, { passive: true });
+      cards.addEventListener("scroll", onCardScroll, { passive: true });
+      return () => {
+        window.removeEventListener("scroll", onWinScroll);
+        window.removeEventListener("resize", measure);
+        cards.removeEventListener("scroll", onCardScroll);
+        cards.style.transform = "";
+        if (spacer) spacer.style.height = "";
+      };
     }
 
     const stickyY = sentinel.getBoundingClientRect().top + window.scrollY;
