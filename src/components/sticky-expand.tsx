@@ -34,36 +34,11 @@ export function StickyExpand({
     const cards    = document.getElementById(cardsId);
     if (!sentinel || !section || !cards) return;
 
-    // Mobile: pin the section, then map vertical scroll → horizontal card scroll.
-    // Simpler math than desktop (cards are ~1 per view), spacer height set to match.
+    // Mobile: no scroll-pinning. Cards are a native horizontal-scroll carousel
+    // (swipe sideways) in normal flow, so the page scrolls vertically as usual.
     if (window.matchMedia("(max-width: 900px)").matches) {
-      const spacer = document.querySelector<HTMLElement>(".leadership-spacer");
-      let stickyY = 0;
-      let maxTranslate = 0;
-      let pinDuration = 1;
-
-      const measure = () => {
-        stickyY = sentinel.getBoundingClientRect().top + window.scrollY;
-        maxTranslate = Math.max(0, cards.scrollWidth - cards.clientWidth);
-        pinDuration = maxTranslate * 2.6; // higher = slower horizontal scroll
-        if (spacer) spacer.style.height = `${pinDuration + window.innerHeight * 0.15}px`;
-      };
-
-      const onScrollM = () => {
-        const progress = Math.max(0, Math.min(1, (window.scrollY - stickyY) / pinDuration));
-        cards.style.transform = `translateX(${-progress * maxTranslate}px)`;
-      };
-
-      measure();
-      onScrollM();
-      window.addEventListener("scroll", onScrollM, { passive: true });
-      window.addEventListener("resize", measure, { passive: true });
-      return () => {
-        window.removeEventListener("scroll", onScrollM);
-        window.removeEventListener("resize", measure);
-        cards.style.transform = "";
-        if (spacer) spacer.style.height = "";
-      };
+      cards.style.transform = "";
+      return;
     }
 
     const stickyY = sentinel.getBoundingClientRect().top + window.scrollY;

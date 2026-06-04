@@ -1555,12 +1555,12 @@
   .footer-socials { margin-top: 14px !important; justify-content: flex-start; }
 }
 
-/* ===== About stats → single row, compact (mobile) ===== */
+/* ===== About stats → compact 2×2 rectangles (mobile) ===== */
 @media (max-width: 600px) {
-  .about-stats { grid-template-columns: repeat(4, 1fr) !important; margin-top: 24px !important; }
-  .bignum { padding: 12px 6px; }
-  .bignum-v { font-size: 22px !important; margin-bottom: 4px; }
-  .bignum-l { font-size: 7.5px; letter-spacing: 0.05em; }
+  .about-stats { grid-template-columns: repeat(2, 1fr) !important; margin-top: 20px !important; }
+  .bignum { padding: 10px 12px; }
+  .bignum-v { font-size: 26px !important; margin-bottom: 2px; line-height: 1; }
+  .bignum-l { font-size: 9px; letter-spacing: 0.05em; line-height: 1.25; }
 }
 
 /* ===== About value cards [01]-[..] → square 2×2 (mobile) ===== */
@@ -1596,24 +1596,31 @@
   .approach-step p  { font-size: 12px !important; line-height: 1.5; }
 }
 
-/* ===== Item 2: Leadership cards → pinned section, scroll-driven horizontal (mobile) ===== */
+/* ===== Item 2: Leadership cards → native horizontal carousel (mobile) ===== */
 .leader-meta-mobile { display: none; }
 @media (max-width: 900px) {
-  /* Section pins below the nav; spacer (JS-sized) drives the horizontal scroll */
+  /* Normal flow — page scrolls vertically; cards swipe horizontally */
   #leadership-section {
-    position: sticky !important;
-    top: 60px;
-    min-height: calc(100vh - 60px) !important;
-    overflow: hidden !important;
+    position: static !important;
+    min-height: auto !important;
+    overflow: visible !important;
   }
+  #leadership-section.sticky-expanded { width: calc(100% - var(--gutter)); max-width: calc(100% - var(--gutter)); }
   #leadership-section::before { display: none !important; }
+  .leadership-spacer { display: none !important; }
 
-  /* Cards row: JS sets transform; overflow clipped by the section */
+  /* Cards row: native horizontal scroll + snap */
   #leadership-cards {
-    overflow: visible;
+    transform: none !important;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
     gap: 16px !important;
     flex-wrap: nowrap;
+    padding-bottom: 10px;
+    scrollbar-width: none;
   }
+  #leadership-cards::-webkit-scrollbar { display: none; }
 
   /* Card: vertical — image → (name/role | socials) → description */
   .leader-card {
@@ -1623,6 +1630,7 @@
     padding: 0 0 18px !important;
     gap: 0 !important;
     flex-shrink: 0;
+    scroll-snap-align: center;
   }
   .leader-polaroid {
     width: 100% !important;
