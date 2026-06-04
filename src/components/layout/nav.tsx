@@ -158,6 +158,7 @@ function NavOverlay({ open, onClose }: { open: boolean; onClose: () => void }) {
 export function Nav() {
   const [, toggleTheme] = useTheme();
   const [overlayOpen, setOverlayOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
   const pathname = usePathname();
@@ -167,6 +168,9 @@ export function Nav() {
   const themeToggleRef = useRef<HTMLButtonElement>(null);
   const firstRender = useRef(true);
   const lastY = useRef(0);
+
+  // Close mobile menu on route change
+  useEffect(() => { setMobileMenuOpen(false); }, [pathname]);
 
   useEffect(() => {
     const onScroll = () => {
@@ -279,9 +283,33 @@ export function Nav() {
               <span>Explore</span>
               <Icon.Plus />
             </button>
+            <button
+              className={`mobile-hamburger${mobileMenuOpen ? " open" : ""}`}
+              onClick={() => setMobileMenuOpen(v => !v)}
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? <Icon.X /> : (
+                <svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <path d="M0 1h16M0 6h16M0 11h16"/>
+                </svg>
+              )}
+            </button>
+          </div>
+        </div>
+        <div className={`mobile-nav-menu${mobileMenuOpen ? " open" : ""}`}>
+          <div className="mobile-nav-links">
+            <Link href="/" className={isActive("/") ? "active" : ""} onClick={() => setMobileMenuOpen(false)}>Home</Link>
+            <Link href="/about" className={isActive("/about") ? "active" : ""} onClick={() => setMobileMenuOpen(false)}>About</Link>
+            <Link href="/services" className={isActive("/services") ? "active" : ""} onClick={() => setMobileMenuOpen(false)}>Services</Link>
+            <Link href="/careers" className={isActive("/careers") ? "active" : ""} onClick={() => setMobileMenuOpen(false)}>Careers</Link>
+            <Link href="/contact" className={isActive("/contact") ? "active" : ""} onClick={() => setMobileMenuOpen(false)}>Contact</Link>
+            <a href="https://uftech.in/jobs" target="_blank" rel="noreferrer" onClick={() => setMobileMenuOpen(false)}>Jobs ↗</a>
           </div>
         </div>
       </nav>
+      {mobileMenuOpen && (
+        <div className="mobile-menu-backdrop" onClick={() => setMobileMenuOpen(false)} />
+      )}
       <NavOverlay open={overlayOpen} onClose={() => setOverlayOpen(false)} />
     </>
   );

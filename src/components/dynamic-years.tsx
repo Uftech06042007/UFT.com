@@ -34,13 +34,20 @@ export function DynamicYears({ type, suffix }: Props) {
       setValue(years + s);
     };
 
-    fetch("https://timeapi.io/api/time/current/zone?timeZone=UTC")
+    // Show local time immediately so the value never stays "—"
+    const now = new Date();
+    display({ year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() });
+
+    // Optionally refine with server time (3 s timeout)
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 3000);
+    fetch("https://timeapi.io/api/time/current/zone?timeZone=UTC", { signal: controller.signal })
       .then((r) => r.json())
       .then((data) => display({ year: data.year, month: data.month, day: data.day }))
-      .catch(() => {
-        const now = new Date();
-        display({ year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() });
-      });
+      .catch(() => {})
+      .finally(() => clearTimeout(timeoutId));
+
+    return () => { controller.abort(); clearTimeout(timeoutId); };
   }, [type, suffix]);
 
   return <>{value ?? "—"}</>;

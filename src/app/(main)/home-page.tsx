@@ -248,7 +248,7 @@ export default function HomePage() {
               ))}
             </div>
             <div className="industry-visual">
-              <div style={{
+              <div className="svc-visual-card" style={{
                 background: "var(--bg-card)",
                 borderRadius: "16px",
                 padding: "12px 12px 24px",
@@ -280,7 +280,7 @@ export default function HomePage() {
                     </span>
                   </div>
                 )}
-                <div style={{ padding: "20px 8px 0" }}>
+                <div className="svc-visual-body" style={{ padding: "20px 8px 0" }}>
                   <p style={{ fontSize: 13, lineHeight: 1.65, color: "var(--fg-muted)", marginBottom: 16 }}>
                     {UFT_DATA.services[activeService].desc}
                   </p>

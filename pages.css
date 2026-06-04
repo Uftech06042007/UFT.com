@@ -1435,3 +1435,46 @@
 @media (max-width: 360px) {
   .hero-title { white-space: normal; line-height: 1.05; }
 }
+
+/* ===== MOBILE-ONLY HOME PAGE FIXES ===== */
+
+/* 5. Less empty space between hero title and the content card */
+@media (max-width: 600px) {
+  .hero { min-height: 75vh; }
+  .hero-card-wrap { margin-top: -20vh; }
+}
+
+/* 7 & 8. Services + Industries: image on top, list below, no text clutter */
+@media (max-width: 900px) {
+  #services-section .industries-strip,
+  #industries-section .industries-strip {
+    display: flex;
+    flex-direction: column;
+  }
+  /* Move image above the rows list */
+  #services-section .industry-visual,
+  #industries-section .industry-visual {
+    order: -1;
+    margin-left: 0;
+    max-width: 100%;
+  }
+  /* Remove portrait aspect ratio — height is now driven by the image */
+  .svc-visual-card { aspect-ratio: auto !important; padding-bottom: 12px !important; }
+  /* Hide service description + capability pills */
+  .svc-visual-body { display: none; }
+  /* Service image fills width naturally */
+  .svc-visual-card img { width: 100% !important; aspect-ratio: 16/9 !important; object-fit: cover; }
+}
+
+/* 6. Client carousel cards: slightly taller rectangles on mobile */
+@media (max-width: 640px) {
+  .cc-outer { padding: 16px 0; }
+  .cc-card  { aspect-ratio: 5/3 !important; border-radius: 8px; }
+  .cc-card img { height: 22px; }
+}
+
+/* 2. Dark mode: ensure hero and stack cards look correct on mobile */
+@media (max-width: 900px) {
+  [data-theme="dark"] .hero-meta { background: var(--bg-card); }
+  [data-theme="dark"] .clients-blur-section { background: rgba(20,20,28,0.7); }
+}

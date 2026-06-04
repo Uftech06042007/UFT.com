@@ -1,29 +1,51 @@
 "use client";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 
-const VISIBLE = 5;
+const VISIBLE_DESKTOP = 5;
+const VISIBLE_MOBILE  = 3;
 
 export function ClientCarousel({ items }: { items: { name: string; logo: string }[] }) {
   const total = items.length;
-  const extended = [...items.slice(-VISIBLE), ...items, ...items.slice(0, VISIBLE)];
+  const [visibleCount, setVisibleCount] = useState(VISIBLE_DESKTOP);
 
-  const [idx, setIdx] = useState(VISIBLE);
+  useEffect(() => {
+    const update = () => setVisibleCount(window.innerWidth < 640 ? VISIBLE_MOBILE : VISIBLE_DESKTOP);
+    update();
+    window.addEventListener("resize", update, { passive: true });
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  const extended = useMemo(
+    () => [...items.slice(-visibleCount), ...items, ...items.slice(0, visibleCount)],
+    [items, visibleCount]
+  );
+
+  const [idx, setIdx] = useState(VISIBLE_DESKTOP);
   const [animated, setAnimated] = useState(true);
   const [cardWidth, setCardWidth] = useState(0);
-  const outerRef = useRef<HTMLDivElement>(null);
-  const dragX = useRef(0);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const outerRef  = useRef<HTMLDivElement>(null);
+  const dragX     = useRef(0);
+  const timerRef  = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Reset position when visible count changes
+  useEffect(() => {
+    setAnimated(false);
+    setIdx(visibleCount);
+  }, [visibleCount]);
 
   const measureCard = useCallback(() => {
-    if (outerRef.current) setCardWidth(outerRef.current.offsetWidth / VISIBLE);
-  }, []);
+    if (outerRef.current) {
+      const w = outerRef.current.getBoundingClientRect().width || outerRef.current.offsetWidth;
+      if (w > 0) setCardWidth(w / visibleCount);
+    }
+  }, [visibleCount]);
 
   const advance = useCallback((dir: 1 | -1) => {
     setAnimated(true);
-    setIdx(i => Math.max(0, Math.min(VISIBLE + total, i + dir)));
-  }, [total]);
+    setIdx(i => Math.max(0, Math.min(visibleCount + total, i + dir)));
+  }, [total, visibleCount]);
 
-  const stopTimer = useCallback(() => {
+  const stopTimer  = useCallback(() => {
     if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null; }
   }, []);
 
@@ -42,32 +64,31 @@ export function ClientCarousel({ items }: { items: { name: string; logo: string 
 
   useEffect(() => {
     if (!animated) {
-      // Double rAF: first frame commits the instant-repositioned DOM,
-      // second frame re-enables transition so the next slide animates cleanly.
-      const id = requestAnimationFrame(() => {
-        requestAnimationFrame(() => setAnimated(true));
-      });
+      const id = requestAnimationFrame(() => requestAnimationFrame(() => setAnimated(true)));
       return () => cancelAnimationFrame(id);
     }
   }, [animated]);
 
   const onTransitionEnd = useCallback(() => {
-    if (idx >= VISIBLE + total) { setAnimated(false); setIdx(VISIBLE); }
-    else if (idx === 0) { setAnimated(false); setIdx(total); }
-  }, [idx, total]);
+    if (idx >= visibleCount + total) { setAnimated(false); setIdx(visibleCount); }
+    else if (idx === 0)              { setAnimated(false); setIdx(total); }
+  }, [idx, total, visibleCount]);
 
-  const onMouseDown = (e: React.MouseEvent) => { dragX.current = e.clientX; };
-  const handleSwipe = (endX: number, active: boolean) => {
+  const onMouseDown  = (e: React.MouseEvent)  => { dragX.current = e.clientX; };
+  const handleSwipe  = (endX: number, active: boolean) => {
     if (!active) return;
     const diff = dragX.current - endX;
-    if (Math.abs(diff) > 40) { advance(diff > 0 ? 1 : -1); resetTimer(); }
+    if (Math.abs(diff) > 20) { advance(diff > 0 ? 1 : -1); resetTimer(); }
   };
-  const onMouseUp = (e: React.MouseEvent) => handleSwipe(e.clientX, true);
-  const onMouseLeave = (e: React.MouseEvent) => handleSwipe(e.clientX, e.buttons > 0);
-  const onTouchStart = (e: React.TouchEvent) => { dragX.current = e.touches[0].clientX; };
-  const onTouchEnd = (e: React.TouchEvent) => handleSwipe(e.changedTouches[0].clientX, true);
+  const onMouseUp    = (e: React.MouseEvent)  => handleSwipe(e.clientX, true);
+  const onMouseLeave = (e: React.MouseEvent)  => handleSwipe(e.clientX, e.buttons > 0);
+  const onTouchStart = (e: React.TouchEvent)  => { dragX.current = e.touches[0].clientX; };
+  const onTouchEnd   = (e: React.TouchEvent)  => handleSwipe(e.changedTouches[0].clientX, true);
 
-  const scaleMap: Record<number, number> = { 0: 0.82, 1: 0.92, 2: 1.0, 3: 0.92, 4: 0.82 };
+  const centerPos = Math.floor(visibleCount / 2);
+  const scaleMap: Record<number, number> = visibleCount === 3
+    ? { 0: 0.88, 1: 1.0, 2: 0.88 }
+    : { 0: 0.82, 1: 0.92, 2: 1.0, 3: 0.92, 4: 0.82 };
 
   return (
     <div
@@ -88,7 +109,7 @@ export function ClientCarousel({ items }: { items: { name: string; logo: string 
         onTransitionEnd={onTransitionEnd}
       >
         {extended.map((c, i) => {
-          const pos = i - idx;
+          const pos   = i - idx;
           const scale = scaleMap[pos] ?? 0.82;
           return (
             <div
@@ -99,9 +120,9 @@ export function ClientCarousel({ items }: { items: { name: string; logo: string 
                 transform: `scale(${scale})`,
                 transformOrigin: "center center",
                 transition: animated ? "transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1), box-shadow 0.5s ease" : "none",
-                zIndex: pos === 2 ? 2 : 1,
+                zIndex: pos === centerPos ? 2 : 1,
                 position: "relative",
-                boxShadow: pos === 2
+                boxShadow: pos === centerPos
                   ? "0 0 0 1px rgba(255,120,30,0.3), 0 4px 24px rgba(255,100,20,0.35), 0 0 40px rgba(255,120,30,0.2)"
                   : undefined,
               }}
