@@ -1531,23 +1531,101 @@
   }
 }
 
-/* Footer: logo left, description+icons right; then nav columns below */
+/* Footer (mobile): panel 1 = [logo left | tagline right]; panel 2 = socials; then rest */
 @media (max-width: 600px) {
   .footer-grid > div { row-gap: 4px; }
   .footer ul li + li { margin-top: 2px; }
 
-  /* Brand row: [logo LEFT] [description + icons RIGHT] */
-  .footer-grid > div:first-child {
+  /* Panel 1: logo left, tagline right (right-aligned, small so text height ≈ logo) */
+  .footer-brand-row {
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
+    align-items: center;
+    justify-content: space-between;
     gap: 16px;
   }
-  .footer-brand-info {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
+  .footer-brand-row .nav-logo { flex-shrink: 0; }
+  .footer-tagline {
+    margin: 0 !important;
+    text-align: right;
+    font-size: 10.5px !important;
+    line-height: 1.35;
+    max-width: 60% !important;
   }
-  .footer-brand-info p { margin-top: 0 !important; font-size: 13px; line-height: 1.5; }
-  .footer-brand-info > div { margin-top: 12px !important; }
+  /* Panel 2: socials, left aligned, below */
+  .footer-socials { margin-top: 14px !important; justify-content: flex-start; }
+}
+
+/* ===== Item 1: Approach steps [01]-[04] → 2×2 grid (mobile) ===== */
+@media (max-width: 600px) {
+  .approach-steps {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 14px;
+    padding: 0 !important;
+  }
+  .approach-step {
+    display: block !important;
+    border-bottom: none !important;
+    padding: 0 !important;
+  }
+  .approach-step .approach-n { display: block; margin-bottom: 6px; }
+  .approach-step h4 { font-size: 14px !important; margin-bottom: 4px !important; }
+  .approach-step p  { font-size: 12px !important; line-height: 1.5; }
+}
+
+/* ===== Item 2: Leadership cards → horizontal carousel + vertical card (mobile) ===== */
+.leader-meta-mobile { display: none; }
+@media (max-width: 900px) {
+  /* Section: normal flow, no sticky choreography */
+  #leadership-section { position: static !important; min-height: auto !important; overflow: visible !important; }
+  #leadership-section.sticky-expanded { width: calc(100% - var(--gutter)); max-width: calc(100% - var(--gutter)); }
+  #leadership-section::before { display: none !important; }
+  .leadership-spacer { display: none !important; }
+
+  /* Cards: native horizontal scroll, one card at a time */
+  #leadership-cards {
+    transform: none !important;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 16px !important;
+    padding-bottom: 10px;
+    scrollbar-width: none;
+  }
+  #leadership-cards::-webkit-scrollbar { display: none; }
+
+  /* Card: vertical — image → (name/role | socials) → description */
+  .leader-card {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    width: 85vw !important;
+    padding: 0 0 18px !important;
+    gap: 0 !important;
+    scroll-snap-align: center;
+  }
+  .leader-polaroid {
+    width: 100% !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+  }
+  .leader-photobox { width: 100% !important; height: auto !important; aspect-ratio: 1 / 1; }
+  .leader-nameplate { display: none !important; }
+
+  /* Name/role left, socials right */
+  .leader-meta-mobile {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 18px 0;
+  }
+  .leader-id-m h3 { font-size: 16px; font-weight: 700; letter-spacing: 0.01em; }
+  .leader-role-m { font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-top: 3px; }
+  .leader-socials-m { display: flex; gap: 8px; flex-shrink: 0; }
+
+  /* Bio: description below, hide desktop socials */
+  .leader-bio { padding: 12px 18px 0 !important; }
+  .leader-socials-d { display: none !important; }
 }

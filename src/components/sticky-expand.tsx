@@ -34,6 +34,10 @@ export function StickyExpand({
     const cards    = document.getElementById(cardsId);
     if (!sentinel || !section || !cards) return;
 
+    // Mobile: skip the scroll-driven horizontal choreography entirely —
+    // cards render as a native horizontal scroll carousel (see CSS).
+    if (window.matchMedia("(max-width: 900px)").matches) return;
+
     const stickyY = sentinel.getBoundingClientRect().top + window.scrollY;
 
     if (enableBacklight) {

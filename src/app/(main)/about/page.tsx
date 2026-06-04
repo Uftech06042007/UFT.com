@@ -100,10 +100,10 @@ export default function AboutPage() {
           </div>
           <div id="leadership-cards" style={{ display: "flex", gap: 24, marginTop: 20, willChange: "transform" }}>
             {UFT_DATA.team.map((p, i) => (
-              <div key={i} style={{ background: "var(--bg-card)", borderRadius: "var(--radius-lg)", boxShadow: "0 12px 40px rgba(0,0,0,0.16), 0 2px 8px rgba(0,0,0,0.08)", overflow: "hidden", display: "flex", flexDirection: "row", alignItems: "center", width: 640, flexShrink: 0, padding: "36px 32px 36px 28px", gap: 28 }}>
+              <div key={i} className="leader-card" style={{ background: "var(--bg-card)", borderRadius: "var(--radius-lg)", boxShadow: "0 12px 40px rgba(0,0,0,0.16), 0 2px 8px rgba(0,0,0,0.08)", overflow: "hidden", display: "flex", flexDirection: "row", alignItems: "center", width: 640, flexShrink: 0, padding: "36px 32px 36px 28px", gap: 28 }}>
                 {/* Polaroid */}
-                <div style={{ flexShrink: 0, background: "var(--bg-elev)", padding: "2px 2px 0", boxShadow: "0 4px 16px rgba(0,0,0,0.18), 0 1px 4px rgba(0,0,0,0.10)", borderRadius: 0, display: "flex", flexDirection: "column" }}>
-                  <div style={{ width: 260, height: 260, overflow: "hidden" }}>
+                <div className="leader-polaroid" style={{ flexShrink: 0, background: "var(--bg-elev)", padding: "2px 2px 0", boxShadow: "0 4px 16px rgba(0,0,0,0.18), 0 1px 4px rgba(0,0,0,0.10)", borderRadius: 0, display: "flex", flexDirection: "column" }}>
+                  <div className="leader-photobox" style={{ width: 260, height: 260, overflow: "hidden" }}>
                     {p.photo.startsWith("[") ? (
                       <div style={{ width: "100%", height: "100%", background: "#e8e8e4", display: "flex", alignItems: "center", justifyContent: "center" }}>
                         <span style={{ fontSize: 11, color: "#aaa", letterSpacing: "0.08em" }}>[ photo ]</span>
@@ -118,15 +118,33 @@ export default function AboutPage() {
                       />
                     )}
                   </div>
-                  <div style={{ height: 60, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "0 4px" }}>
+                  <div className="leader-nameplate" style={{ height: 60, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "0 4px" }}>
                     <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 2, letterSpacing: "0.02em" }}>{p.name}</h3>
                     <div className="mono" style={{ fontSize: 9, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--accent)" }}>{p.role}</div>
                   </div>
                 </div>
+                {/* Mobile-only meta row: name+role left, socials right */}
+                <div className="leader-meta-mobile">
+                  <div className="leader-id-m">
+                    <h3>{p.name}</h3>
+                    <div className="mono leader-role-m">{p.role}</div>
+                  </div>
+                  <div className="leader-socials-m">
+                    {p.socials.linkedin && (
+                      <a href={p.socials.linkedin} className="social-btn" target="_blank" rel="noreferrer"><Icon.LinkedIn /></a>
+                    )}
+                    {p.socials.twitter && (
+                      <a href={p.socials.twitter} className="social-btn" target="_blank" rel="noreferrer"><Icon.Twitter /></a>
+                    )}
+                    {p.socials.facebook && (
+                      <a href={p.socials.facebook} className="social-btn" target="_blank" rel="noreferrer"><Icon.Facebook /></a>
+                    )}
+                  </div>
+                </div>
                 {/* Bio */}
-                <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", alignSelf: "stretch" }}>
+                <div className="leader-bio" style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", alignSelf: "stretch" }}>
                   <p className="muted" style={{ fontSize: 13, lineHeight: 1.75 }}>{p.bio}</p>
-                  <div style={{ display: "flex", gap: 8, marginTop: "auto" }}>
+                  <div className="leader-socials-d" style={{ display: "flex", gap: 8, marginTop: "auto" }}>
                     {p.socials.linkedin && (
                       <a href={p.socials.linkedin} className="social-btn" target="_blank" rel="noreferrer"><Icon.LinkedIn /></a>
                     )}
@@ -143,7 +161,7 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-      <div style={{ height: "420vh" }} />
+      <div className="leadership-spacer" style={{ height: "420vh" }} />
     </main>
   );
 }
