@@ -63,7 +63,7 @@ export function StickyExpand({
         cancelAnimationFrame(rafId);
         const startY = window.scrollY;
         const dist = targetY - startY;
-        const dur = 130; // ms — lower = faster snap
+        const dur = 70; // ms — lower = faster snap
         const t0 = performance.now();
         const tick = (now: number) => {
           const p = Math.min(1, (now - t0) / dur);
