@@ -54,7 +54,7 @@ export function StickyExpand({
       };
 
       // Horizontal swipe → drive vertical scroll. Natural drag: finger follows cards.
-      const HSPEED = 6; // higher = faster horizontal swipe
+      const HSPEED = 14; // higher = faster horizontal swipe
       let startX = 0, startY = 0, lastX = 0, mode: "h" | "v" | null = null;
       const onTouchStart = (e: TouchEvent) => {
         startX = lastX = e.touches[0].clientX;
