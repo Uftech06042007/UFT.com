@@ -1437,109 +1437,50 @@
   .hero-title { white-space: normal; line-height: 1.05; }
 }
 
-/* ===== HOME PAGE CARD LAYOUT ===== */
+/* ===== HOME PAGE CARD LAYOUT — MOBILE ONLY ===== */
+/* Desktop: original layout uses existing CSS (industries-strip grid, section-head-row grid, etc.)
+   Mobile (≤900px): title → image → description → list via flex order on the strip */
 
-/* Image + description always needed (new JSX structure) */
-.section-img-wrap {
-  display: block;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.15);
-}
-a.section-img-wrap { cursor: pointer; }
-.section-img-wrap img {
-  width: 100%;
-  object-fit: cover;
-  display: block;
-  transition: transform 0.4s ease;
-}
-a.section-img-wrap:hover img { transform: scale(1.02); }
-.section-sub-text { color: var(--fg-muted); line-height: 1.6; }
-
-/* ── DESKTOP (>900px): match original 2-column layout ── */
-@media (min-width: 901px) {
-  /*
-    Original layout:
-      Row 1 (header): [title left] [description right]   ← section-head-row
-      Row 2 (content): [rows left] [image right]         ← industries-strip equivalent
-  */
-  #services-section > .container,
-  #industries-section > .container {
-    display: grid;
-    grid-template-columns: 1fr 1.2fr;
-    gap: 56px 24px;   /* 56px row gap matches original section-head-row margin-bottom */
-    align-items: start;
-  }
-
-  /* Row 1, col 1: eyebrow + title */
-  #services-section .section-head-row,
-  #industries-section .section-head-row {
-    grid-column: 1;
-    grid-row: 1;
-    display: block;
-    margin-bottom: 0;
-  }
-
-  /* Row 1, col 2: description text (matches original right-column of section-head-row) */
-  #services-section .section-sub-text,
-  #industries-section .section-sub-text {
-    grid-column: 2;
-    grid-row: 1;
-    align-self: end;
-    font-size: 15px;
-    margin: 0;
-    max-width: 420px;
-    margin-left: 32px;
-    padding-bottom: 8px;
-  }
-
-  /* Row 2, col 1: rows list */
-  #services-section .industries-rows,
-  #industries-section .industries-rows {
-    grid-column: 1;
-    grid-row: 2;
-  }
-
-  /* Row 2, col 2: image (matches original industry-visual position) */
-  #services-section .section-img-wrap,
-  #industries-section .section-img-wrap {
-    grid-column: 2;
-    grid-row: 2;
-    margin: 0 0 0 32px;
-    max-width: 520px;
-    justify-self: center;
-  }
-  #services-section .section-img-wrap img { aspect-ratio: 4/3; border-radius: var(--radius-lg); }
-  #industries-section .section-img-wrap { max-width: 420px; }
-  #industries-section .section-img-wrap img { aspect-ratio: 4/5; border-radius: var(--radius-lg); }
-
-  /* Approach: restore 2-column */
-  .approach-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 56px; align-items: start; }
-
-  /* Restore original spacing */
-  #services-section, #industries-section, #approach-section { margin-top: 48px; margin-bottom: 48px; }
-  #services-section > .container,
-  #industries-section > .container,
-  #approach-section > .container { padding: 48px; }
-}
-
-/* ── MOBILE (≤900px): vertical layout — eyebrow→title→image→desc→list ── */
 @media (max-width: 900px) {
-  /* 2-line title: serif-italic on its own line */
+  /* 2-line titles: serif-italic on its own line */
   .home-stack-card .section-title .serif-italic,
   .cta-card .serif-italic { display: block; }
 
+  /* Header: block layout; hide desktop description */
   #services-section .section-head-row,
-  #industries-section .section-head-row,
-  #approach-section .section-head-row { display: block; margin-bottom: 14px; }
+  #industries-section .section-head-row { display: block; margin-bottom: 0; }
+  .section-sub-desktop { display: none; }
 
-  .section-img-wrap { margin: 14px 0 12px; }
-  .section-img-wrap img { aspect-ratio: 4/3; }
-  .section-sub-text { font-size: 13px; margin-bottom: 14px; }
+  /* Strip becomes flex column.
+     Order within strip: industry-visual(order:-1) → section-sub-mobile-only(order:0, first in DOM) → industries-rows(order:0, second in DOM)
+     Result: IMAGE → DESCRIPTION → LIST */
+  #services-section .industries-strip,
+  #industries-section .industries-strip { display: flex; flex-direction: column; }
+  #services-section .industry-visual,
+  #industries-section .industry-visual { order: -1; margin-left: 0 !important; max-width: 100% !important; }
 
-  .approach-grid { display: flex; flex-direction: column; gap: 24px; }
+  /* Services: strip the card wrapper on mobile — show clean image only */
+  .svc-visual-card {
+    aspect-ratio: auto !important;
+    padding: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+  .svc-visual-card img { aspect-ratio: 16/9 !important; border-radius: var(--radius-lg) !important; }
+  .svc-visual-body { display: none !important; }
 
+  /* Industries: landscape image */
+  #industries-section .industry-visual img {
+    aspect-ratio: 16/9 !important;
+    border-radius: var(--radius-lg) !important;
+  }
+
+  /* Tighter spacing */
   #services-section, #industries-section, #approach-section { margin-top: 16px; margin-bottom: 16px; }
+  #services-section > .container,
+  #industries-section > .container,
+  #approach-section > .container { padding: 22px 16px; }
 }
 
 /* ===== MOBILE-ONLY HOME PAGE FIXES ===== */
@@ -1548,30 +1489,6 @@ a.section-img-wrap:hover img { transform: scale(1.02); }
   .hero { min-height: 85vh; }
 }
 
-/* Cards: section name → title (2 lines) → description → list */
-@media (max-width: 900px) {
-  /* Make containers flex columns so we can reorder description before list */
-  #services-section > .container,
-  #industries-section > .container {
-    display: flex;
-    flex-direction: column;
-  }
-  #services-section .section-head-row,
-  #industries-section .section-head-row { order: 1; }
-  /* Description moves before the list */
-  #services-section .section-sub-mobile-only,
-  #industries-section .section-sub-mobile-only { order: 2; margin-top: 10px !important; }
-  #services-section .industries-strip,
-  #industries-section .industries-strip { order: 3; display: flex; flex-direction: column; }
-
-  /* Hide image — not in the desired mobile order */
-  #services-section .industry-visual,
-  #industries-section .industry-visual { display: none !important; }
-
-  /* Title: break serif-italic onto its own line (2-line title) */
-  .section-title .serif-italic,
-  .cta-card .serif-italic { display: block; }
-}
 
 /* 6. Client carousel cards: slightly taller rectangles on mobile */
 @media (max-width: 640px) {
