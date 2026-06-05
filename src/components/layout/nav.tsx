@@ -177,7 +177,13 @@ export function Nav() {
   useEffect(() => {
     const onScroll = () => {
       const y = window.scrollY;
-      setScrolled(y > 8);
+      // Mobile: hysteresis (dead-zone) so small scrolls near the threshold don't
+      // flip attached <-> island repeatedly, which reads as jitter.
+      if (window.innerWidth <= 900) {
+        setScrolled(prev => (prev ? y > 4 : y > 20));
+      } else {
+        setScrolled(y > 8);
+      }
       const delta = y - lastY.current;
       if (delta > 6 && y > 80) setHidden(true);
       else if (delta < -6) setHidden(false);

@@ -1749,6 +1749,28 @@
     outline: none;
     box-shadow: 0 6px 18px rgba(0,0,0,0.14), 0 2px 6px rgba(0,0,0,0.10);
   }
+
+  /* All service icons are orange (not just on hover/active) */
+  #services-section .industry-row-num,
+  #services-section .industry-row.active .industry-row-num,
+  #services-section .industry-row--clicked .industry-row-num {
+    color: var(--accent) !important;
+  }
+  /* Subtle press feedback on the whole button */
+  #services-section .industry-row:active { transform: scale(0.97); }
+  /* Drop the desktop's persistent enlarge; use a subtle pop on tap instead */
+  #services-section .industry-row.active .industry-row-num svg,
+  #services-section .industry-row:hover .industry-row-num svg { transform: none; }
+  #services-section .industry-row.active .industry-row-num svg {
+    animation: svc-icon-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+}
+
+/* Subtle icon pop when a service is tapped (mobile) */
+@keyframes svc-icon-pop {
+  0%   { transform: scale(1) rotate(0deg); }
+  45%  { transform: scale(1.25) rotate(-6deg); }
+  100% { transform: scale(1) rotate(0deg); }
 }
 
 /* ===== Industries (mobile): card-in-card — image inner card + per-item description ===== */
@@ -1768,12 +1790,15 @@
     border-radius: 12px !important;
     box-shadow: 0 2px 8px rgba(0,0,0,0.12);
   }
-  /* Description sits right below the image; swaps with the active list item */
+  /* Description sits right below the image; swaps with the active list item.
+     Fixed height (sized to the longest blurb) so the card never resizes between
+     items — text is never clipped, it just sits in a constant-size box. */
   #industries-section .industry-visual-blurb {
     display: block;
     margin: 12px 4px 4px;
     font-size: 14px;
     line-height: 1.6;
     color: var(--fg-muted);
+    min-height: 4.8em;
   }
 }
