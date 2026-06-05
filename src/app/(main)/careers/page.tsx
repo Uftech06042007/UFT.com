@@ -67,15 +67,22 @@ export default function CareersPage() {
               { cls: "lau-b", src: "/assets/lau-b.jpg", alt: "UFT meeting room" },
               { cls: "lau-c", src: "/assets/lau-c.jpg", alt: "UFT team" },
               { cls: "lau-d", src: "/assets/lau-d.jpg", alt: "UFT team" },
+              // Empty slots (mobile only): bottom of left column + top of right column
+              { cls: "lau-slot lau-slot-1", slot: true },
+              { cls: "lau-slot lau-slot-2", slot: true },
               { cls: "lau-e", src: "/assets/lau-e.jpg", alt: "UFT all-hands" },
               { cls: "lau-f", src: "/assets/lau-f.jpg", alt: "UFT team" },
               { cls: "lau-g", src: "/assets/lau-g-3.jpg", alt: "UFT workspace", imgStyle: { transform: "scale(1.75)", transformOrigin: "35% center" } },
               { cls: "lau-h", src: "/assets/lau-h.jpg", alt: "UFT team event" },
-            ] as { cls: string; src: string; alt: string; imgStyle?: React.CSSProperties }[]).map(({ cls, src, alt, imgStyle }) => (
-              <div key={cls} className={cls} style={{ position: "relative" }}>
-                <img src={src} alt={alt} style={imgStyle} />
-              </div>
-            ))}
+            ] as { cls: string; src?: string; alt?: string; imgStyle?: React.CSSProperties; slot?: boolean }[]).map(({ cls, src, alt, imgStyle, slot }) =>
+              slot ? (
+                <div key={cls} className={cls} aria-hidden="true" />
+              ) : (
+                <div key={cls} className={cls} style={{ position: "relative" }}>
+                  <img src={src} alt={alt} style={imgStyle} />
+                </div>
+              )
+            )}
           </div>
         </div>
       </section>
