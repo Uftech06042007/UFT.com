@@ -1713,3 +1713,29 @@
     padding-top: 14px !important;
   }
 }
+
+/* ===== Services list items as buttons (phone only) ===== */
+@media (max-width: 600px) {
+  /* Stack the rows with breathing room between each button */
+  #services-section .industries-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  /* Each service row becomes a self-contained button card */
+  #services-section .industry-row {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--bg-card);
+    padding: 16px 16px !important;
+    gap: 14px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  /* Active/clicked still reads as a button — don't shift it left */
+  #services-section .industry-row:hover,
+  #services-section .industry-row.active,
+  #services-section .industry-row--clicked {
+    padding-left: 16px !important;
+    border-color: var(--accent);
+  }
+}
