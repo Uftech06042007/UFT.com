@@ -51,7 +51,9 @@ export function ClientCarousel({ items }: { items: { name: string; logo: string 
 
   const resetTimer = useCallback(() => {
     stopTimer();
-    timerRef.current = setInterval(() => advance(1), 3000);
+    // Slightly faster flow on mobile
+    const interval = typeof window !== "undefined" && window.innerWidth < 640 ? 2200 : 3000;
+    timerRef.current = setInterval(() => advance(1), interval);
   }, [advance, stopTimer]);
 
   useEffect(() => {

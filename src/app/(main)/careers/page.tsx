@@ -79,7 +79,7 @@ export default function CareersPage() {
                 <div key={cls} className={cls} aria-hidden="true" />
               ) : (
                 <div key={cls} className={cls} style={{ position: "relative" }}>
-                  <img src={src} alt={alt} style={imgStyle} />
+                  <img src={src} alt={alt} style={imgStyle} loading="lazy" decoding="async" />
                 </div>
               )
             )}

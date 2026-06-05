@@ -276,6 +276,8 @@ export default function HomePage() {
                     src={UFT_DATA.services[activeService].image}
                     alt={UFT_DATA.services[activeService].title}
                     fetchPriority="low"
+                    loading="lazy"
+                    decoding="async"
                     style={{
                       width: "100%",
                       aspectRatio: "4/3",
@@ -368,6 +370,8 @@ export default function HomePage() {
                   src={UFT_DATA.industries[activeIndustry].image}
                   alt={UFT_DATA.industries[activeIndustry].name}
                   fetchPriority="low"
+                  loading="lazy"
+                  decoding="async"
                   style={{
                     width: "100%",
                     aspectRatio: "4/5",

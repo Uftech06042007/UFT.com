@@ -88,7 +88,7 @@ export const UFT_DATA: UFTData = {
       desc: "Applied AI and ML solutions that make your business faster, stronger, and more effective — from analytics to computer vision to intelligent automation.",
       descFull: "We design and implement AI and ML solutions that solve real operational problems — not generic demos. For engineering clients, that means predictive maintenance, visual defect detection, and simulation acceleration. For BFSI clients, fraud detection, credit scoring models, and intelligent document processing. We handle the full stack: data preparation, model development, fine-tuning on your proprietary data, and production deployment with monitoring. All work is delivered with responsible AI and compliance guardrails built in from day one.",
       capabilities: ["Generative AI implementation", "Predictive maintenance & defect detection", "Fraud detection & credit scoring", "Intelligent document processing", "Model fine-tuning & deployment", "AI for engineering & BFSI", "Responsible AI & compliance"],
-      image: "/assets/service-ai.png",
+      image: "/assets/service-ai.jpg",
     },
     {
       id: "engineering",
@@ -125,7 +125,7 @@ export const UFT_DATA: UFTData = {
       desc: "Serving major OEMs with customized hiring models — assemblers, machine operators, FPGA engineers, quality engineers, maintenance technicians, and more.",
       descFull: "We supply contract-based skilled manpower to major OEMs and manufacturers — assemblers, CNC operators, FPGA engineers, validation engineers, quality engineers, and maintenance technicians. Our hiring process is ISO 9001:2015 certified, and we work to each client's specific skill matrix and safety framework, ensuring workers are production-ready on day one. We serve clients in automotive, pharma packaging, medical devices, and semiconductor manufacturing, with the ability to scale headcount up or down based on production cycles.",
       capabilities: ["CNC & assembly operators", "FPGA & validation engineers", "Quality & maintenance roles", "Pharma & medical devices", "Automotive OEM staffing", "ISO-certified hiring process", "Production-cycle scaling"],
-      image: "/assets/service-manufacturing.png",
+      image: "/assets/service-manufacturing.jpg",
     },
   ],
   industries: [
@@ -153,14 +153,14 @@ export const UFT_DATA: UFTData = {
     {
       name: "P. L. Somashekar",
       role: "President",
-      photo: "/assets/president.png",
+      photo: "/assets/president.jpg",
       bio: "29 years of experience in product development and engineering services across automotive and oil & gas. Built UFT from the ground up into a leading service provider. Former leadership roles at Kinetic Engineering, LML Vespa, and Tata Group. B.E. Mechanical (Bangalore University), MMS Finance (Pune University).",
       socials: { linkedin: "https://www.linkedin.com/in/somashekar-pl-398b556/" },
     },
     {
       name: "N. S. Natesh",
       role: "Chief Executive Officer",
-      photo: "/assets/ceo.png",
+      photo: "/assets/ceo.jpg",
       photoPosition: "center 20%",
       bio: "CEO & Director at UnitForce Technologies with 23+ years leading digital transformation and global delivery management. A former COO experienced in technology, corporate affairs, and strategic growth, he is also a former NASSCOM National SME Council Member. He is an alumnus of IIM Bangalore, MCE , and FAU Erlangen-Nürnberg, bringing specialized expertise in German innovation spanning engineering, digital transformation, and industrial ecosystems.",
       socials: { linkedin: "https://www.linkedin.com/in/nateshns" },
@@ -168,7 +168,7 @@ export const UFT_DATA: UFTData = {
     {
       name: "Gayathri Murthy",
       role: "Global - Business Head",
-      photo: "/assets/team-gayathri-2.png",
+      photo: "/assets/team-gayathri-2.jpg",
       photoPosition: "50% 42%",
       photoScale: 1.12,
       bio: "Global Business Head with 19+ years' experience in HR, Talent Acquisition, Business Development, and Client Relations. Currently leading global operations at UnitForce Technologies, driving account mining and workforce management. Proven success scaling recruitment teams, driving growth, and optimizing talent delivery.",
@@ -184,7 +184,7 @@ export const UFT_DATA: UFTData = {
     {
       name: "Nanditha D N",
       role: "Operations Manager",
-      photo: "/assets/team-nandita.png",
+      photo: "/assets/team-nandita.jpg",
       photoPosition: "50% 20%",
       bio: "Operations Manager with 18+ years across financial controllership, strategic growth, and P&L optimization. Former Head of Finance & Controlling at Unitforce Technologies managing global cluster operations across India, UAE, and the USA. MBA in Finance.",
       socials: { linkedin: "https://www.linkedin.com/in/nanditha-natesh-b72434175/" },
@@ -206,7 +206,7 @@ export const UFT_DATA: UFTData = {
     {
       name: "Prasanna K",
       role: "Manager - Finance & Accounts",
-      photo: "/assets/team-prasanna.png",
+      photo: "/assets/team-prasanna.jpg",
       photoPosition: "50% 20%",
       bio: "Finance & Accounts professional with 12+ years of experience in accounting, taxation, compliance, MIS reporting, audits, and financial operations. Currently working as Manager – Finance & Accounts at UFTC with expertise in GST, TDS, budgeting, reconciliations, and financial reporting.",
       socials: { linkedin: "https://www.linkedin.com/in/prasanna-kumar-9246339a" },
@@ -226,7 +226,7 @@ export const UFT_DATA: UFTData = {
       address: '"White House", No 7, 3rd Floor, 17th Cross Road, Behind Maruthi Mandir, Vijayanagar, Bengaluru - 560040',
       tz: "GMT+5:30",
       entity: "Unitforce Technologies Consulting Pvt. Ltd.",
-      photo: "/assets/Bengaluru.png",
+      photo: "/assets/Bengaluru.jpg",
     },
     {
       city: "Mumbai",
@@ -234,7 +234,7 @@ export const UFT_DATA: UFTData = {
       address: "106, Ujagar Chambers, Deonar, Chembur East, Mumbai - 400088",
       tz: "GMT+5:30",
       entity: "Unitforce Technologies Consulting Pvt. Ltd.",
-      photo: "/assets/mumbai.png",
+      photo: "/assets/mumbai.jpg",
     },
     {
       city: "Charlotte",
@@ -242,7 +242,7 @@ export const UFT_DATA: UFTData = {
       address: "1002, Carmel Drive, Gastonia, Charlotte, North Carolina - 28056",
       tz: "GMT-5",
       entity: "Unitforce Technologies LLC",
-      photo: "/assets/Usa.png",
+      photo: "/assets/Usa.jpg",
     },
     {
       city: "Dubai",
@@ -250,7 +250,7 @@ export const UFT_DATA: UFTData = {
       address: "1309, 13th Floor, Creative Tower, Fujairah Creative City Free zone, Fujairah, UAE. PO Box - 4422",
       tz: "GMT+4",
       entity: "Unitforce Technologies FZ LLC",
-      photo: "/assets/Dubai.png",
+      photo: "/assets/Dubai.jpg",
     },
   ],
   stats: [

@@ -170,6 +170,7 @@ export function Nav() {
   const themeToggleRef = useRef<HTMLButtonElement>(null);
   const firstRender = useRef(true);
   const lastY = useRef(0);
+  const scrollAcc = useRef(0);
 
   // Close mobile menu on route change
   useEffect(() => { setMobileMenuOpen(false); }, [pathname]);
@@ -177,16 +178,21 @@ export function Nav() {
   useEffect(() => {
     const onScroll = () => {
       const y = window.scrollY;
-      // Mobile: hysteresis (dead-zone) so small scrolls near the threshold don't
-      // flip attached <-> island repeatedly, which reads as jitter.
-      if (window.innerWidth <= 900) {
-        setScrolled(prev => (prev ? y > 4 : y > 20));
+      const isMobile = window.innerWidth <= 900;
+      // Hysteresis (dead-zone) so small scrolls near the threshold don't flip
+      // attached <-> island repeatedly, which reads as jitter.
+      if (isMobile) {
+        setScrolled(prev => (prev ? y > 6 : y > 28));
       } else {
         setScrolled(y > 8);
       }
+      // Hide/show on direction, but only after SUSTAINED movement so momentum-scroll
+      // wobble (rapid +/- deltas) can't bounce the bar up and down.
       const delta = y - lastY.current;
-      if (delta > 6 && y > 80) setHidden(true);
-      else if (delta < -6) setHidden(false);
+      if ((delta > 0) !== (scrollAcc.current > 0)) scrollAcc.current = 0;
+      scrollAcc.current += delta;
+      if (scrollAcc.current > 64 && y > 90) setHidden(true);
+      else if (scrollAcc.current < -48 || y < 90) setHidden(false);
       lastY.current = y;
     };
     onScroll();

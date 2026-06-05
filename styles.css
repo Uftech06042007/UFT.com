@@ -655,23 +655,29 @@ h1, h2, h3, h4 { font-weight: 500; letter-spacing: -0.02em; line-height: 1.05; }
   .nav-links { display: none; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .nav-overlay-body { grid-template-columns: 1fr; gap: 32px; }
-  /* dvh + extra bottom clearance so the panel ends above the mobile browser nav bar */
-  .nav-overlay-panel { top: 68px; width: calc(100vw - 24px); border-radius: 16px; padding: 24px 20px; max-height: calc(100dvh - 140px); }
+  /* dvh + extra bottom clearance so the panel ends above the mobile browser nav bar.
+     overscroll-behavior: contain stops scroll from chaining to the page at the ends. */
+  .nav-overlay-panel { top: 68px; width: calc(100vw - 24px); border-radius: 16px; padding: 24px 20px; max-height: calc(100dvh - 140px); overscroll-behavior: contain; }
   .nav--float { top: 8px; left: 12px; right: 12px; }
 
-  /* Smoother + snappier attached <-> island transition on mobile:
-     one unified curve/duration for all animated props (no mismatched timings). */
+  /* Smooth attached <-> island transition on mobile: one unified curve/duration,
+     promoted to its own layer, with a lighter blur so each frame is cheap. */
   .nav,
   .nav--float,
   .nav--scrolled {
     transition:
-      top 0.26s cubic-bezier(0.22, 1, 0.36, 1),
-      left 0.26s cubic-bezier(0.22, 1, 0.36, 1),
-      right 0.26s cubic-bezier(0.22, 1, 0.36, 1),
-      border-radius 0.26s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+      top 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      left 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      right 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      border-radius 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.34s cubic-bezier(0.4, 0, 0.2, 1);
     will-change: top, left, right, border-radius, transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backdrop-filter: blur(12px) !important;
+    backdrop-filter: blur(12px) !important;
   }
+  .nav--hidden { transform: translateY(-100%) translateZ(0); }
 
   /* Nav grid: [hamburger | logo (centered) | cta] */
   .nav-inner {
