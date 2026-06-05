@@ -168,9 +168,8 @@ export const UFT_DATA: UFTData = {
     {
       name: "Gayathri Murthy",
       role: "Global - Business Head",
-      photo: "/assets/team-gayathri-2.jpg",
-      photoPosition: "50% 42%",
-      photoScale: 1.12,
+      photo: "/assets/team-gayathri-3.png",
+      photoPosition: "50% 40%",
       bio: "Global Business Head with 19+ years' experience in HR, Talent Acquisition, Business Development, and Client Relations. Currently leading global operations at UnitForce Technologies, driving account mining and workforce management. Proven success scaling recruitment teams, driving growth, and optimizing talent delivery.",
       socials: { linkedin: "https://www.linkedin.com/in/gayathri-murthy-43b03411/" },
     },
