@@ -184,7 +184,7 @@ export const UFT_DATA: UFTData = {
       name: "Nanditha D N",
       role: "Senior Manager - Finance and Accounts",
       photo: "/assets/team-nandita.jpg",
-      photoPosition: "50% 20%",
+      photoPosition: "50% 0%",
       bio: "Senior Manager - Finance and Accounts at Unitforce Technologies with 13+ years leading strategic finance, compliance, and operational transformation. Experienced in global controllership and P&L optimization, she has successfully steered business units to profitability while mitigating risk. She holds an MBA in Finance, specializing in multi-geography reporting and governance across India, the USA, and the UAE.",
       socials: { linkedin: "https://www.linkedin.com/in/nanditha-natesh-b72434175/" },
     },
