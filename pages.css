@@ -1693,37 +1693,37 @@
   .lau-collage {
     display: block !important;
     column-count: 2 !important;
-    column-gap: 12px !important;
+    column-gap: 8px !important;
     grid-template-columns: none !important;
     grid-template-rows: none !important;
     overflow: visible !important;
+    /* Extend the images a bit further toward the screen edges */
+    margin-left: -8px !important;
+    margin-right: -8px !important;
   }
   .lau-collage > div {
     width: 100% !important;
-    margin: 0 0 12px !important;
+    margin: 0 0 8px !important;
     aspect-ratio: 3 / 2 !important;
     grid-column: auto !important;
     grid-row: auto !important;
     break-inside: avoid;
     -webkit-column-break-inside: avoid;
   }
-  /* Empty slots: shorter than photos (creates the offset) + faint orange glow */
+  /* Empty slots: no block/border — just a soft orange glow in the gap */
   .lau-collage > .lau-slot {
     display: block !important;
     aspect-ratio: 3 / 1 !important;
-    border-radius: var(--radius-lg);
-    border: 1px dashed color-mix(in srgb, var(--accent) 45%, transparent);
-    background: color-mix(in srgb, var(--accent) 5%, transparent);
-    box-shadow:
-      0 0 18px color-mix(in srgb, var(--accent) 22%, transparent),
-      inset 0 0 14px color-mix(in srgb, var(--accent) 9%, transparent);
+    border: none !important;
+    box-shadow: none !important;
+    background: radial-gradient(ellipse at center,
+      color-mix(in srgb, var(--accent) 20%, transparent) 0%,
+      transparent 72%) !important;
   }
   [data-theme="dark"] .lau-collage > .lau-slot {
-    border-color: color-mix(in srgb, var(--accent) 60%, transparent);
-    background: color-mix(in srgb, var(--accent) 8%, transparent);
-    box-shadow:
-      0 0 26px color-mix(in srgb, var(--accent) 38%, transparent),
-      inset 0 0 16px color-mix(in srgb, var(--accent) 16%, transparent);
+    background: radial-gradient(ellipse at center,
+      color-mix(in srgb, var(--accent) 32%, transparent) 0%,
+      transparent 72%) !important;
   }
   .lau-collage img { width: 100%; height: 100%; object-fit: cover; }
 }
