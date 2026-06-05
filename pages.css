@@ -1750,3 +1750,30 @@
     box-shadow: 0 6px 18px rgba(0,0,0,0.14), 0 2px 6px rgba(0,0,0,0.10);
   }
 }
+
+/* ===== Industries (mobile): card-in-card — image inner card + per-item description ===== */
+.industry-visual-blurb { display: none; }
+@media (max-width: 900px) {
+  /* Outer card: holds the image card + the active item's description */
+  #industries-section .industry-visual {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.10), 0 1px 3px rgba(0,0,0,0.08);
+  }
+  /* Inner card: the image */
+  #industries-section .industry-visual img,
+  #industries-section .industry-visual .ph {
+    border-radius: 12px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  }
+  /* Description sits right below the image; swaps with the active list item */
+  #industries-section .industry-visual-blurb {
+    display: block;
+    margin: 12px 4px 4px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--fg-muted);
+  }
+}

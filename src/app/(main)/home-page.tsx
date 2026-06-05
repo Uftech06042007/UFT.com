@@ -383,6 +383,10 @@ export default function HomePage() {
                   </span>
                 </div>
               )}
+              {/* Mobile only: active industry's description, below the image (card-in-card) */}
+              <p className="industry-visual-blurb">
+                {UFT_DATA.industries[activeIndustry].blurb}
+              </p>
             </div>
           </div>
         </div>
