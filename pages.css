@@ -1732,15 +1732,21 @@
     min-height: 72px;
     align-content: center;
     box-shadow: 0 4px 12px rgba(0,0,0,0.10), 0 1px 3px rgba(0,0,0,0.08);
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
   }
   /* Keep multi-line names from making a button taller than the rest */
   #services-section .industry-row-name { line-height: 1.25; }
-  /* Active/clicked still reads as a button — don't shift it left */
+  /* Active/clicked still reads as a button — don't shift it left.
+     No orange outline/border on tap; depth comes from the shadow only. */
   #services-section .industry-row:hover,
   #services-section .industry-row.active,
-  #services-section .industry-row--clicked {
+  #services-section .industry-row--clicked,
+  #services-section .industry-row:focus,
+  #services-section .industry-row:focus-visible {
     padding-left: 16px !important;
-    border-color: var(--accent);
+    border-color: var(--border);
+    outline: none;
     box-shadow: 0 6px 18px rgba(0,0,0,0.14), 0 2px 6px rgba(0,0,0,0.10);
   }
 }
