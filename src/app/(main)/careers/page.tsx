@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type React from "react";
 import { StickyHeroFade } from "@/components/sticky-hero-fade";
+import { StackFade } from "@/components/stack-fade";
 import { Icon } from "@/components/icons";
 import { JobsList } from "@/components/jobs-list";
 
@@ -13,6 +14,7 @@ export default function CareersPage() {
   return (
     <main className="page-enter sticky-hero">
       <StickyHeroFade />
+      <StackFade container=".careers-stack" card=".careers-stack-card" />
       <section className="page-hero" style={{ paddingBottom: 16 }}>
         <div className="container">
           <span className="eyebrow">[ Careers · Culture ]</span>
@@ -29,8 +31,9 @@ export default function CareersPage() {
         </div>
       </section>
 
+      <div className="careers-stack">
       {/* Open roles — latest jobs from uftech.in/jobs */}
-      <section className="section" id="careers-intro-section" style={{ paddingTop: 24 }}>
+      <section className="section careers-stack-card" id="careers-intro-section" style={{ paddingTop: 24 }}>
         <div className="container">
           <span className="eyebrow">[ Open Roles ]</span>
           <h2
@@ -50,7 +53,7 @@ export default function CareersPage() {
       </section>
 
       {/* Life at UFT — photo collage */}
-      <section className="section" id="lau-section">
+      <section className="section careers-stack-card" id="lau-section">
         <div className="container">
           <span className="eyebrow">[ Life at UFT ]</span>
           <h2
@@ -85,6 +88,7 @@ export default function CareersPage() {
           </div>
         </div>
       </section>
+      </div>
 
     </main>
   );

@@ -282,16 +282,14 @@
 }
 #testimonial-section > .container { padding-bottom: 0; }
 
-/* Stacked-card transition (desktop): the clients/testimonials card parks with
-   its bottom at mid-screen (sticky top set by StackReveal, like the site's
-   other stacked cards), then the leadership card slides up and stacks on top of
-   it while the clients card fades out underneath. The fade — not just z-index —
-   is what makes it animate like the other stacks, and it also avoids the
-   clients card peeking below the (shorter) leadership card. */
-@media (min-width: 901px) {
-  #testimonial-section { z-index: 1; }
-  #leadership-section { z-index: 2; }
-}
+/* Stacked-card transition (mobile + desktop): the clients/testimonials card
+   parks with its bottom at mid-screen (sticky top set by StackReveal, like the
+   site's other stacked cards), then the leadership card slides up and stacks on
+   top of it while the clients card fades out underneath. The fade — not just
+   z-index — is what makes it animate like the other stacks, and it also avoids
+   the clients card peeking below the (shorter) leadership card. */
+#testimonial-section { z-index: 1; }
+#leadership-section { z-index: 2; }
 #services-section .section-head-row,
 #industries-section .section-head-row {
   grid-template-columns: 1fr 1.2fr;
@@ -763,7 +761,12 @@
 }
 .jobs-explore-btn:hover { opacity: 0.9; transform: translateY(-1px); }
 @media (max-width: 720px) {
-  .jobs-grid { grid-template-columns: 1fr; }
+  .jobs-grid { grid-template-columns: 1fr; gap: 12px; }
+  .job-card { padding: 14px 16px; gap: 8px; }
+  .job-card-title { font-size: 16px; line-height: 1.25; }
+  .job-card-loc { font-size: 12px; }
+  .job-card-skills { gap: 6px; }
+  .job-skill { padding: 3px 10px; font-size: 11px; }
 }
 
 .lau-collage {

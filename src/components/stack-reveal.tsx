@@ -7,15 +7,13 @@ import { useEffect } from "react";
  * mid-screen (top = 50vh - height), then fades out as the over card slides up
  * and overlaps it. We only touch the under card's position/opacity — the over
  * card keeps its own sticky positioning (the leadership card runs StickyExpand,
- * so its top/transform must be left alone). Desktop only; on mobile the cards
- * flow sequentially.
+ * so its top/transform must be left alone). Runs on mobile + desktop.
  */
 export function StackReveal({ underId, overId }: { underId: string; overId: string }) {
   useEffect(() => {
     const under = document.getElementById(underId);
     const over = document.getElementById(overId);
     if (!under || !over) return;
-    if (!window.matchMedia("(min-width: 901px)").matches) return;
 
     // Park the under card with its bottom at mid-screen (matches StackFade).
     const init = () => {
