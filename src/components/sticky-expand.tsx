@@ -52,10 +52,32 @@ export function StickyExpand({
         if (spacer) spacer.style.height = `${pinDuration + window.innerHeight * 0.15}px`;
       };
 
+      // iOS Safari throttles `scroll` EVENTS during momentum/inertia scrolling (Android
+      // Chrome fires them ~every frame), so writing the transform from a scroll handler
+      // stutters on iPhone but is smooth on Android. window.scrollY *is* still updated
+      // every frame though — so we sample it in a persistent rAF loop instead, which
+      // tracks momentum smoothly on both platforms. translate3d keeps it GPU-composited.
+      let loopId = 0, lastTx = NaN, running = false;
       const apply = () => {
         const progress = Math.max(0, Math.min(1, (window.scrollY - stickyY) / pinDuration));
-        cards.style.transform = `translateX(${-progress * maxTranslate}px)`;
+        const tx = -progress * maxTranslate;
+        if (tx !== lastTx) {
+          cards.style.transform = `translate3d(${tx}px,0,0)`;
+          lastTx = tx;
+        }
       };
+      const frame = () => {
+        apply();
+        loopId = requestAnimationFrame(frame);
+      };
+      const startLoop = () => { if (!running) { running = true; frame(); } };
+      const stopLoop = () => { running = false; cancelAnimationFrame(loopId); };
+
+      // Only spin the rAF loop while the section is on/near screen.
+      const io = new IntersectionObserver(
+        (entries) => { if (entries[0].isIntersecting) startLoop(); else stopLoop(); },
+        { rootMargin: "200px 0px" }
+      );
 
       // Custom fast snap animation (native smooth-scroll is too slow / fixed)
       let rafId = 0;
@@ -111,14 +133,15 @@ export function StickyExpand({
       const onTouchEnd = () => {};
 
       measure();
-      apply();
-      window.addEventListener("scroll", apply, { passive: true });
+      apply();            // initial paint before the loop spins up
+      io.observe(section); // starts/stops the rAF loop as the section enters/leaves view
       window.addEventListener("resize", measure, { passive: true });
       section.addEventListener("touchstart", onTouchStart, { passive: true });
       section.addEventListener("touchmove", onTouchMove, { passive: false });
       section.addEventListener("touchend", onTouchEnd, { passive: true });
       return () => {
-        window.removeEventListener("scroll", apply);
+        io.disconnect();
+        stopLoop();
         window.removeEventListener("resize", measure);
         section.removeEventListener("touchstart", onTouchStart);
         section.removeEventListener("touchmove", onTouchMove);

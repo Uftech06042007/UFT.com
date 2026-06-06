@@ -39,8 +39,8 @@ function Logo() {
         letterSpacing: "-0.02em",
         fontStretch: "condensed",
       }}>
-        <span>UNITFORCE</span>
-        <span>TECHNOLOGIES</span>
+        <span>UNITFORCE TECHNOLOGIES</span>
+        <span>CONSULTING PVT LTD</span>
       </span>
     </Link>
   );
