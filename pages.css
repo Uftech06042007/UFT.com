@@ -203,6 +203,7 @@
 #industries-section,
 #approach-section,
 #testimonial-section,
+#careers-intro-section,
 #lau-section,
 #contact-form-section,
 #locations-section,
@@ -235,6 +236,7 @@
 #industries-section > .container,
 #approach-section > .container,
 #testimonial-section > .container,
+#careers-intro-section > .container,
 #lau-section > .container,
 #contact-form-section > .container,
 #locations-section > .container {
@@ -279,6 +281,17 @@
   max-width: 100%;
 }
 #testimonial-section > .container { padding-bottom: 0; }
+
+/* Stacked-card transition (desktop): the clients/testimonials card parks with
+   its bottom at mid-screen (sticky top set by StackReveal, like the site's
+   other stacked cards), then the leadership card slides up and stacks on top of
+   it while the clients card fades out underneath. The fade — not just z-index —
+   is what makes it animate like the other stacks, and it also avoids the
+   clients card peeking below the (shorter) leadership card. */
+@media (min-width: 901px) {
+  #testimonial-section { z-index: 1; }
+  #leadership-section { z-index: 2; }
+}
 #services-section .section-head-row,
 #industries-section .section-head-row {
   grid-template-columns: 1fr 1.2fr;
@@ -561,17 +574,6 @@
 /* PAGE HERO (sub-pages) */
 .page-hero { padding: 80px 0 64px; }
 
-/* Careers page — hero sized to the fixed title + statement height */
-.careers-page-hero {
-  padding: 0;
-  min-height: 75vh;
-  position: relative;
-}
-/* Fixed careers title fades on scroll */
-.careers-title-fixed {
-  opacity: var(--careers-fade, 1);
-  transition: opacity 0.05s linear;
-}
 .page-hero > .container { max-width: none; }
 .page-hero .eyebrow { color: #000; }
 
@@ -680,6 +682,90 @@
   [ E: wide 1-2  ][ F: tall 3-4  ]
   [ G: sq  ][ H: sq ][ F cont.   ]
 */
+/* ===== Open roles: latest job cards ===== */
+.jobs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+.job-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 24px 24px 22px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+.job-card:hover {
+  transform: translateY(-3px);
+  border-color: oklch(0.72 0.18 145 / 0.5);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
+}
+.job-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.job-card-ref {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.job-card-arrow {
+  color: var(--fg-muted);
+  transform: rotate(-45deg);
+  transition: transform 0.22s ease, color 0.22s ease;
+}
+.job-card:hover .job-card-arrow { transform: rotate(0deg); color: var(--accent); }
+.job-card-title {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+.job-card-loc {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  color: var(--fg-muted);
+}
+.job-card-loc svg { flex-shrink: 0; }
+.job-card-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: auto;
+}
+.job-skill {
+  padding: 5px 12px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--fg-muted);
+}
+.jobs-explore-wrap { margin-top: 32px; }
+.jobs-explore-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 13px 24px;
+  border-radius: 100px;
+  font-size: 14px;
+  font-weight: 600;
+  background: var(--fg);
+  color: var(--bg);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.jobs-explore-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+@media (max-width: 720px) {
+  .jobs-grid { grid-template-columns: 1fr; }
+}
+
 .lau-collage {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -1308,6 +1394,7 @@
 [data-theme="dark"] #approach-section,
 [data-theme="dark"] #leadership-section,
 [data-theme="dark"] #testimonial-section,
+[data-theme="dark"] #careers-intro-section,
 [data-theme="dark"] #lau-section,
 [data-theme="dark"] #contact-form-section,
 [data-theme="dark"] #locations-section {
@@ -1413,14 +1500,6 @@
 }
 
 /* ===== TOUCH / MOBILE FIXES ===== */
-/* The fixed decorative hero/careers titles sit on top of scrolling content.
-   Their inner wrapper has pointer-events:auto for desktop, but on touch it
-   silently intercepts taps over a large area (even when faded out), which
-   makes content underneath unclickable. Disable that capture on touch. */
-@media (hover: none) {
-  .careers-title-fixed .container { pointer-events: none !important; }
-}
-
 /* Phone layout polish */
 @media (max-width: 600px) {
   /* Title is nowrap by default and overflows narrow screens — scale it down */
@@ -1676,13 +1755,6 @@
   .tc-card { flex-basis: calc(100% - 12px) !important; }
 }
 
-/* ===== Careers hero: normal spacing before the first card (mobile) ===== */
-@media (max-width: 900px) {
-  /* Title flows in-line instead of fixed, so the card follows with normal spacing */
-  .careers-page-hero { min-height: auto !important; }
-  .careers-title-fixed { position: static !important; opacity: 1 !important; }
-}
-
 /* ===== Life at UFT: offset 2-column masonry with empty slots (mobile) =====
    Left col:  photo, photo, photo, photo, [empty]
    Right col: [empty], photo, photo, photo, photo
@@ -1735,6 +1807,7 @@
   #approach-section > .container,
   #leadership-section > .container,
   #testimonial-section > .container,
+  #careers-intro-section > .container,
   #lau-section > .container,
   #contact-form-section > .container,
   #locations-section > .container {
