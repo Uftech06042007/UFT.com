@@ -1,0 +1,16 @@
+# UnitForce Technologies (UFT)
+
+> Inspired Innovations since 2003 — software, engineering, and talent solutions for global enterprises across India, the USA, and the UAE. ISO 9001:2015 certified.
+
+UnitForce Technologies operates as five interconnected practices: AI, engineering, talent, software, and manufacturing.
+
+## Pages
+- [Home](https://uftech.com/): Overview of UFT's services, industries, and clients.
+- [About](https://uftech.com/about): Company story, leadership, and values.
+- [Services](https://uftech.com/services): AI, engineering, talent acquisition, software, and manufacturing services.
+- [Careers](https://uftech.com/careers): Open roles and life at UFT.
+- [Contact](https://uftech.com/contact): Office locations and ways to get in touch.
+
+## Contact
+- Email: info@uftech.com
+- Locations: Bengaluru (HQ), Mumbai (India); USA; Dubai (UAE)

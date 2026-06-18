@@ -8,6 +8,7 @@ import { JobsList } from "@/components/jobs-list";
 export const metadata: Metadata = {
   title: "Careers",
   description: "Build the things that build everything else. Join UFT.",
+  alternates: { canonical: "/careers" },
 };
 
 export default function CareersPage() {

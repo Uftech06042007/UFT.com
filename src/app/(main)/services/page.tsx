@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Services",
   description:
     "Explore UFT's full range of services — talent acquisition, engineering, software, manufacturing, and AI.",
+  alternates: { canonical: "/services" },
 };
 
 export default function ServicesPage() {

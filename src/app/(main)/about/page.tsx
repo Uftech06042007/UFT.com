@@ -11,6 +11,7 @@ export const metadata: Metadata = {
   title: "About",
   description:
     "Learn about UnitForce Technologies — our story, leadership, and values since 2003.",
+  alternates: { canonical: "/about" },
 };
 
 export default function AboutPage() {
