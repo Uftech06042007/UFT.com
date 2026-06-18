@@ -55,7 +55,7 @@ export default function ServicesPage() {
                   {/* Mobile-only image — sits between tagline and description */}
                   <div className="sc-image-mobile">
                     {s.image ? (
-                      <img src={s.image} alt={s.title} />
+                      <img src={s.image} alt="" />
                     ) : (
                       <div className="ph" style={{ aspectRatio: "16/9" }}>
                         <span className="ph-label">{s.title.toUpperCase()}</span>
@@ -100,7 +100,7 @@ export default function ServicesPage() {
                     {s.image ? (
                       <img
                         src={s.image}
-                        alt={s.title}
+                        alt=""
                         style={{
                           width: "100%",
                           aspectRatio: "4/3",

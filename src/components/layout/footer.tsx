@@ -5,10 +5,10 @@ import { Icon } from "@/components/icons";
 
 function Logo() {
   return (
-    <Link href="/" className="nav-logo">
+    <Link href="/" className="nav-logo" aria-label="UFT — home">
       <Image
         src="/assets/uft-logo.png"
-        alt="UFT"
+        alt=""
         className="nav-logo-img logo-light"
         width={120}
         height={36}
@@ -16,7 +16,7 @@ function Logo() {
       />
       <Image
         src="/assets/uft-logo-dark.png"
-        alt="UFT"
+        alt=""
         className="nav-logo-img logo-dark"
         width={120}
         height={36}

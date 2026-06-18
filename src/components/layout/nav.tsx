@@ -10,10 +10,10 @@ import { useTheme } from "@/hooks/use-theme";
 
 function Logo() {
   return (
-    <Link href="/" className="nav-logo" style={{ marginLeft: "-24px" }}>
+    <Link href="/" className="nav-logo" style={{ marginLeft: "-24px" }} aria-label="UFT — Inspired Innovations, home">
       <Image
         src="/assets/uft-logo.png"
-        alt="UFT — Inspired Innovations"
+        alt=""
         className="nav-logo-img logo-light"
         width={120}
         height={36}
@@ -22,7 +22,7 @@ function Logo() {
       />
       <Image
         src="/assets/uft-logo-dark.png"
-        alt="UFT — Inspired Innovations"
+        alt=""
         className="nav-logo-img logo-dark"
         width={120}
         height={36}
