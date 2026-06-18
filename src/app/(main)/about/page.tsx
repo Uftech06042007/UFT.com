@@ -166,13 +166,13 @@ export default function AboutPage() {
                   </div>
                   <div className="leader-socials-m">
                     {p.socials.linkedin && (
-                      <a href={p.socials.linkedin} className="social-btn" target="_blank" rel="noreferrer"><Icon.LinkedIn /></a>
+                      <a href={p.socials.linkedin} className="social-btn" target="_blank" rel="noreferrer" aria-label={`${p.name} on LinkedIn`}><Icon.LinkedIn /></a>
                     )}
                     {p.socials.twitter && (
-                      <a href={p.socials.twitter} className="social-btn" target="_blank" rel="noreferrer"><Icon.Twitter /></a>
+                      <a href={p.socials.twitter} className="social-btn" target="_blank" rel="noreferrer" aria-label={`${p.name} on X (Twitter)`}><Icon.Twitter /></a>
                     )}
                     {p.socials.facebook && (
-                      <a href={p.socials.facebook} className="social-btn" target="_blank" rel="noreferrer"><Icon.Facebook /></a>
+                      <a href={p.socials.facebook} className="social-btn" target="_blank" rel="noreferrer" aria-label={`${p.name} on Facebook`}><Icon.Facebook /></a>
                     )}
                   </div>
                 </div>
@@ -181,13 +181,13 @@ export default function AboutPage() {
                   <p className="muted" style={{ fontSize: 13, lineHeight: 1.75 }}>{p.bio}</p>
                   <div className="leader-socials-d" style={{ display: "flex", gap: 8, marginTop: "auto" }}>
                     {p.socials.linkedin && (
-                      <a href={p.socials.linkedin} className="social-btn" target="_blank" rel="noreferrer"><Icon.LinkedIn /></a>
+                      <a href={p.socials.linkedin} className="social-btn" target="_blank" rel="noreferrer" aria-label={`${p.name} on LinkedIn`}><Icon.LinkedIn /></a>
                     )}
                     {p.socials.twitter && (
-                      <a href={p.socials.twitter} className="social-btn" target="_blank" rel="noreferrer"><Icon.Twitter /></a>
+                      <a href={p.socials.twitter} className="social-btn" target="_blank" rel="noreferrer" aria-label={`${p.name} on X (Twitter)`}><Icon.Twitter /></a>
                     )}
                     {p.socials.facebook && (
-                      <a href={p.socials.facebook} className="social-btn" target="_blank" rel="noreferrer"><Icon.Facebook /></a>
+                      <a href={p.socials.facebook} className="social-btn" target="_blank" rel="noreferrer" aria-label={`${p.name} on Facebook`}><Icon.Facebook /></a>
                     )}
                   </div>
                 </div>

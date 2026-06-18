@@ -113,6 +113,10 @@ export function ClientCarousel({ items }: { items: { name: string; logo: string 
         {extended.map((c, i) => {
           const pos   = i - idx;
           const scale = scaleMap[pos] ?? 0.82;
+          // The list is padded with clones at both ends for seamless looping.
+          // Only the real middle copies carry alt text; clones are decorative
+          // so each logo is announced once (no redundant alt text).
+          const isClone = i < visibleCount || i >= visibleCount + total;
           return (
             <div
               key={i}
@@ -131,7 +135,8 @@ export function ClientCarousel({ items }: { items: { name: string; logo: string 
             >
               <img
                 src={c.logo}
-                alt={c.name}
+                alt={isClone ? "" : c.name}
+                aria-hidden={isClone || undefined}
                 onError={(e) => {
                   e.currentTarget.style.display = "none";
                   const fb = e.currentTarget.nextElementSibling as HTMLElement;

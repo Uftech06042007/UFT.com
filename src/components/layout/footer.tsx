@@ -39,13 +39,13 @@ export function Footer() {
               </p>
             </div>
             <div className="footer-socials" style={{ display: "flex", gap: 10, marginTop: 24 }}>
-              <a href={UFT_DATA.contact.socials.linkedin} className="social-btn" target="_blank" rel="noreferrer">
+              <a href={UFT_DATA.contact.socials.linkedin} className="social-btn" target="_blank" rel="noreferrer" aria-label="UFT on LinkedIn">
                 <Icon.LinkedIn />
               </a>
-              <a href={UFT_DATA.contact.socials.twitter} className="social-btn" target="_blank" rel="noreferrer">
+              <a href={UFT_DATA.contact.socials.twitter} className="social-btn" target="_blank" rel="noreferrer" aria-label="UFT on X (Twitter)">
                 <Icon.Twitter />
               </a>
-              <a href={UFT_DATA.contact.socials.facebook} className="social-btn" target="_blank" rel="noreferrer">
+              <a href={UFT_DATA.contact.socials.facebook} className="social-btn" target="_blank" rel="noreferrer" aria-label="UFT on Facebook">
                 <Icon.Facebook />
               </a>
             </div>
