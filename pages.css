@@ -1906,3 +1906,112 @@
     min-height: 4.8em;
   }
 }
+
+/* ===== Careers hero: copy left, CV-builder ad right ===== */
+.careers-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap: 48px;
+  align-items: stretch;
+}
+.careers-hero-copy { min-width: 0; }
+/* Fit the title to the narrower column while keeping the forced 2 lines */
+.careers-hero-copy .page-title { font-size: clamp(32px, 4vw, 58px); }
+
+.cv-ad {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 28px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background:
+    radial-gradient(ellipse at top right, var(--accent-soft), transparent 65%),
+    var(--bg-card);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.12), 0 2px 10px rgba(0,0,0,0.07);
+}
+[data-theme="dark"] .cv-ad { box-shadow: 0 8px 40px rgba(0,0,0,0.5), 0 2px 10px rgba(0,0,0,0.4); }
+
+.cv-ad-badge {
+  align-self: flex-start;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  background: var(--accent-soft);
+  padding: 5px 10px;
+  border-radius: 100px;
+}
+.cv-ad-title {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(24px, 2.4vw, 32px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+.cv-ad-sub { font-size: 14px; line-height: 1.6; color: var(--fg-muted); }
+
+/* Horizontal marquee — cards scale to fill the ad's height (flex + aspect-ratio),
+   so the ad matches the title/hero column with no empty space. */
+.cv-ad-marquee {
+  position: relative;
+  flex: 1;              /* fill the vertical space between sub-text and CTA */
+  min-height: 230px;    /* floor for when the ad isn't height-constrained (mobile) */
+  overflow: hidden;
+  border-radius: 8px;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+}
+.cv-ad-track {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: stretch;
+  width: max-content;
+  animation: cv-ad-scroll 34s linear infinite;
+}
+@keyframes cv-ad-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.cv-ad-marquee:hover .cv-ad-track { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) { .cv-ad-track { animation: none; } }
+
+.cv-ad-card {
+  position: relative;
+  flex-shrink: 0;
+  height: 100%;
+  aspect-ratio: 3 / 4;   /* width derives from the strip height */
+  /* Trailing margin (not flex `gap`) so each card + spacing is one repeating
+     unit — makes the -50% loop land exactly on a copy boundary = seamless. */
+  margin: 0 16px 0 0;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: #fff;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.18);
+}
+.cv-ad-card img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
+.cv-ad-card figcaption {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 18px 8px 7px;
+  text-align: center;
+  color: #fff;
+  background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.35) 60%, transparent);
+}
+.cv-ad-card-name { font-size: 12px; font-weight: 600; }
+.cv-ad-card-tag { font-size: 10px; opacity: 0.85; }
+
+.cv-ad-cta { align-self: flex-start; margin-top: 4px; }
+
+@media (max-width: 960px) {
+  .careers-hero-grid { grid-template-columns: 1fr; gap: 40px; }
+  .cv-ad { max-width: 560px; }
+}

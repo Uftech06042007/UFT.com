@@ -4,6 +4,7 @@ import { StickyHeroFade } from "@/components/sticky-hero-fade";
 import { StackFade } from "@/components/stack-fade";
 import { Icon } from "@/components/icons";
 import { JobsList } from "@/components/jobs-list";
+import { ResumeAd } from "@/components/resume-ad";
 
 export const metadata: Metadata = {
   title: "Careers",
@@ -18,17 +19,23 @@ export default function CareersPage() {
       <StackFade container=".careers-stack" card=".careers-stack-card" />
       <section className="page-hero" style={{ paddingBottom: 16 }}>
         <div className="container">
-          <span className="eyebrow">[ Careers · Culture ]</span>
-          <h1 className="page-title">
-            Build the things that{" "}
-            <span className="serif-italic">build everything else.</span>
-          </h1>
-          <p className="page-sub">
-            We hire relentless problem-solvers across roles like Software and Embedded Engineers,
-            SAP Consultants, Talent Recruiters, AI Specialists, Mechanical Engineers, PLM Analysts,
-            Operations Managers, Business Analysts, Finance Professionals, and dozens of other
-            critical disciplines. If you prefer real impact over hype — read on.
-          </p>
+          <div className="careers-hero-grid">
+            <div className="careers-hero-copy">
+              <span className="eyebrow">[ Careers · Culture ]</span>
+              <h1 className="page-title">
+                Build the things that<br />
+                <span className="serif-italic">build everything else.</span>
+              </h1>
+              <p className="page-sub">
+                We hire relentless problem-solvers across roles like Software and Embedded Engineers,
+                SAP Consultants, Talent Recruiters, AI Specialists, Mechanical Engineers, PLM Analysts,
+                Operations Managers, Business Analysts, Finance Professionals, and dozens of other
+                critical disciplines. If you prefer real impact over hype — read on.
+              </p>
+            </div>
+
+            <ResumeAd />
+          </div>
         </div>
       </section>
 
