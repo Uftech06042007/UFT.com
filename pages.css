@@ -1970,7 +1970,9 @@
   display: flex;
   align-items: stretch;
   width: max-content;
-  animation: cv-ad-scroll 34s linear infinite;
+  /* Track is 6× the base list (~3.4k px per half), so duration is large to keep
+     the scroll calm — speed = halfWidth / duration ≈ 48 px/s. */
+  animation: cv-ad-scroll 70s linear infinite;
 }
 @keyframes cv-ad-scroll {
   from { transform: translateX(0); }
@@ -2014,4 +2016,16 @@
 @media (max-width: 960px) {
   .careers-hero-grid { grid-template-columns: 1fr; gap: 40px; }
   .cv-ad { max-width: 560px; }
+
+  /* Tighten the gap above the "[ Careers · Culture ]" eyebrow (mobile only) */
+  .sticky-hero:has(.careers-hero-grid) .page-hero { padding-top: 24px; }
+
+  /* On phones the stacked ad makes the hero taller than the screen, so the
+     sticky "cards scroll over the pinned hero" effect buries the ad's CTA under
+     the Open Roles card. Fall back to a normal scrolling flow on careers.
+     (!important overrides the inline position/opacity the StackFade/HeroFade JS
+     applies.) */
+  .sticky-hero:has(.careers-hero-grid) .page-hero { position: static; }
+  .sticky-hero:has(.careers-hero-grid) .page-hero .container { opacity: 1 !important; }
+  .careers-stack-card { position: relative !important; top: auto !important; }
 }
