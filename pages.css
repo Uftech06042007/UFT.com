@@ -1995,8 +1995,9 @@
   background: #fff;
   box-shadow: 0 8px 22px rgba(0,0,0,0.18);
 }
+.cv-ad-card { text-decoration: none; color: inherit; cursor: pointer; }
 .cv-ad-card img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
-.cv-ad-card figcaption {
+.cv-ad-card-cap {
   position: absolute;
   inset-inline: 0;
   bottom: 0;

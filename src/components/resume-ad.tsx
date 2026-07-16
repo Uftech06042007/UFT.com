@@ -33,21 +33,33 @@ export function ResumeAd() {
 
       <div className="cv-ad-marquee">
         <div className="cv-ad-track">
-          {MARQUEE.map((t, i) => (
-            <figure key={`${t.id}-${i}`} className="cv-ad-card" aria-hidden={i >= RESUME_TEMPLATES.length}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={`/assets/resume/${t.id}.png`}
-                alt={`${t.name} resume template`}
-                loading="lazy"
-                decoding="async"
-              />
-              <figcaption>
-                <span className="cv-ad-card-name">{t.name}</span>
-                <span className="cv-ad-card-tag">{t.tagline}</span>
-              </figcaption>
-            </figure>
-          ))}
+          {MARQUEE.map((t, i) => {
+            const dup = i >= RESUME_TEMPLATES.length;
+            return (
+              <a
+                key={`${t.id}-${i}`}
+                href="https://uftech.in/enhance-cv"
+                target="_blank"
+                rel="noreferrer"
+                className="cv-ad-card"
+                aria-label={`Build your resume with the ${t.name} template`}
+                aria-hidden={dup}
+                tabIndex={dup ? -1 : undefined}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={`/assets/resume/${t.id}.png`}
+                  alt={`${t.name} resume template`}
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span className="cv-ad-card-cap">
+                  <span className="cv-ad-card-name">{t.name}</span>
+                  <span className="cv-ad-card-tag">{t.tagline}</span>
+                </span>
+              </a>
+            );
+          })}
         </div>
       </div>
 
